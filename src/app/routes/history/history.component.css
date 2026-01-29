@@ -1,0 +1,104 @@
+/* =========================
+   HERO
+========================= */
+
+.history-hero {
+  height: 80vh;
+  background: url('/header-1.jpg') center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.history-hero h1 {
+  color: #fff;
+  font-size: 42px;
+  letter-spacing: 2px;
+}
+
+/* =========================
+   TIMELINE
+========================= */
+
+.timeline {
+  padding: 100px 20px;
+  background: #fff;
+}
+
+.timeline-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ITEM BASE */
+.timeline-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 60px;
+  margin-bottom: 120px;
+}
+
+/* TEXTO */
+.timeline h3 {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #000;
+}
+
+.timeline p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #444;
+  max-width: 420px;
+}
+
+/* IMÁGENES */
+.timeline .media img {
+  max-width: 300px; /* prueba 300 / 340 / 380 */
+  width: 100%;
+  height: auto;
+}
+
+
+/* =========================
+   INTERCALADO AUTOMÁTICO
+========================= */
+
+/* ITEMS PARES → imagen a la izquierda */
+.timeline-item:nth-child(even) {
+  direction: rtl;
+}
+
+/* Corregimos contenido interno */
+.timeline-item:nth-child(even) .content,
+.timeline-item:nth-child(even) .media {
+  direction: ltr;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+  .timeline-item {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .timeline p {
+    margin: 0 auto;
+  }
+
+  .timeline-item:nth-child(even) {
+    direction: ltr;
+  }
+}
+.story {
+  margin-bottom: 28px;
+}
+
+.story:last-child {
+  margin-bottom: 0;
+}

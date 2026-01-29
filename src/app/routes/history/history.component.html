@@ -1,0 +1,26 @@
+<section class="history-hero">
+  <h1>NUESTRA HISTORIA</h1>
+</section>
+
+<section class="timeline">
+  <div class="timeline-container">
+
+    <div class="timeline-item" *ngFor="let item of timeline">
+
+      <!-- TEXTO -->
+      <div class="content">
+        <div class="story" *ngFor="let story of item.stories">
+          <h3>{{ story.year }}</h3>
+          <p>{{ story.text }}</p>
+        </div>
+      </div>
+
+      <!-- IMAGEN -->
+      <div class="media">
+        <img [src]="item.image" [alt]="item.alt">
+      </div>
+
+    </div>
+
+  </div>
+</section>
