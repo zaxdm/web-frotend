@@ -1,0 +1,188 @@
+<section class="contact-container">
+
+  <!-- HEADER -->
+  <div class="contact-header">
+    <span class="subtitle">CONTACT US</span>
+    <h1>SELECT YOUR REGION</h1>
+
+    <!-- REGION SELECT -->
+    <div class="region-select-wrapper">
+      <mat-form-field appearance="outline" class="region-select">
+        <mat-label>Country or Region</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Type to search..."
+          [formControl]="regionControl"
+          [matAutocomplete]="auto"
+        />
+        
+        <!-- Icono de búsqueda -->
+        <mat-icon matPrefix>search</mat-icon>
+        
+        <!-- Botón limpiar -->
+        <button
+          mat-icon-button
+          matSuffix
+          *ngIf="regionControl.value"
+          (click)="clearRegion()"
+          aria-label="Clear selection"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selectRegion($event.option.value)"
+          class="region-autocomplete"
+        >
+          <mat-option
+            *ngFor="let region of filteredRegions | async"
+            [value]="region"
+            class="region-option"
+          >
+            <mat-icon class="region-icon">place</mat-icon>
+            <span class="region-label">{{ region.label }}</span>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      
+      <!-- Help text -->
+      <p class="select-help">Start typing to search for your region</p>
+    </div>
+  </div>
+
+  <!-- REGION INFO PANEL (con animación) -->
+  <div 
+    class="region-panel" 
+    *ngIf="selectedRegion"
+    [@slideInOut]
+  >
+    <div class="panel-arrow"></div>
+    
+    <button class="close-panel" (click)="clearRegion()" aria-label="Close panel">
+      <mat-icon>close</mat-icon>
+    </button>
+
+    <div class="panel-content">
+      <div class="panel-block">
+        <span class="panel-title">
+          <mat-icon class="panel-icon">person</mat-icon>
+          {{ selectedRegion.label | uppercase }} REGIONAL CONTACT
+        </span>
+
+        <h3>{{ selectedRegion.contact?.name }}</h3>
+
+        <div class="contact-info">
+          <div class="contact-item" *ngFor="let phone of selectedRegion.contact?.phones">
+            <mat-icon class="contact-icon">phone</mat-icon>
+            <span>Mobile: {{ phone }}</span>
+          </div>
+          
+          <div class="contact-item email">
+            <mat-icon class="contact-icon">email</mat-icon>
+            <a [href]="'mailto:' + selectedRegion.contact?.email" class="email-link">
+              {{ selectedRegion.contact?.email }}
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <span class="panel-title">
+          <mat-icon class="panel-icon">business</mat-icon>
+          OFFICES
+        </span>
+
+        <p class="country">
+          <mat-icon class="contact-icon">flag</mat-icon>
+          {{ selectedRegion.contact?.office?.country }}
+        </p>
+
+        <div class="office-info">
+          <div class="contact-item">
+            <mat-icon class="contact-icon">location_on</mat-icon>
+            <span>{{ selectedRegion.contact?.office?.address }}</span>
+          </div>
+          <div class="contact-item">
+            <mat-icon class="contact-icon">phone</mat-icon>
+            <span>Office Phone: {{ selectedRegion.contact?.office?.phone }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="contact-content">
+    <!-- LEFT TEXT -->
+    <div class="contact-info">
+      <p>
+        Wherever your operation is located:<br />
+        our tools, services, engineers and specialists are always there for you.
+      </p>
+
+      <p>
+        Use the drop down menu to find the closest regional Terelion sales office.
+      </p>
+
+      <p class="bold">
+        Find your contact people in your region!
+      </p>
+    </div>
+
+    <!-- FORM -->
+    <form class="contact-form">
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>First name</mat-label>
+          <input matInput placeholder="Enter first name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Last name</mat-label>
+          <input matInput placeholder="Enter last name" required />
+        </mat-form-field>
+      </div>
+
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" placeholder="your.email@example.com" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Phone</mat-label>
+          <input matInput placeholder="+1 (123) 456-7890" />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Company</mat-label>
+        <input matInput placeholder="Your company name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full">
+        <mat-label>Comments or questions</mat-label>
+        <textarea
+          matInput
+          rows="6"
+          placeholder="Type your message here..."
+        ></textarea>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" class="send-button">
+          <mat-icon>send</mat-icon>
+          SEND E-MAIL
+        </button>
+      </div>
+
+      <p class="legal">
+        Terelion, LLC will use the personal data you provided above to respond to your question or comment.
+        Terelion, LLC does this to fulfill our legitimate interest in providing you efficient support.
+        Your personal data will be stored as long as necessary to meet the purpose set out above.
+      </p>
+    </form>
+  </div>
+</section>

@@ -89,7 +89,15 @@
         </div>
       </li>
 
-      <li><a href="#" (click)="closeMenus()">{{ 'NAV.CONTACT' | translate }}</a></li>
+      <li>
+  <a
+    routerLink="/contactos"
+    (click)="closeMenus()"
+  >
+    {{ 'NAV.CONTACT' | translate }}
+  </a>
+</li>
+
 
     <!-- SECCIÓN CONTENIDO DE FONDO PARA MENÚ MÓVIL -->
     <div class="back" *ngIf="menuOpen">
