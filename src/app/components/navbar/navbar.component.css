@@ -100,37 +100,70 @@
   
 }
 
-/* Idiomas */
-.language-selector-simple {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end; /* a la derecha */
-}
-
-.language-selector-simple p {
-  margin: 0;             /* 👈 elimina separación por defecto */
-  padding: 0;
-  line-height: 1.70;     /* 👈 controla qué tan juntos quedan */
-}
-@media (max-width: 768px) {
-  .nav-active .language-selector {
-    display: none !important;
-  }
-}
-
-
 .language-selector-simple .lang {
   cursor: pointer;
-  color: rgb(65, 64, 64);
+  color: rgb(255, 255, 255);
   font-size: 16px;
   transition: color 0.2s ease, opacity 0.2s ease;
 }
+.language-selector-simple .lang:hover {
+  opacity: 0.8;
+}
 
-
-.language-selector-simple .lang.active {
+/* --- Utilidades Derecha --- */
+.language-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: white;
-  font-weight: 600;
-  text-decoration: underline;
+  cursor: pointer;
+  font-size: 15px;
+  position: relative;
+  transition: opacity 0.2s;
+}
+
+.language-selector:hover {
+  opacity: 0.8;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: calc(var(--nav-height) + 10px);
+  right: 0;
+  background-color: var(--primary-green);
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 3000;
+  min-width: 150px;
+  overflow: hidden;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.language-dropdown button {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: white;
+}
+
+
+.logo {
+  width: 210px;     /* 🔹 ajusta aquí el tamaño */
+  height: auto;
+  margin-bottom: -40px;
 }
 
 /* ================= NAVBAR CONTAINER ================= */
@@ -249,7 +282,7 @@
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: 10px;
   padding: 0;
   margin: 0;
   transition: all 0.3s ease;
@@ -259,6 +292,7 @@
   position: absolute;
   top: var(--nav-height);
   left: 0;
+  
   width: 100%;
   flex-direction: column;
   background-color: var(--primary-green);
@@ -267,15 +301,68 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.nav-links.mobile-menu-open li {
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
+
 
 .nav-links.mobile-menu-open li:last-child {
   border-bottom: none;
 }
 
+/* ================= ACORDEÓN VERTICAL DE PRODUCTOS (MÓVIL) ================= */
+.accordion-productos {
+  padding-top: 4px;
+  border-radius: 4px;
+}
+
+.accordion-about {
+  margin-top: 10px;
+  padding-top: 15px;
+  animation: slideDown 0.3s ease-out;
+  padding: 15px 15px;
+}
+
+.accordion-section {
+  margin-bottom: 15px;
+}
+
+.accordion-section:last-child {
+  margin-bottom: 0;
+}
+
+.accordion-title {
+  color: rgb(0, 0, 0);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin: 5px 0 8px 0;
+  padding: 0;
+  opacity: 0.85;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.384);
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.accordion-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  line-height: 1.1; /* prueba 1.1 – 1.3 */
+}
+
+/* ================= TOGGLE ICON (+/-) ================= */
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion-toggle {
+  font-size: 18px;
+  font-weight: 300;
+  margin-left: 10px;
+  transition: transform 0.3s ease;
+  color: black;
+}
 .nav-links a {
   color: var(--text-white);
   text-decoration: none;
@@ -289,116 +376,6 @@
 
 .nav-links a:hover, .nav-links a.active-link {
   opacity: 1;
-  font-weight: 700; /* Se pone un poco más grueso al pasar */
-}
-
-/* --- Logo Centro --- */
-.nav-center {
-  display: flex;
-  justify-content: center;
-  flex: 1;
-  order: 2;
-}
-
-.logo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: white;
-}
-
-.logo-green {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: var(--primary-green);
-}
-
-.logo-pag {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.logo-svg {
-  height: 40px;
-  width: 40px;
-  margin-bottom: -5px;
-}
-
-.logo-text {
-  text-transform: lowercase; /* El logo de Terelion texto suele ser minúscula o estilizado */
-  font-weight: bold;
-  font-size: 20px;
-  letter-spacing: -1px;
-}
-
-/* --- Utilidades Derecha --- */
-.language-selector {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-  cursor: pointer;
-  font-size: 15px;
-  position: relative;
-  transition: opacity 0.2s;
-}
-
-.language-selector:hover {
-  opacity: 0.8;
-}
-
-.language-dropdown {
-  position: absolute;
-  top: calc(var(--nav-height) + 10px);
-  right: 0;
-  background-color: var(--primary-green);
-  border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 3000;
-  min-width: 150px;
-  overflow: hidden;
-  animation: slideDown 0.2s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.language-dropdown button {
-  display: block;
-  width: 100%;
-  padding: 12px 16px;
-  background: none;
-  border: none;
-  color: white;
-  text-align: left;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: background-color 0.2s;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.language-dropdown button:last-child {
-  border-bottom: none;
-}
-
-.language-dropdown button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.language-dropdown button.active {
-  background-color: rgba(0, 0, 0, 0.2);
-  font-weight: 700;
 }
 
 /* ================= MEGA MENU (Fondo Verde) ================= */
@@ -407,15 +384,12 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 70vh;
+  height: 60vh;
   background-color: var(--primary-green);
   z-index: 1900; /* Debajo del navbar */
   padding-top: var(--nav-height);
   opacity: 0;
   visibility: hidden;
-  overflow-y: auto; /* Permite scroll si el contenido es muy largo */
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  transform: translateY(-100%); /* Inicialmente fuera de pantalla */
 }
 
 .mega-menu-wrapper.show {
@@ -426,48 +400,46 @@
 
 /* El contenedor interno debe permitir scroll */
 .container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 40px 50px;
+  padding: 25px 30px;
   color: white;
-  height: calc(100vh - var(--nav-height)); /* Altura restante */
-  overflow-y: auto; /* Scroll interno si es necesario */
+  margin-top: -10px;
 }
 
 /* --- Títulos Principales (PRODUCTS, TECHNOLOGY) --- */
 .menu-header {
-  border-bottom: 1px solid var(--border-line);
-  margin-bottom: 30px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.384);
+  margin-bottom: 10px;
   padding-bottom: 10px;
 }
 
 .menu-header h2 {
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 800; /* Muy grueso */
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 0;
-  color: #1e401e; 
-  color: rgba(0, 0, 0, 0.4); 
+  color: #00000088; 
 }
 
 /* --- Grid de Columnas --- */
 .grid-layout {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
-  gap: 40px;
-  
-  
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 6px;
+  row-gap: 6px;
 }
+
+
 
 /* Títulos de Columna (ROLLER CONE BITS, etc.) */
 .col-title {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
-  color: #1a331a; /* Verde muy oscuro/negro, estilo "etiqueta" */
+  color: #000000; /* Verde muy oscuro/negro, estilo "etiqueta" */
   margin-bottom: 20px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.1px;
+  line-height: 1;
   opacity: 0.7;
 }
 
@@ -478,28 +450,165 @@
   margin: 0;
 }
 
-.link-list li {
-  margin-bottom: 12px;
-}
-
 .link-list a {
   color: white;
   text-decoration: none;
-  font-size: 16px; /* Tamaño grande y legible como en la foto */
+  font-size: 13px; /* Tamaño grande y legible como en la foto */
   font-weight: 600; /* Semi-bold */
   text-transform: uppercase; /* Todo mayúsculas */
-  letter-spacing: 0.5px; /* Un poco de aire entre letras */
+  letter-spacing: 0.1px; /* Un poco de aire entre letras */
   display: block;
-  line-height: 1.2;
+  line-height: 1;
 }
 
 .link-list a:hover {
-  text-decoration: underline;
-}
+color: #00000079;}
 
 /* Margen extra para separar secciones */
 .mt-large {
   margin-top: 60px;
+}
+
+/* ================= OVERLAY BÚSQUEDA ================= */
+.search-trigger svg{
+    cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  top: 5px;
+}
+.search-overlay {
+  position: fixed; /* También cambiar a fixed */
+  top: 0; /* Cambiar de bottom: 0 a top: 0 */
+  left: 0;
+  width: 100%;
+  height: var(--nav-height);
+  background-color: #549e52;
+  z-index: 2100; /* Mayor que navbar y mega-menu */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease-in-out;
+}
+
+
+/* Clase para mostrarlo */
+.search-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Contenedor interno para limitar el ancho */
+.search-container-inner {
+  width: 100%;
+  max-width: 1000px; /* Ajusta qué tan ancha quieres la línea */
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Icono Lupa Grande */
+.search-icon-large {
+  width: 32px;
+  height: 32px;
+  filter: brightness(0) invert(1); /* Blanco */
+  opacity: 0.9;
+}
+
+/* El Input Principal */
+.search-input-field {
+  flex: 1; /* Ocupa todo el espacio central */
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid white; /* La línea blanca inferior */
+  color: white;
+  font-size: 18px; /* Texto grande */
+  font-family: 'Segoe UI', sans-serif;
+  padding: 10px 5px;
+  outline: none; /* Quita el borde azul del navegador */
+}
+
+/* Estilo del Placeholder (Texto fantasma) */
+.search-input-field::placeholder {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 400;
+}
+
+/* Botón Cerrar X */
+.close-search-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.search-input {
+  width: 220px;
+  background: transparent;
+  border: none;           
+  border-bottom: 2px solid transparent; 
+  color: #fff;
+  font-size: 14px;
+  padding: 5px 0;
+  transition: border-color 0.3s;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  &:focus {
+    outline: none;
+    border-bottom-color: #fff; 
+  }
+}
+
+.language-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.language-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  background: #0f2f1f00;
+  min-width: 140px;
+  z-index: 5000;
+}
+
+.language-dropdown button:hover,
+.language-dropdown button.active {
+  background: #8a8b8a00;
+  color: #ffffff9c;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 768px) {
+  .nav-left { order: 3; margin-left: auto; }   /* hamburguesa derecha */
+  .nav-right { order: 1; margin-right: auto; } /* lupa izquierda */
+  .logo-img { max-height: 40px; } }
+
+/* Contenedor derecho alineado al final */
+.nav-right {
+  display: flex;
+  flex-direction: column; /* Cambiado de fila a columna */
+  align-items: flex-end;  /* Alinea todo a la derecha */
+  justify-content: center;
+  gap: 20px;  
 }
 
 /* ================= RESPONSIVE ================= */
@@ -604,253 +713,3 @@
 
 
 
-
-
-/* ================= OVERLAY BÚSQUEDA ================= */
-.search-overlay {
-  position: fixed; /* También cambiar a fixed */
-  top: 0; /* Cambiar de bottom: 0 a top: 0 */
-  left: 0;
-  width: 100%;
-  height: var(--nav-height);
-  background-color: #549e52;
-  z-index: 2100; /* Mayor que navbar y mega-menu */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-10px);
-  transition: all 0.3s ease-in-out;
-}
-
-
-/* Clase para mostrarlo */
-.search-overlay.active {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-/* Contenedor interno para limitar el ancho */
-.search-container-inner {
-  width: 100%;
-  max-width: 1000px; /* Ajusta qué tan ancha quieres la línea */
-  padding: 0 40px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* Icono Lupa Grande */
-.search-icon-large {
-  width: 32px;
-  height: 32px;
-  filter: brightness(0) invert(1); /* Blanco */
-  opacity: 0.9;
-}
-
-/* El Input Principal */
-.search-input-field {
-  flex: 1; /* Ocupa todo el espacio central */
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid white; /* La línea blanca inferior */
-  color: white;
-  font-size: 18px; /* Texto grande */
-  font-family: 'Segoe UI', sans-serif;
-  padding: 10px 5px;
-  outline: none; /* Quita el borde azul del navegador */
-}
-
-/* Estilo del Placeholder (Texto fantasma) */
-.search-input-field::placeholder {
-  color: rgba(255, 255, 255, 0.8);
-  font-weight: 400;
-}
-
-/* Botón Cerrar X */
-.close-search-btn {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s;
-}
-
-.close-search-btn:hover {
-  transform: scale(1.1); /* Efecto zoom al pasar mouse */
-}
-
-
-
-
-
-/* ===== MOBILE ===== */
-@media (max-width: 768px) {
-  .nav-left { order: 3; margin-left: auto; }   /* hamburguesa derecha */
-  .nav-right { order: 1; margin-right: auto; } /* lupa izquierda */
-  .logo-img { max-height: 40px; } }
-
-/* Contenedor derecho alineado al final */
-.nav-right {
-  display: flex;
-  flex-direction: column; /* Cambiado de fila a columna */
-  align-items: flex-end;  /* Alinea todo a la derecha */
-  justify-content: center;
-  gap: 20px;  
-}
-
-/* Estilo común para cada fila (Idioma y Buscador) */
-.right-item {
-  display: flex;
-  align-items: center; /* Centra verticalmente texto e icono */
-  gap: 10px;           /* Espacio entre el texto y el icono */
-  cursor: pointer;
-  color: white;
-  transition: opacity 0.2s;
-}
-
-.right-item:hover {
-  opacity: 0.8;
-}
-
-/* Texto (English / Search...) */
-.label-text {
-  font-family: 'Segoe UI', sans-serif;
-  font-weight: 400;
-  font-size: 15px;
-  white-space: nowrap; /* Evita que el texto se rompa */
-}
-
-/* Iconos */
-.icon-sm {
-  width: 18px;
-  height: 18px;
-}
-
-.icon-md {
-  width: 22px;
-  height: 22px;
-}
-
-.search-trigger {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-}
-
-.search-input {
-  width: 220px;
-  background: transparent;
-  border: none;           
-  border-bottom: 2px solid transparent; 
-  color: #fff;
-  font-size: 14px;
-  padding: 5px 0;
-  transition: border-color 0.3s;
-
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  &:focus {
-    outline: none;
-    border-bottom-color: #fff; 
-  }
-}
-
-svg {
-  pointer-events: none;
-}
-
-
-.about-us-menu {
-  position: relative;
-
-  .submenu {
-    display: block; 
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background: #222; 
-    padding: 5px 0;
-    border-radius: 4px;
-    min-width: 150px;
-    z-index: 1000;
-
-    li {
-      a {
-        display: block;
-        padding: 8px 12px;
-        color: #fff;
-        text-decoration: none;
-
-        &:hover {
-          background: rgba(255, 255, 255, 0.1);
-        }
-      }
-    }
-  }
-}
-
-.language-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.language-btn:hover {
-  opacity: 0.85;
-}
-
-
-
-.language-selector {
-  position: relative;
-}
-
-.language-dropdown {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  background: #0f2f1f;
-  border-radius: 8px;
-  padding: 8px 0;
-  min-width: 140px;
-  z-index: 5000;
-}
-
-.language-dropdown button {
-  width: 100%;
-  background: none;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-align: left;
-  cursor: pointer;
-}
-
-.language-dropdown button:hover,
-.language-dropdown button.active {
-  background: #2ecc71;
-  color: #000;
-}
-
-.lang {
-  cursor: pointer;
-}
-
-.lang.active {
-  color: #2ecc71;
-  font-weight: 700;
-}

@@ -259,9 +259,9 @@
 
 .footer__logo {
   display: block;
-  width: 120px; /* Logo un poco más grande */
-  height: auto; /* Mantener proporción */
-  max-height: 90px;
+  width: auto; /* Logo un poco más grande */
+  height: 200px; /* Mantener proporción */
+  max-height: 900px;
 }
 
 /* DERECHA - MODIFICADO */
@@ -415,3 +415,4 @@
     width: 200px;
   }
 }
+

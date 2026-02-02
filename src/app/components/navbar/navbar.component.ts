@@ -1,14 +1,13 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, RouterLink } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
-
 
 @Component({
   selector: 'app-nvbar',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [CommonModule, TranslateModule, RouterLink],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -41,31 +40,32 @@ export class NavbarComponent implements OnInit {
   currentLang = 'en';
   langDropdownOpen = false;
 
-constructor(private router: Router, private translate: TranslateService) {
-  this.translate.setDefaultLang('en');
-
-}
+  constructor(
+    private router: Router,
+    private translate: TranslateService
+  ) {
+    this.translate.setDefaultLang('en');
+  }
 
   // ===============================
   // INIT
   // ===============================
   ngOnInit() {
+    // 🔑 MUY IMPORTANTE: detectar tamaño al cargar
+    this.updateViewMode();
+
     const savedLang = localStorage.getItem('language') || 'en';
     this.currentLang = savedLang;
     this.translate.use(this.currentLang);
-    
-    // Verificar página de producto al iniciar
+
     this.checkProductPage();
-    
-    // Escuchar cambios de ruta
+
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe(() => {
         this.checkProductPage();
       });
   }
-
-
 
   // ===============================
   // RUTAS
@@ -81,17 +81,19 @@ constructor(private router: Router, private translate: TranslateService) {
   private updateViewMode() {
     this.isMobileView = window.innerWidth <= this.MOBILE_WIDTH;
 
+    // Al pasar a desktop, cerrar todo
     if (!this.isMobileView) {
       this.menuOpen = false;
       this.showProductos = false;
       this.showAbout = false;
+      this.searchOpen = false;
+      this.langDropdownOpen = false;
     }
   }
 
   @HostListener('window:resize')
   onResize() {
     this.updateViewMode();
-    this.langDropdownOpen = false;
   }
 
   // ===============================
@@ -138,10 +140,15 @@ constructor(private router: Router, private translate: TranslateService) {
     this.showAbout = false;
   }
 
+  cerrarMegaMenu() {
+    this.showProductos = false;
+  }
+
   // ===============================
-  // BÚSQUEDA
+  // BÚSQUEDA (SOLO MÓVIL)
   // ===============================
   toggleSearch() {
+    if (!this.isMobileView) return;
     this.searchOpen = !this.searchOpen;
   }
 
@@ -156,12 +163,25 @@ constructor(private router: Router, private translate: TranslateService) {
     this.currentLang = langCode;
     localStorage.setItem('language', langCode);
     this.translate.use(langCode);
+    this.langDropdownOpen = false;
   }
 
   get currentLanguageLabel(): string {
-  const lang = this.languages.find(l => l.code === this.currentLang);
-  return lang ? lang.label : '';
-}
+    const lang = this.languages.find(l => l.code === this.currentLang);
+    return lang ? lang.label : '';
+  }
+  cerrarMegaAbout() {
+    this.showAbout = false;
+  }
 
+  // ===============================
+  // CERRAR MENUS AL NAVEGAR
+  // ===============================
+  cerrarMenusAlNavegar() {
+    this.showProductos = false;
+    this.showAbout = false;
+    this.menuOpen = false;
+    this.searchOpen = false;
+  }
 
 }

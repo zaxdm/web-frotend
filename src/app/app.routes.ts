@@ -5,6 +5,7 @@ import { AcercaDeComponent } from './routes/acerca-de/acerca-de.component';
 import { HistoryComponent } from './routes/history/history.component';
 import { VistaProductosComponent } from './components/vista-productos/vista-productos.component';
 import { MasInfoComponent } from './components/mas-info/mas-info.component';
+import { ProductoGeneralComponent } from './components/producto-general/producto-general.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -12,7 +13,7 @@ export const routes: Routes = [
   { path: 'acerca-de', component: AcercaDeComponent },
   { path: 'his', component: HistoryComponent },
   { path: 'productos', component: VistaProductosComponent },
-  { path: 'productos/general',loadComponent: () => import('./components/producto-general/producto-general.component').then(m => m.ProductoGeneralComponent)},
+  { path: 'productos/general', component: ProductoGeneralComponent },
   { path: 'mas-info', component: MasInfoComponent }
 ];
   

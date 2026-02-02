@@ -17,9 +17,77 @@
     <!-- SECCIÓN LISTA DE ENLACES DE NAVEGACIÓN -->
     <ul class="nav-links" [class.mobile-menu-open]="menuOpen">
 
-      <li><a href="#" (click)="toggleProductos($event)" [class.active-link]="showProductos">{{ 'NAV.PRODUCTS' | translate }}</a></li>
+      <li>
+        <a href="#" (click)="toggleProductos($event)" [class.active-link]="showProductos" class="accordion-header">
+          {{ 'NAV.PRODUCTS' | translate }}
+          <span class="accordion-toggle" *ngIf="isMobileView">{{ showProductos ? '−' : '+' }}</span>
+        </a>
+        
+        <!-- ACORDEÓN VERTICAL DE PRODUCTOS (SOLO MÓVIL) -->
+        <div class="accordion-productos" *ngIf="showProductos && isMobileView">
+          <!-- ROLLER CONE BITS -->
+          <div class="accordion-section">
+            
+            <a routerLink="/productos/general"><h4 class="accordion-title">{{ 'NAV_MENU.ROLLERCONE' | translate }}</h4></a>
+            <ul class="accordion-links">
+              <li><a routerLink="/productos">{{ 'NAV_MENU.RIDGEBACK' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.AVENGER' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.DFORCE' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.TARGET' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.PILOTHOLE' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.REVERSECIRCULATION' | translate }}</a></li>
+            </ul>
+          </div>
+
+          <!-- RPS -->
+          <div class="accordion-section">
+            <h4 class="accordion-title">{{ 'NAV_MENU.RPS' | translate }}</h4>
+            <ul class="accordion-links">
+              <li><a href="#">{{ 'NAV_MENU.RPS_GEN3' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.RPS_GEN2' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.RPS_BITS' | translate }}</a></li>
+            </ul>
+          </div>
+
+          <!-- DOWN THE HOLE -->
+          <div class="accordion-section">
+            <h4 class="accordion-title">{{ 'NAV_MENU.DOWNTHEHOLE' | translate }}</h4>
+            <ul class="accordion-links">
+              <li><a href="#">{{ 'NAV_MENU.WARRIOR_HAMMERS' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.WARRIOR_BITS' | translate }}</a></li>
+            </ul>
+          </div>
+
+          <!-- TECHNOLOGY -->
+          <div class="accordion-section">
+            <h4 class="accordion-title">{{ 'NAV_MENU.TECHNOLOGY' | translate }}</h4>
+            <ul class="accordion-links">
+              <li><a href="#">{{ 'NAV_MENU.ADVANCED_MODELING' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.RCPRO' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.METALLURGY' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.FIELDSERVICE' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.SEALTEST' | translate }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
       
-      <li class="about-us-menu"><a href="#" (click)="toggleAbout($event)" [class.active-link]="showAbout">{{ 'NAV.ABOUT' | translate }}</a></li>
+      <li class="about-us-menu">
+        <a href="#" (click)="toggleAbout($event)" [class.active-link]="showAbout" class="accordion-header">
+          {{ 'NAV.ABOUT' | translate }}
+          <span class="accordion-toggle" *ngIf="isMobileView">{{ showAbout ? '−' : '+' }}</span>
+        </a>
+
+        <!-- ACORDEÓN VERTICAL DE ACERCA DE (SOLO MÓVIL) -->
+        <div class="accordion-about" *ngIf="showAbout && isMobileView">
+          <div class="accordion-section">
+            <ul class="accordion-links">
+              <li><a href="#">{{ 'NAV_MENU.ABOUTUS' | translate }}</a></li>
+              <li><a href="#">{{ 'NAV_MENU.OURHISTORY' | translate }}</a></li>
+            </ul>
+          </div>
+        </div>
+      </li>
 
       <li><a href="#" (click)="closeMenus()">{{ 'NAV.CONTACT' | translate }}</a></li>
 
@@ -44,14 +112,11 @@
   <div class="social-lang-row">
     <!-- REDES SOCIALES -->
     <div class="icons-redes">
-      <a href="https://www.facebook.com/terelionmining/" aria-label="Facebook">
+      <a href="https://www.facebook.com/share/1BzmQ64ZW3/" aria-label="Facebook">
         <i class="bi bi-facebook"></i>
       </a>
-      <a href="https://www.linkedin.com/company/terelionmining/" aria-label="LinkedIn">
+      <a href="https://www.linkedin.com/company/jf-tricon-per%C3%BA/" aria-label="LinkedIn">
         <i class="bi bi-linkedin"></i>
-      </a>
-      <a href="https://www.youtube.com/c/Terelion" aria-label="YouTube">
-        <i class="bi bi-youtube"></i>
       </a>
       <a href="https://www.instagram.com/terelion.mining/" aria-label="Instagram">
         <i class="bi bi-instagram"></i>
@@ -80,14 +145,14 @@
   <!-- SECCIÓN CENTRAL DEL NAVBAR (LOGO) -->
   <div class="nav-center">
     <!-- Logo blanco para otras páginas -->
-    <div class="logo" *ngIf="!isProductPage">
-        <img src="/logo_blanco.png" alt="Terelion Logo" class="logo" />
+    <div class="logo" *ngIf="!isProductPage && !isMobileView">
+        <img src="/logo-blanco.png" alt="Terelion Logo" class="logo" />
     </div>
 
     <!-- Logo verde para páginas de productos -->
-    <div class="logo-green" *ngIf="isProductPage">
+    <div class="logo-green" *ngIf="isProductPage && !isMobileView">
     <div class="logo-pag">
-        <img src="/logo_verde.png" alt="Terelion Logo" class="logo" />
+        <img src="/logo-negro.png" alt="Terelion Logo" class="logo" />
     </div>
   </div>
   </div>
@@ -129,21 +194,26 @@
 
   <!-- BOTÓN DE BÚSQUEDA -->
 <div class="nav-right">
-    <div class="right-item search-trigger" (click)="toggleSearch()">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
+  <div class="right-item search-trigger" (click)="toggleSearch()">
 
-      <!-- INPUT SE MUESTRA SOLO CUANDO searchOpen=true -->
-      <input
-        type="text"
-        class="search-input"
-        [placeholder]="'NAV.SEARCH' | translate"
-        *ngIf="searchOpen"
-      />
-    </div>
+    <!-- INPUT A LA IZQUIERDA -->
+    <input
+      type="text"
+      class="search-input"
+      [placeholder]="'NAV.SEARCH' | translate"
+      *ngIf="!isMobileView || searchOpen"
+    />
+
+    <!-- LUPA A LA DERECHA -->
+    <svg width="24" height="24" viewBox="0 0 24 24"
+      fill="none" stroke="white" stroke-width="2">
+      <circle cx="11" cy="11" r="8"></circle>
+      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+    </svg>
+
   </div>
+</div>
+
 
 <!-- Solo para móvil -->
 <div class="search-overlay" [class.active]="searchOpen">
@@ -178,7 +248,8 @@
 </nav>
 
 <!-- SECCIÓN MEGA MENÚ DE PRODUCTOS -->
-<div class="mega-menu-wrapper" [class.show]="showProductos">
+<div class="mega-menu-wrapper"   [class.show]="showProductos"
+  (mouseleave)="cerrarMegaMenu()">
   <div class="container">
     
     <!-- ENCABEZADO DEL MENÚ DE PRODUCTOS -->
@@ -191,14 +262,14 @@
       
       <!-- COLUMNA 1: ROLLER CONE BITS -->
       <div class="column">
-        <h3 class="col-title">{{ 'NAV_MENU.ROLLERCONE' | translate }}</h3>
+        <a routerLink="/productos/general" (click)="cerrarMenusAlNavegar()"><h3 class="col-title">{{ 'NAV_MENU.ROLLERCONE' | translate }}</h3></a>
         <ul class="link-list">
-          <li><a href="#">{{ 'NAV_MENU.RIDGEBACK' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.AVENGER' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.DFORCE' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.TARGET' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.PILOTHOLE' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.REVERSECIRCULATION' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RIDGEBACK' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.AVENGER' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.DFORCE' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.TARGET' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.PILOTHOLE' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.REVERSECIRCULATION' | translate }}</a></li>
         </ul>
       </div>
 
@@ -206,9 +277,9 @@
       <div class="column">
         <h3 class="col-title">{{ 'NAV_MENU.RPS' | translate }}</h3>
         <ul class="link-list">
-          <li><a href="#">{{ 'NAV_MENU.RPS_GEN3' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.RPS_GEN2' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.RPS_BITS' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RPS_GEN3' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RPS_GEN2' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RPS_BITS' | translate }}</a></li>
         </ul>
       </div>
 
@@ -216,41 +287,38 @@
       <div class="column">
         <h3 class="col-title">{{ 'NAV_MENU.DOWNTHEHOLE' | translate }}</h3>
         <ul class="link-list">
-          <li><a href="#">{{ 'NAV_MENU.WARRIOR_HAMMERS' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.WARRIOR_BITS' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.WARRIOR_HAMMERS' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.WARRIOR_BITS' | translate }}</a></li>
         </ul>
       </div>
-    </div>
+    
 
     <!-- ENCABEZADO DE TECNOLOGÍA -->
-    <div class="menu-header mt-large">
-      <h2>{{ 'NAV_MENU.TECHNOLOGY' | translate }}</h2>
-    </div>
-    
-    <!-- LAYOUT EN GRID PARA TECNOLOGÍA -->
-    <div class="grid-layout">
-      <div class="column">
+    <div class="column">
+      <h3 class="col-title">{{ 'NAV_MENU.TECHNOLOGY' | translate }}</h3>
         <ul class="link-list">
-          <li><a href="#">{{ 'NAV_MENU.ADVANCED_MODELING' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.RCPRO' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.METALLURGY' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.FIELDSERVICE' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.SEALTEST' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.ADVANCED_MODELING' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RCPRO' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.METALLURGY' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.FIELDSERVICE' | translate }}</a></li>
+          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.SEALTEST' | translate }}</a></li>
         </ul>
-      </div>
     </div>
-
+</div>
   </div>
 </div>
+
+
 <!-- SECCIÓN MEGA MENÚ ABOUT US -->
-<div class="mega-menu-wrapper" [class.show]="showAbout">
+<div class="mega-menu-wrapper" [class.show]="showAbout"
+(mouseleave)="cerrarMegaAbout()">
   <div class="container">
 
     <div class="grid-layout">
       <div class="column">
         <ul class="link-list">
-          <li><a href="#">{{ 'NAV_MENU.ABOUTUS' | translate }}</a></li>
-          <li><a href="#">{{ 'NAV_MENU.OURHISTORY' | translate }}</a></li>
+          <li><a routerLink="/acerca-de" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.ABOUTUS' | translate }}</a></li>
+          <li><a routerLink="/his" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.OURHISTORY' | translate }}</a></li>
         </ul>
       </div>
     </div>
