@@ -282,7 +282,7 @@
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 10px;
+  gap: 20px;
   padding: 0;
   margin: 0;
   transition: all 0.3s ease;
@@ -342,6 +342,11 @@
   margin-bottom: 12px;
 }
 
+
+
+.logo-pag{
+  margin-top: 40px;
+}
 .accordion-links {
   list-style: none;
   padding: 0;
@@ -376,6 +381,67 @@
 
 .nav-links a:hover, .nav-links a.active-link {
   opacity: 1;
+}
+
+/* Mantener texto blanco en los enlaces principales cuando mega menú está abierto */
+.navbar.nav-active .nav-links > li > a {
+  color: var(--text-white) !important;
+}
+
+/* Enlaces en color negro en páginas de producto (excepto cuando mega menú está abierto) */
+.navbar.nav-product-page .nav-links > li > a {
+  color: #000000;
+}
+
+/* Enlaces en color negro en página de contactos */
+.navbar.nav-contact-page .nav-links > li > a {
+  color: #000000;
+}
+
+/* Botones y iconos en negro en página de contactos */
+.navbar.nav-contact-page .language-btn {
+  color: #000000;
+}
+
+.navbar.nav-contact-page .language-btn svg {
+  stroke: #000000;
+}
+
+.navbar.nav-contact-page .hamburger-btn svg rect {
+  fill: #000000;
+}
+
+.navbar.nav-contact-page .search-trigger svg {
+  stroke: #000000;
+}
+
+.navbar.nav-contact-page .search-input {
+  color: #000000;
+}
+
+.navbar.nav-contact-page .search-input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.navbar.nav-contact-page .search-input:focus {
+  border-bottom-color: #000000;
+}
+
+/* Mantener iconos y botones en blanco cuando mega menú está visible */
+.navbar.nav-active .hamburger-btn svg rect {
+  fill: white;
+}
+
+.navbar.nav-active .search-trigger svg {
+  stroke: white;
+}
+
+.navbar.nav-active .language-btn {
+  color: white;
+}
+
+.navbar.nav-active .language-btn svg {
+  stroke: white;
 }
 
 /* ================= MEGA MENU (Fondo Verde) ================= */
@@ -419,6 +485,10 @@
   letter-spacing: 1px;
   margin: 0;
   color: #00000088; 
+}
+
+.title-broc{
+    text-decoration: none;
 }
 
 /* --- Grid de Columnas --- */
@@ -570,6 +640,32 @@ color: #00000079;}
   }
 }
 
+/* Input de búsqueda siempre blanco en mega menú */
+.search-input.mega-menu-active {
+  color: #ffffff !important;
+}
+
+.search-input.mega-menu-active::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.search-input.mega-menu-active:focus {
+  border-bottom-color: #ffffff !important;
+}
+
+/* Input de búsqueda en páginas blancas (producto) */
+.navbar.nav-product-page .search-input {
+  color: #000000;
+}
+
+.navbar.nav-product-page .search-input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.navbar.nav-product-page .search-input:focus {
+  border-bottom-color: #000000;
+}
+
 .language-btn {
   display: flex;
   align-items: center;
@@ -581,19 +677,49 @@ color: #00000079;}
   font-weight: 500;
 }
 
-.language-dropdown {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  background: #0f2f1f00;
-  min-width: 140px;
-  z-index: 5000;
+/* OVERLAY OSCURO DE FONDO */
+.lang-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.479);
+  z-index: 900;
 }
 
-.language-dropdown button:hover,
+/* DROPDOWN DE IDIOMAS */
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 8px;
+  background: #11111100;
+  padding: 12px;
+  border-radius: 10px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* BOTONES */
+.language-dropdown button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  padding: 6px 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* HOVER */
+.language-dropdown button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ACTIVO */
 .language-dropdown button.active {
-  background: #8a8b8a00;
-  color: #ffffff9c;
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 /* ===== MOBILE ===== */

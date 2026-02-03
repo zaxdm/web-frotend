@@ -2,7 +2,7 @@
   "NAV": {
     "PRODUCTS": "Produtos",
     "ABOUT": "Sobre",
-    "CONTACT": "Contato",
+    "CONTACT": "Contato", 
     "SEARCH": "Pesquisar em terelion.com...",
     "FOLLOWUS": "Siga-nos em"
   },
@@ -79,10 +79,10 @@
     "COOKIES": "Cookies",
     "LEGAL_NOTICE": "Aviso legal",
     "DATA_PRIVACY": "Privacidade de dados",
-    "COPYRIGHT": "Copyright © {{year}} - Terelion, LLC",
+    "COPYRIGHT": "Copyright © {{year}} - JF Tricon Perú, LLC",
     "CALL_US": "Ligue para nós",
     "EMAIL_US": "Envie-nos um email",
-    "EMAIL_ADDRESS": "infoterelion.com",
+    "EMAIL_ADDRESS": "frank.rupay@jftriconperu.com",
     "NEWS_1": "A Terelion é expositora na Minexchange 2022 SME Annual Conference & Expo",
     "NEWS_2": "A Terelion estará na MINExpo 2021",
     "NEWS_3": "Siga-nos nas redes sociais"

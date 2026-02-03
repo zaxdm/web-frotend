@@ -1,5 +1,5 @@
 <!-- SECCIÓN NAVBAR PRINCIPAL -->
-<nav class="navbar" [class.nav-active]="showProductos || menuOpen" [class.nav-product-page]="isProductPage">
+<nav class="navbar" [class.nav-active]="showProductos || menuOpen" [class.nav-product-page]="isProductPage" [class.nav-contact-page]="isContactPage">
   
   <!-- SECCIÓN IZQUIERDA DEL NAVBAR (HAMBURGUESA Y ENLACES) -->
   <div class="nav-left">
@@ -152,22 +152,26 @@
 
   <!-- SECCIÓN CENTRAL DEL NAVBAR (LOGO) -->
   <div class="nav-center">
-    <!-- Logo blanco para otras páginas -->
-    <div class="logo" *ngIf="!isProductPage && !isMobileView">
-        <img src="/logo-blanco.png" alt="Terelion Logo" class="logo" />
-    </div>
+    <!-- Logo blanco para otras páginas y cuando el mega menú está abierto -->
+    <div class="logo" *ngIf="(!isProductPage && !isContactPage && !isMobileView) || showProductos || showAbout">
+  <a routerLink="/home" aria-label="Ir al inicio">
+    <img src="/logo-blanco.png" alt="Terelion Logo" class="logo" />
+  </a>
+</div> 
 
-    <!-- Logo verde para páginas de productos -->
-    <div class="logo-green" *ngIf="isProductPage && !isMobileView">
-    <div class="logo-pag">
-        <img src="/logo-negro.png" alt="Terelion Logo" class="logo" />
-    </div>
+    <!-- Logo negro para páginas de productos y contactos (solo cuando mega menú está cerrado) -->
+    <div class="logo-green" *ngIf="(isProductPage || isContactPage) && !isMobileView && !showProductos && !showAbout">
+  <div class="logo-pag">
+    <a routerLink="/home" aria-label="Ir al inicio">
+      <img src="/logo-negro.png" alt="Terelion Logo" class="logo" />
+    </a>
   </div>
-  </div>
+</div>
 
+  </div>
   <!-- SECCIÓN DERECHA DEL NAVBAR (IDIOMAS Y BÚSQUEDA) -->
   <div class="nav-right">
-<!-- SELECTOR DE IDIOMAS (NO SE MUESTRA EN MÓVIL CON MENÚ ABIERTO) -->
+<!-- SELECTOR DE IDIOMAS (DESKTOP) -->
 <div class="right-item language-selector" *ngIf="!isMobileView">
 
   <button
@@ -175,10 +179,7 @@
     (click)="toggleLangDropdown()"
     aria-label="Language selector"
   >
- <span class="label-text">
-  {{ currentLanguageLabel }}
-</span>
-
+    <span class="label-text">{{ currentLanguageLabel }}</span>
 
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
       <circle cx="12" cy="12" r="10"></circle>
@@ -186,8 +187,19 @@
     </svg>
   </button>
 
+  <!-- OVERLAY OSCURO -->
+  <div
+    class="lang-overlay"
+    *ngIf="langDropdownOpen"
+    (click)="closeLangDropdown()"
+  ></div>
+
   <!-- DROPDOWN -->
-  <div class="language-dropdown" *ngIf="langDropdownOpen">
+  <div
+    class="language-dropdown"
+    *ngIf="langDropdownOpen"
+    (mouseleave)="closeLangDropdown()"
+  >
     <button
       *ngFor="let lang of languages"
       (click)="selectLanguage(lang.code)"
@@ -209,6 +221,7 @@
       type="text"
       class="search-input"
       [placeholder]="'NAV.SEARCH' | translate"
+      [class.mega-menu-active]="showProductos || showAbout"
       *ngIf="!isMobileView || searchOpen"
     />
 
@@ -247,11 +260,6 @@
     
   </div>
 </div>
-
-
-
-
-
 </div>
 </nav>
 
@@ -270,7 +278,7 @@
       
       <!-- COLUMNA 1: ROLLER CONE BITS -->
       <div class="column">
-        <a routerLink="/productos/general" (click)="cerrarMenusAlNavegar()"><h3 class="col-title">{{ 'NAV_MENU.ROLLERCONE' | translate }}</h3></a>
+        <a class="title-broc" routerLink="/productos/general" (click)="cerrarMenusAlNavegar()"><h3 class="col-title">{{ 'NAV_MENU.ROLLERCONE' | translate }}</h3></a>
         <ul class="link-list">
           <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RIDGEBACK' | translate }}</a></li>
           <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.AVENGER' | translate }}</a></li>

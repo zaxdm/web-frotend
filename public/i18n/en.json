@@ -6,7 +6,7 @@
     "SEARCH": "Search terelion.com...",
     "FOLLOWUS": "Follow us on"
   },
-  "NAV_MENU": {
+  "NAV_MENU": { 
     "PRODUCTS": "Products",
     "ROLLERCONE": "Roller Cone Bits",
     "RIDGEBACK": "RIDGEBACK™ – Hard Rock Drilling",
@@ -79,10 +79,10 @@
   "COOKIES": "Cookies",
   "LEGAL_NOTICE": "Legal notice",
   "DATA_PRIVACY": "Data privacy",
-  "COPYRIGHT": "© {{year}} Terelion. All rights reserved.",
+  "COPYRIGHT": "© {{year}} JF Tricon Perú. All rights reserved.",
   "CALL_US": "Call us:",
   "EMAIL_US": "Email us:",
-  "EMAIL_ADDRESS": "info@terelion.com",
+  "EMAIL_ADDRESS": "frank.rupay@jftriconperu.com",
   "NEWS_1": "Terelion is an exhibitor at Minexchange 2022 SME Annual Conference & Expo",
     "NEWS_2": "Terelion will be at MINExpo 2021",
     "NEWS_3": "Follow us on social media"

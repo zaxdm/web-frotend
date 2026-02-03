@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
   showAbout = false;
   searchOpen = false;
   isProductPage = false;
+  isContactPage = false;
 
   // ===============================
   // RESPONSIVE
@@ -73,6 +74,7 @@ export class NavbarComponent implements OnInit {
   private checkProductPage() {
     const url = this.router.url;
     this.isProductPage = url.includes('/producto') || url.includes('/productos');
+    this.isContactPage = url.includes('/contactos');
   }
 
   // ===============================
@@ -163,6 +165,10 @@ export class NavbarComponent implements OnInit {
     this.currentLang = langCode;
     localStorage.setItem('language', langCode);
     this.translate.use(langCode);
+    this.langDropdownOpen = false;
+  }
+
+  closeLangDropdown() {
     this.langDropdownOpen = false;
   }
 

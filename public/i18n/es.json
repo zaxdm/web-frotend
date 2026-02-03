@@ -7,7 +7,7 @@
     "FOLLOWUS": "Síguenos en"
   },
   "NAV_MENU": {
-    "PRODUCTS": "Productos",
+    "PRODUCTS": "Productos", 
     "ROLLERCONE": "Brocas Tricónicas",
     "RIDGEBACK": "RIDGEBACK™ – Perforación en roca dura",
     "AVENGER": "AVENGER™ – Perforación de alto rendimiento",
@@ -79,10 +79,10 @@
     "COOKIES": "Cookies",
     "LEGAL_NOTICE": "Aviso legal",
     "DATA_PRIVACY": "Privacidad de datos",
-    "COPYRIGHT": "Copyright © {{year}} - Terelion, LLC",
+    "COPYRIGHT": "Copyright © {{year}} - JF Tricon Perú, LLC",
     "CALL_US": "Llámanos:",
     "EMAIL_US": "Envíenos un correo electrónico a",
-    "EMAIL_ADDRESS": "infoterelion.com",
+    "EMAIL_ADDRESS": "frank.rupay@jftriconperu.com",
     "NEWS_1": "Terelion es expositor en Minexchange 2022 SME Annual Conference & Expo",
     "NEWS_2": "Terelion estará en MINExpo 2021",
     "NEWS_3": "Síguenos en nuestras redes sociales"
