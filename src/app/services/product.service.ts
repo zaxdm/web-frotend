@@ -17,9 +17,9 @@ export class ProductService {
     descriptions: [
       'Descripción principal del producto',
       'Otra descripción del producto'
-    ],
-    mainImage: 'hero.png',
-    thumbnails: ['hero.png'],
+    ], 
+    mainImage: 'hero (1).webp',
+    thumbnails: ['hero (1).webp'],
     contactLink: '#',
     features: [],
     downloads: []

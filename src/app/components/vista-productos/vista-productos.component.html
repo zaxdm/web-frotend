@@ -1,7 +1,8 @@
-<div class="page-container">
+<div class="page-container" *ngIf="heroProduct">
 
   <main class="product-container">
     <section class="product-info">
+      
       <nav class="breadcrumb">
         <span *ngFor="let crumb of heroProduct.breadcrumbs; let last = last">
           {{ crumb.label }}
@@ -24,6 +25,7 @@
       <a [href]="heroProduct.contactLink" class="cta-link">
         COMUNÍQUESE CON NOSOTROS
       </a>
+
     </section>
 
     <section class="product-gallery">
@@ -59,13 +61,15 @@
 
       <div class="downloads-content">
         <h2>DESCARGABLES</h2>
-        <div class="download-card">
+
+        <div class="download-card" *ngIf="downloads.length">
           <h3>{{ downloads[0].title }}</h3>
           <div class="download-item">
             <span>{{ downloads[0].description }}</span>
             <span class="icon-download">&#8595;</span>
           </div>
         </div>
+
       </div>
 
     </div>

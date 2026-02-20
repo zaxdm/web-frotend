@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, NgZone } from '@angular/core';
 import { FooterService } from '../../services/footer.service';
 import { FooterData } from '../../models/footer.model';
 import { CommonModule } from '@angular/common';
@@ -15,58 +15,93 @@ export class FooterComponent implements OnInit, AfterViewInit {
   footerData!: FooterData;
   currentYear: number = new Date().getFullYear();
   currentIndex: number = 0;
+  private scrollListenerActive = false;
 
   @ViewChild('newsCarousel') newsCarousel!: ElementRef<HTMLDivElement>;
 
-  constructor(private footerService: FooterService) {}
+  constructor(
+    private footerService: FooterService,
+    private cdr: ChangeDetectorRef,
+    private ngZone: NgZone
+  ) {}
 
   ngOnInit(): void {
     this.footerData = this.footerService.getFooter();
   }
 
-ngAfterViewInit(): void {
-  if (this.newsCarousel) {
-    // Escuchar scroll del carrusel
-    this.newsCarousel.nativeElement.addEventListener('scroll', () => {
-      this.updateCurrentIndex();
-    });
-
-    // Inicializa el índice
-    this.updateCurrentIndex();
+  ngAfterViewInit(): void {
+    if (this.newsCarousel) {
+      // Inicializa el índice después de que la vista esté lista
+      setTimeout(() => {
+        this.updateCurrentIndex();
+        this.setupScrollListener();
+      });
+    }
   }
-}
 
-  onScroll(event: Event) {
+  private setupScrollListener(): void {
+    if (this.scrollListenerActive) return;
+    
+    this.scrollListenerActive = true;
+    const carousel = this.newsCarousel.nativeElement;
+
+    // Usar NgZone para optimizar la detección de cambios
+    this.ngZone.runOutsideAngular(() => {
+      carousel.addEventListener('scroll', this.handleScroll.bind(this));
+    });
+  }
+
+  private handleScroll(): void {
+    // Usar requestAnimationFrame para optimizar el rendimiento
+    requestAnimationFrame(() => {
+      this.ngZone.run(() => {
+        this.updateCurrentIndex();
+      });
+    });
+  }
+
+  onScroll(event: Event): void {
     const target = event.target as HTMLDivElement;
     const scrollLeft = target.scrollLeft;
     const firstItem = target.firstElementChild as HTMLElement;
+    
     if (!firstItem) return;
 
-    const itemWidth = firstItem.offsetWidth + parseInt(getComputedStyle(firstItem).marginRight); 
-    this.currentIndex = Math.round(scrollLeft / itemWidth);
+    const itemWidth = firstItem.offsetWidth + parseInt(getComputedStyle(firstItem).marginRight || '0');
+    const newIndex = Math.round(scrollLeft / itemWidth);
+    
+    if (newIndex !== this.currentIndex) {
+      this.currentIndex = newIndex;
+      // Forzar detección de cambios si es necesario
+      this.cdr.detectChanges();
+    }
   }
 
+  updateCurrentIndex(): void {
+    const carousel = this.newsCarousel?.nativeElement;
+    if (!carousel) return;
 
-  updateCurrentIndex() {
-  const carousel = this.newsCarousel.nativeElement;
-  const children = Array.from(carousel.children) as HTMLElement[];
+    const children = Array.from(carousel.children) as HTMLElement[];
+    if (!children.length) return;
 
-  if (!children.length) return;
+    const carouselCenter = carousel.scrollLeft + carousel.offsetWidth / 2;
 
-  // Encuentra el item más centrado en la vista
-  const carouselCenter = carousel.scrollLeft + carousel.offsetWidth / 2;
+    let closestIndex = 0;
+    let closestDistance = Infinity;
 
-  let closestIndex = 0;
-  let closestDistance = Infinity;
+    children.forEach((child, index) => {
+      const childCenter = child.offsetLeft + child.offsetWidth / 2;
+      const distance = Math.abs(carouselCenter - childCenter);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
 
-  children.forEach((child, index) => {
-    const childCenter = child.offsetLeft + child.offsetWidth / 2;
-    const distance = Math.abs(carouselCenter - childCenter);
-    if (distance < closestDistance) {
-      closestDistance = distance;
-      closestIndex = index;
+    if (this.currentIndex !== closestIndex) {
+      this.currentIndex = closestIndex;
+      // Programar detección de cambios después de la actualización
+      this.cdr.detectChanges();
     }
-  });
-    this.currentIndex = closestIndex;
-}
+  }
 }

@@ -4,7 +4,7 @@
 
 .history-hero {
   height: 80vh;
-  background: url('/header-1.jpg') center / cover no-repeat;
+  background: url('/header-1.webp') center / cover no-repeat;
   display: flex;
   justify-content: center;
 }
