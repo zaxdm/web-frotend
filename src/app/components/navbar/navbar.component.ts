@@ -14,9 +14,8 @@ import { NavbarData } from '../../models/navbar.model';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-
   // ===============================
-  // 🔥 DATA REAL DEL ADMIN
+  // DATA DEL ADMIN
   // ===============================
   navbarData!: NavbarData;
   aboutMenu: any[] = [];
@@ -25,7 +24,7 @@ export class NavbarComponent implements OnInit {
   logoActual = '';
 
   // ===============================
-  // MENÚS
+  // ESTADOS DEL MENÚ
   // ===============================
   menuOpen = false;
   showProductos = false;
@@ -49,7 +48,6 @@ export class NavbarComponent implements OnInit {
     { code: 'es', label: 'Español' },
     { code: 'pt', label: 'Português' }
   ];
-
   currentLang = 'en';
   langDropdownOpen = false;
 
@@ -66,17 +64,14 @@ export class NavbarComponent implements OnInit {
   // ===============================
   ngOnInit() {
     this.updateViewMode();
-
+    
     const savedLang = localStorage.getItem('language') || 'en';
     this.currentLang = savedLang;
     this.translate.use(this.currentLang);
-
+    
     this.checkProductPage();
-
-    // 🔥 CARGAR NAVBAR
     this.loadNavbar();
-
-    // 🔥 ESCUCHAR CAMBIOS EN VIVO DEL EDITOR
+    
     this.navbarService.navbarData$.subscribe(data => {
       this.applyNavbarData(data);
     });
@@ -89,7 +84,7 @@ export class NavbarComponent implements OnInit {
   }
 
   // ===============================
-  // 🔥 LOAD NAVBAR
+  // NAVBAR DATA
   // ===============================
   loadNavbar() {
     const data = this.navbarService.getNavbar();
@@ -119,7 +114,7 @@ export class NavbarComponent implements OnInit {
   // ===============================
   private updateViewMode() {
     this.isMobileView = window.innerWidth <= this.MOBILE_WIDTH;
-
+    
     if (!this.isMobileView) {
       this.menuOpen = false;
       this.showProductos = false;
@@ -139,9 +134,8 @@ export class NavbarComponent implements OnInit {
   // ===============================
   toggleMenu() {
     if (!this.isMobileView) return;
-
     this.menuOpen = !this.menuOpen;
-
+    
     if (!this.menuOpen) {
       this.showProductos = false;
       this.showAbout = false;
@@ -150,10 +144,9 @@ export class NavbarComponent implements OnInit {
 
   toggleProductos(event?: Event) {
     if (event) event.preventDefault();
-
     this.showProductos = !this.showProductos;
     this.showAbout = false;
-
+    
     if (this.isMobileView && !this.menuOpen) {
       this.menuOpen = true;
     }
@@ -161,10 +154,9 @@ export class NavbarComponent implements OnInit {
 
   toggleAbout(event?: Event) {
     if (event) event.preventDefault();
-
     this.showAbout = !this.showAbout;
     this.showProductos = false;
-
+    
     if (this.isMobileView && !this.menuOpen) {
       this.menuOpen = true;
     }
@@ -172,7 +164,6 @@ export class NavbarComponent implements OnInit {
 
   closeMenus() {
     if (!this.isMobileView) return;
-
     this.menuOpen = false;
     this.showProductos = false;
     this.showAbout = false;

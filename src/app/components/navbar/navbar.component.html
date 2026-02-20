@@ -19,7 +19,9 @@
         
         <div class="accordion-productos" *ngIf="showProductos && isMobileView">
           <div class="accordion-section" *ngFor="let categoria of productosMenu">
-            <a routerLink="/productos/general"><h4 class="accordion-title">{{ categoria.titulo }}</h4></a>
+            <a routerLink="/productos/general" (click)="cerrarMenusAlNavegar()">
+              <h4 class="accordion-title">{{ categoria.titulo }}</h4>
+            </a>
             <ul class="accordion-links">
               <li *ngFor="let item of categoria.items">
                 <a [routerLink]="item.ruta" (click)="cerrarMenusAlNavegar()">{{ item.nombre }}</a>
@@ -47,7 +49,7 @@
       </li>
 
       <li>
-        <a [routerLink]="navbarData.contactoRuta" (click)="closeMenus()">{{ navbarData.contactoLabel }}</a>
+        <a [routerLink]="navbarData.contactoRuta" (click)="cerrarMenusAlNavegar()">{{ navbarData.contactoLabel }}</a>
       </li>
 
       <div class="back" *ngIf="menuOpen">
@@ -165,7 +167,9 @@
 
     <div class="grid-layout">
       <div class="column" *ngFor="let categoria of productosMenu">
-        <a routerLink="/productos/general"><h3 class="col-title">{{ categoria.titulo }}</h3></a>
+        <a routerLink="/productos/general" (click)="cerrarMenusAlNavegar()">
+          <h3 class="col-title">{{ categoria.titulo }}</h3>
+        </a>
         <ul class="link-list">
           <li *ngFor="let item of categoria.items">
             <a [routerLink]="item.ruta" (click)="cerrarMenusAlNavegar()">
