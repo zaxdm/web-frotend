@@ -7,13 +7,17 @@
   background: url('/header-1.webp') center / cover no-repeat;
   display: flex;
   justify-content: center;
+    /* Asegura que el texto dentro del H1 también esté centrado */
+  text-align: center;
+  align-items: center;
 }
 
 .history-hero h1 {
   color: #fff;
   font-size: 42px;
   letter-spacing: 2px;
-}
+
+} 
 
 /* =========================
    TIMELINE
@@ -71,21 +75,79 @@
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE (Móvil)
 ========================= */
 
-@media (max-width: 900px) {
+@media (max-width: 992px) {
+  /* 1. Ajustamos el contenedor principal para que no esté apretado */
+  .timeline {
+    padding: 40px 20px;
+  }
+
+  .timeline-container {
+    max-width: 100%;
+    margin: 0;
+  }
+
   .timeline-item {
-    grid-template-columns: 1fr;
-    text-align: center;
+    /* 2. Cambiamos a flex-column para controlar el orden */
+    display: flex;
+    flex-direction: column; 
+    gap: 20px;
+    margin-bottom: 60px;
+    direction: ltr !important; /* Forzamos orden normal para todos */
+  }
+
+  /* 3. IMAGEN PRIMERO */
+  .timeline-item .media {
+    order: 1; /* Esto la pone arriba */
+    width: 100%;
+  }
+
+  /* 4. TEXTO SEGUNDO Y A LA IZQUIERDA */
+  .timeline-item .content {
+    order: 2; /* Esto lo pone abajo de la imagen */
+    width: 100%;
+    text-align: left; /* Alineado a la izquierda */
+  }
+
+  .timeline-item .story {
+    text-align: left;
+    margin-bottom: 20px;
   }
 
   .timeline p {
-    margin: 0 auto;
+    max-width: 100%; /* Que use todo el ancho disponible */
+    text-align: left;
+    margin-left: 0;
   }
 
-  .timeline-item:nth-child(even) {
-    direction: ltr;
+  .timeline h3 {
+    text-align: left;
+  }
+
+  /* Reset de cualquier estilo intercalado que mueva el texto */
+  .timeline-item:nth-child(even) .content,
+  .timeline-item:nth-child(even) .media {
+    direction: ltr !important;
+    text-align: left;
+  }
+  .history-hero{
+    align-items: center;
+    justify-content: center; 
+  /* Asegura que el texto dentro del H1 también esté centrado */
+  text-align: center;
+  }
+
+  .history-hero h1{
+    font-size: 28px;
+  }
+
+  .content h3{
+    font-size: 20px;
+  }
+
+  .content p{
+    font-size: 12px;
   }
 }
-
