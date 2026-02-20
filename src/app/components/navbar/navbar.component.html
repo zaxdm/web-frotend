@@ -1,72 +1,29 @@
 <!-- SECCIÓN NAVBAR PRINCIPAL -->
-<nav class="navbar" [class.nav-active]="showProductos || menuOpen" [class.nav-product-page]="isProductPage" [class.nav-contact-page]="isContactPage">
+<nav class="navbar" [class.nav-active]="showProductos || showAbout || menuOpen" [class.nav-product-page]="isProductPage" [class.nav-contact-page]="isContactPage" [class.nav-about-page]="isAboutPage">
   
-  <!-- SECCIÓN IZQUIERDA DEL NAVBAR (HAMBURGUESA Y ENLACES) -->
   <div class="nav-left">
     <button class="hamburger-btn" (click)="toggleMenu()" [class.active]="menuOpen" aria-label="Menu">
-<svg width="28" height="18" viewBox="0 0 28 18">
-  <!-- Línea superior -->
-  <rect x="6" y="0" width="16" height="2" fill="white" />
-  <!-- Línea central (más larga) -->
-  <rect x="6" y="8" width="24" height="2" fill="white" />
-  <!-- Línea inferior -->
-  <rect x="6" y="16" width="16" height="2" fill="white" />
-</svg>
+      <svg width="28" height="18" viewBox="0 0 28 18">
+        <rect x="6" y="0" width="16" height="2" fill="white" />
+        <rect x="6" y="8" width="24" height="2" fill="white" />
+        <rect x="6" y="16" width="16" height="2" fill="white" />
+      </svg>
     </button> 
 
-    <!-- SECCIÓN LISTA DE ENLACES DE NAVEGACIÓN -->
     <ul class="nav-links" [class.mobile-menu-open]="menuOpen">
-
       <li>
         <a href="#" (click)="toggleProductos($event)" [class.active-link]="showProductos" class="accordion-header">
-          {{ 'NAV.PRODUCTS' | translate }}
+          {{ navbarData.productosLabel }}
           <span class="accordion-toggle" *ngIf="isMobileView">{{ showProductos ? '−' : '+' }}</span>
         </a>
         
-        <!-- ACORDEÓN VERTICAL DE PRODUCTOS (SOLO MÓVIL) -->
         <div class="accordion-productos" *ngIf="showProductos && isMobileView">
-          <!-- ROLLER CONE BITS -->
-          <div class="accordion-section">
-            
-            <a routerLink="/productos/general"><h4 class="accordion-title">{{ 'NAV_MENU.ROLLERCONE' | translate }}</h4></a>
+          <div class="accordion-section" *ngFor="let categoria of productosMenu">
+            <a routerLink="/productos/general"><h4 class="accordion-title">{{ categoria.titulo }}</h4></a>
             <ul class="accordion-links">
-              <li><a routerLink="/productos">{{ 'NAV_MENU.RIDGEBACK' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.AVENGER' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.DFORCE' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.TARGET' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.PILOTHOLE' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.REVERSECIRCULATION' | translate }}</a></li>
-            </ul>
-          </div>
-
-          <!-- RPS -->
-          <div class="accordion-section">
-            <h4 class="accordion-title">{{ 'NAV_MENU.RPS' | translate }}</h4>
-            <ul class="accordion-links">
-              <li><a href="#">{{ 'NAV_MENU.RPS_GEN3' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.RPS_GEN2' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.RPS_BITS' | translate }}</a></li>
-            </ul>
-          </div>
-
-          <!-- DOWN THE HOLE -->
-          <div class="accordion-section">
-            <h4 class="accordion-title">{{ 'NAV_MENU.DOWNTHEHOLE' | translate }}</h4>
-            <ul class="accordion-links">
-              <li><a href="#">{{ 'NAV_MENU.WARRIOR_HAMMERS' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.WARRIOR_BITS' | translate }}</a></li>
-            </ul>
-          </div>
-
-          <!-- TECHNOLOGY -->
-          <div class="accordion-section">
-            <h4 class="accordion-title">{{ 'NAV_MENU.TECHNOLOGY' | translate }}</h4>
-            <ul class="accordion-links">
-              <li><a href="#">{{ 'NAV_MENU.ADVANCED_MODELING' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.RCPRO' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.METALLURGY' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.FIELDSERVICE' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.SEALTEST' | translate }}</a></li>
+              <li *ngFor="let item of categoria.items">
+                <a [routerLink]="item.ruta" (click)="cerrarMenusAlNavegar()">{{ item.nombre }}</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -74,270 +31,164 @@
       
       <li class="about-us-menu">
         <a href="#" (click)="toggleAbout($event)" [class.active-link]="showAbout" class="accordion-header">
-          {{ 'NAV.ABOUT' | translate }}
+          {{ navbarData.aboutLabel }}
           <span class="accordion-toggle" *ngIf="isMobileView">{{ showAbout ? '−' : '+' }}</span>
         </a>
 
-        <!-- ACORDEÓN VERTICAL DE ACERCA DE (SOLO MÓVIL) -->
         <div class="accordion-about" *ngIf="showAbout && isMobileView">
           <div class="accordion-section">
             <ul class="accordion-links">
-              <li><a href="#">{{ 'NAV_MENU.ABOUTUS' | translate }}</a></li>
-              <li><a href="#">{{ 'NAV_MENU.OURHISTORY' | translate }}</a></li>
+              <li *ngFor="let item of aboutMenu">
+                <a [routerLink]="item.ruta" (click)="cerrarMenusAlNavegar()">{{ item.nombre }}</a>
+              </li>
             </ul>
           </div>
         </div>
       </li>
 
       <li>
-  <a
-    routerLink="/contactos"
-    (click)="closeMenus()"
-  >
-    {{ 'NAV.CONTACT' | translate }}
-  </a>
-</li>
+        <a [routerLink]="navbarData.contactoRuta" (click)="closeMenus()">{{ navbarData.contactoLabel }}</a>
+      </li>
 
+      <div class="back" *ngIf="menuOpen">
+        <div class="back-content">
+          <div class="text">
+            <p>Menu</p>
+          </div> 
+          <button class="close-btn" (click)="toggleMenu()" aria-label="Cerrar menú">
+            ✕
+          </button>
+        </div>
+      </div>
 
-    <!-- SECCIÓN CONTENIDO DE FONDO PARA MENÚ MÓVIL -->
-    <div class="back" *ngIf="menuOpen">
-      <div class="back-content">
-        <div class="text">
-          <p>Menu</p>
-        </div> 
-  
-        <button class="close-btn" (click)="toggleMenu()" aria-label="Cerrar menú">
-          ✕
+      <div class="respons">
+        <li>{{ navbarData.siguenos }}</li>
+
+        <div class="social-lang-row">
+          <div class="icons-redes">
+            <a *ngFor="let red of redes" [href]="red.url" target="_blank" rel="noopener noreferrer" [attr.aria-label]="red.nombre">
+              <i [class]="red.icon"></i>
+            </a>
+          </div>
+
+          <div class="language-selector-simple">
+            <p *ngFor="let lang of languages">
+              <span class="lang" [class.active]="currentLang === lang.code" (click)="selectLanguage(lang.code)">
+                {{ lang.label }}
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </ul>
+  </div>
+
+  <div class="nav-center">
+    <div class="logo" *ngIf="(!isProductPage && !isContactPage && !isMobileView) || showProductos || showAbout || isAboutPage">
+      <a routerLink="/home">
+        <img [src]="logoActual" class="logo" alt="Terelion logo" />
+      </a>
+    </div> 
+
+    <div class="logo-green" *ngIf="(isProductPage || isContactPage) && !isMobileView && !showProductos && !showAbout">
+      <div class="logo-pag">
+        <a routerLink="/home">
+          <img src="/logo-negro.png" class="logo" alt="Terelion logo" />
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-right">
+    <div class="right-item language-selector" *ngIf="!isMobileView">
+      <button class="language-btn" (click)="toggleLangDropdown()">
+        <span class="label-text">{{ currentLanguageLabel }}</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+      </button>
+
+      <div class="lang-overlay" *ngIf="langDropdownOpen" (click)="closeLangDropdown()"></div>
+
+      <div class="language-dropdown" *ngIf="langDropdownOpen" (mouseleave)="closeLangDropdown()">
+        <button *ngFor="let lang of languages" (click)="selectLanguage(lang.code)" [class.active]="currentLang === lang.code">
+          {{ lang.label }}
         </button>
       </div>
     </div>
 
-
-      <!-- SECCIÓN RESPONSIVA (REDES SOCIALES E IDIOMAS - SOLO PARA PANTALLAS PEQUEÑAS) -->
-       <div class="respons">
-  <li>{{ 'NAV.FOLLOWUS' | translate }}</li>
-
-  <div class="social-lang-row">
-    <!-- REDES SOCIALES -->
-    <div class="icons-redes">
-      <a href="https://www.facebook.com/share/1BzmQ64ZW3/" aria-label="Facebook">
-        <i class="bi bi-facebook"></i>
-      </a>
-      <a href="https://www.linkedin.com/company/jf-tricon-per%C3%BA/" aria-label="LinkedIn">
-        <i class="bi bi-linkedin"></i>
-      </a>
-      <a href="https://www.instagram.com/terelion.mining/" aria-label="Instagram">
-        <i class="bi bi-instagram"></i>
-      </a>
-    </div>
-
-    <!-- SELECTOR DE IDIOMAS SIMPLIFICADO -->
-    <div class="language-selector-simple">
-  <p *ngFor="let lang of languages">
-    <span
-      class="lang"
-      [class.active]="currentLang === lang.code"
-      (click)="selectLanguage(lang.code)"
-    >
-      {{ lang.label }}
-    </span>
-  </p>
-</div>
-
-  </div>
-</div>
-
-    </ul>
-  </div>
-
-  <!-- SECCIÓN CENTRAL DEL NAVBAR (LOGO) -->
-  <div class="nav-center">
-    <!-- Logo blanco para otras páginas y cuando el mega menú está abierto -->
-    <div class="logo" *ngIf="(!isProductPage && !isContactPage && !isMobileView) || showProductos || showAbout">
-  <a routerLink="/home" aria-label="Ir al inicio">
-    <img src="/logo-blanco.png" alt="Terelion Logo" class="logo" />
-  </a>
-</div> 
-
-    <!-- Logo negro para páginas de productos y contactos (solo cuando mega menú está cerrado) -->
-    <div class="logo-green" *ngIf="(isProductPage || isContactPage) && !isMobileView && !showProductos && !showAbout">
-  <div class="logo-pag">
-    <a routerLink="/home" aria-label="Ir al inicio">
-      <img src="/logo-negro.png" alt="Terelion Logo" class="logo" />
-    </a>
-  </div>
-</div>
-
-  </div>
-  <!-- SECCIÓN DERECHA DEL NAVBAR (IDIOMAS Y BÚSQUEDA) -->
-  <div class="nav-right">
-<!-- SELECTOR DE IDIOMAS (DESKTOP) -->
-<div class="right-item language-selector" *ngIf="!isMobileView">
-
-  <button
-    class="language-btn"
-    (click)="toggleLangDropdown()"
-    aria-label="Language selector"
-  >
-    <span class="label-text">{{ currentLanguageLabel }}</span>
-
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
-      <circle cx="12" cy="12" r="10"></circle>
-      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-    </svg>
-  </button>
-
-  <!-- OVERLAY OSCURO -->
-  <div
-    class="lang-overlay"
-    *ngIf="langDropdownOpen"
-    (click)="closeLangDropdown()"
-  ></div>
-
-  <!-- DROPDOWN -->
-  <div
-    class="language-dropdown"
-    *ngIf="langDropdownOpen"
-    (mouseleave)="closeLangDropdown()"
-  >
-    <button
-      *ngFor="let lang of languages"
-      (click)="selectLanguage(lang.code)"
-      [class.active]="currentLang === lang.code"
-    >
-      {{ lang.label }}
-    </button>
-  </div>
-
-</div>
-
-
-  <!-- BOTÓN DE BÚSQUEDA -->
-<div class="nav-right">
-  <div class="right-item search-trigger" (click)="toggleSearch()">
-
-    <!-- INPUT A LA IZQUIERDA -->
-    <input
-      type="text"
-      class="search-input"
-      [placeholder]="'NAV.SEARCH' | translate"
-      [class.mega-menu-active]="showProductos || showAbout"
-      *ngIf="!isMobileView || searchOpen"
-    />
-
-    <!-- LUPA A LA DERECHA -->
-    <svg width="24" height="24" viewBox="0 0 24 24"
-      fill="none" stroke="white" stroke-width="2">
-      <circle cx="11" cy="11" r="8"></circle>
-      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-    </svg>
-
-  </div>
-</div>
-
-
-<!-- Solo para móvil -->
-<div class="search-overlay" [class.active]="searchOpen">
-  <div class="search-container-inner">
-    
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+    <div class="right-item search-trigger" (click)="toggleSearch()">
+      <input
+        type="text"
+        class="search-input"
+        [placeholder]="navbarData.buscarPlaceholder"
+        [class.mega-menu-active]="showProductos || showAbout"
+        *ngIf="!isMobileView || searchOpen"
+      />
+      <svg width="24" height="24" viewBox="0 0 24 24"
+        fill="none" stroke="white" stroke-width="2">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>    
-    <input 
-      type="text" 
-      class="search-input-field" 
-      [placeholder]="'NAV.SEARCH' | translate"
-      autofocus 
-    />
-
-    <button class="close-search-btn" (click)="toggleSearch()">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="square">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
-    </button>
-    
+    </div>
+
+    <div class="search-overlay" [class.active]="searchOpen">
+      <div class="search-container-inner">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>    
+        <input 
+          type="text" 
+          class="search-input-field" 
+          [placeholder]="navbarData.buscarPlaceholder"
+          autofocus 
+        />
+        <button class="close-search-btn" (click)="toggleSearch()">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="square">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
   </div>
-</div>
-</div>
 </nav>
 
-<!-- SECCIÓN MEGA MENÚ DE PRODUCTOS -->
-<div class="mega-menu-wrapper"   [class.show]="showProductos"
-  (mouseleave)="cerrarMegaMenu()">
+<!-- MEGA MENU PRODUCTOS -->
+<div class="mega-menu-wrapper" [class.show]="showProductos" (mouseleave)="cerrarMegaMenu()">
   <div class="container">
-    
-    <!-- ENCABEZADO DEL MENÚ DE PRODUCTOS -->
     <div class="menu-header">
-      <h2>{{ 'NAV_MENU.PRODUCTS' | translate }}</h2>
+      <h2>{{ navbarData.productosLabel }}</h2>
     </div>
 
-    <!-- LAYOUT EN GRID PARA CATEGORÍAS DE PRODUCTOS -->
     <div class="grid-layout">
-      
-      <!-- COLUMNA 1: ROLLER CONE BITS -->
-      <div class="column">
-        <a class="title-broc" routerLink="/productos/general" (click)="cerrarMenusAlNavegar()"><h3 class="col-title">{{ 'NAV_MENU.ROLLERCONE' | translate }}</h3></a>
+      <div class="column" *ngFor="let categoria of productosMenu">
+        <a routerLink="/productos/general"><h3 class="col-title">{{ categoria.titulo }}</h3></a>
         <ul class="link-list">
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RIDGEBACK' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.AVENGER' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.DFORCE' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.TARGET' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.PILOTHOLE' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.REVERSECIRCULATION' | translate }}</a></li>
+          <li *ngFor="let item of categoria.items">
+            <a [routerLink]="item.ruta" (click)="cerrarMenusAlNavegar()">
+              {{ item.nombre }}
+            </a>
+          </li>
         </ul>
       </div>
-
-      <!-- COLUMNA 2: RPS -->
-      <div class="column">
-        <h3 class="col-title">{{ 'NAV_MENU.RPS' | translate }}</h3>
-        <ul class="link-list">
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RPS_GEN3' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RPS_GEN2' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RPS_BITS' | translate }}</a></li>
-        </ul>
-      </div>
-
-      <!-- COLUMNA 3: DOWN THE HOLE -->
-      <div class="column">
-        <h3 class="col-title">{{ 'NAV_MENU.DOWNTHEHOLE' | translate }}</h3>
-        <ul class="link-list">
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.WARRIOR_HAMMERS' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.WARRIOR_BITS' | translate }}</a></li>
-        </ul>
-      </div>
-    
-
-    <!-- ENCABEZADO DE TECNOLOGÍA -->
-    <div class="column">
-      <h3 class="col-title">{{ 'NAV_MENU.TECHNOLOGY' | translate }}</h3>
-        <ul class="link-list">
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.ADVANCED_MODELING' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.RCPRO' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.METALLURGY' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.FIELDSERVICE' | translate }}</a></li>
-          <li><a routerLink="/productos" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.SEALTEST' | translate }}</a></li>
-        </ul>
     </div>
-</div>
   </div>
 </div>
 
-
-<!-- SECCIÓN MEGA MENÚ ABOUT US -->
-<div class="mega-menu-wrapper" [class.show]="showAbout"
-(mouseleave)="cerrarMegaAbout()">
+<!-- MEGA MENU ABOUT -->
+<div class="mega-menu-wrapper" [class.show]="showAbout" (mouseleave)="cerrarMegaAbout()">
   <div class="container">
-
     <div class="grid-layout">
       <div class="column">
         <ul class="link-list">
-          <li><a routerLink="/acerca-de" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.ABOUTUS' | translate }}</a></li>
-          <li><a routerLink="/his" (click)="cerrarMenusAlNavegar()">{{ 'NAV_MENU.OURHISTORY' | translate }}</a></li>
+          <li *ngFor="let item of aboutMenu">
+            <a [routerLink]="item.ruta" (click)="cerrarMenusAlNavegar()">{{ item.nombre }}</a>
+          </li>
         </ul>
       </div>
     </div>
-
   </div>
 </div>

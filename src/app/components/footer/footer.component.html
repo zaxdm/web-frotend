@@ -1,96 +1,76 @@
 <div class="footer-container">
-  <!-- NEWS SECTION -->
-  <section class="footer-news">
-    <div class="footer-news__content">
-      
-      <article class="footer-news__item">
-        <div class="footer-news__date">— 2022-02-25</div>
-        <h5>
-          <a href=#>
-            {{ 'FOOTER.NEWS_1' | translate }}
-          </a>
-        </h5>
-      </article>
 
-      <article class="footer-news__item">
-        <div class="footer-news__date">— 2020-10-19</div>
-        <h5>
-          <a href=#>
-            {{ 'FOOTER.NEWS_2' | translate }}
-          </a>
-        </h5>
-      </article>
+<!-- NOTICIAS -->
+<section class="footer-news">
+  <div #newsCarousel class="footer-news__content carrusel-mobile">
+    <article class="footer-news__item" *ngFor="let news of footerData.noticias">
+      <div class="footer-news__date">— {{ news.fecha }}</div>
+      <h5>
+        <a [href]="news.url">{{ news.titulo }}</a>
+      </h5>
+    </article>
+  </div>
 
-      <article class="footer-news__item">
-        <div class="footer-news__date">— 2020-10-19</div>
-        <h5>
-          <a href=#>
-            {{ 'FOOTER.NEWS_3' | translate }}
-          </a>
-        </h5>
-      </article>
+  <!-- Indicadores tipo líneas -->
+  <div class="news-indicators">
+    <span 
+      *ngFor="let news of footerData.noticias; let i = index"
+      [class.active]="i === currentIndex">
+    </span>
+  </div>
+</section>
 
-    </div>
-  </section>
 
+
+  <!-- FOOTER PRINCIPAL -->
   <footer class="footer">
-    <!-- Contenido del footer se mantiene igual -->
+    <!-- Imagen de fondo movida del CSS al HTML -->
+    <img src="/mountain-footer--green.png" class="footer-bg" alt="Footer background" />
+    
     <div class="footer__content">
       <!-- IZQUIERDA -->
       <div class="footer__left">
         <nav class="footer__menu">
           <div class="footer__menu-row">
-            <a href="/about-this-website/">{{ 'FOOTER.ABOUT_WEBSITE' | translate }}</a>
-            <span class="separator">|</span>
-            <a href="/cookies/">{{ 'FOOTER.COOKIES' | translate }}</a>
-            <span class="separator">|</span>
-            <a href="/legal-notice/">{{ 'FOOTER.LEGAL_NOTICE' | translate }}</a>
+            <ng-container *ngFor="let item of footerData.menuIzquierda; let last = last">
+              <a [routerLink]="item.ruta">{{ item.label }}</a>
+              <span *ngIf="!last" class="separator">|</span>
+            </ng-container>
           </div>
-          <div class="footer__menu-row footer__privacy-row">
-            <a href="/data-privacy/">{{ 'FOOTER.DATA_PRIVACY' | translate }}</a>
-          </div>
-        </nav> 
-
-        <div class="footer__copyright">
-          {{ 'FOOTER.COPYRIGHT' | translate: { year: currentYear } }}
+        </nav>
+        <div class="sticky-side left-side">
+          Copyright © {{ currentYear }} {{ footerData.copyright }}
         </div>
       </div>
 
       <!-- CENTRO -->
       <div class="footer__center">
-        <img src="/logo-blanco.png" alt="Terelion Logo" class="footer__logo" />
+        <img [src]="footerData.logoCentro" alt="Logo" class="footer__logo" />
       </div>
 
       <!-- DERECHA -->
       <div class="footer__right">
         <div class="footer__contact">
           <p>
-            {{ 'FOOTER.CALL_US' |translate}}
-            <a href="tel:+14692944196"> 932 377 785</a>
+            Llámanos:
+            <a [href]="'tel:' + footerData.contacto.telefono">{{ footerData.contacto.telefono }}</a>
           </p>
           <p>
-            {{ 'FOOTER.EMAIL_US' |translate}}
-            <a href="mailto:frank.rupay@jftriconperu.com">{{ 'FOOTER.EMAIL_ADDRESS' | translate }}</a>
+            Email:
+            <a [href]="'mailto:' + footerData.contacto.email">{{ footerData.contacto.email }}</a>
           </p>
         </div>
 
-        <ul class="footer__socials">
-          <li>
-            <a href="https://www.facebook.com/share/1BzmQ64ZW3/" aria-label="Facebook">
-              <i class="bi bi-facebook"></i>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.linkedin.com/company/jf-tricon-per%C3%BA" aria-label="LinkedIn">
-              <i class="bi bi-linkedin"></i>
-            </a>
-          </li>
-          <li>
-            <a href="https://www.instagram.com/terelion.mining/" aria-label="Instagram">
-              <i class="bi bi-instagram"></i>
-            </a>
-          </li>
-        </ul>
+        <div class="sticky-side right-side">
+          <div class="social-iconos">
+            <span class="follow-text">SIGUENOS EN —</span>
+            <i *ngFor="let social of footerData.redes">
+              <a [href]="social.url" [attr.aria-label]="social.nombre" target="_blank">
+                <i [class]="social.icon"></i>
+              </a>
+            </i>
+          </div>
+        </div>
       </div>
     </div>
   </footer>

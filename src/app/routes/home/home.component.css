@@ -5,7 +5,7 @@
   position: absolute;
   top: 20px;
   right: 60px;
-  z-index: 1001;
+  z-index: 1001; 
 }
 
 .language-overlay {
@@ -180,12 +180,14 @@
 
 .hero .content h1 span {
   display: block;
+  margin-left: 80px;
 }
 
 .hero .content p {
   font-size: 18px;
   margin-bottom: 40px;
   line-height: 1.6;
+  
 }
 
 /* Animación de entrada */
@@ -216,6 +218,8 @@
   transition: all 0.3s ease;
   border-radius: 0;
   overflow: visible;
+  margin-left: 80px;
+
   
 }
 
@@ -520,7 +524,7 @@
 /* ABOUT SECTION */
 .about-section {
   width: 100%;
-  padding: 150px 40px;
+  padding: 30px 40px;
   background-color: #ffffff;
 }
 
@@ -532,15 +536,15 @@
 }
 
 .about-container h2 {
-  font-size: 48px;
-  font-weight: 700;
+  font-size: 25px;
+  font-weight: bold;
   margin-bottom: 32px;
   color: #1a1a1a;
   letter-spacing: 1px;
 }
 
 .about-container p {
-  font-size: 18px;
+  font-size: 11px;
   line-height: 1.8;
   color: #333333;
   margin-bottom: 20px;
@@ -552,7 +556,7 @@
   margin-top: 24px;
   color: #2ecc71;
   text-decoration: none;
-  font-size: 16px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.8px;
   border-bottom: 2px solid #2ecc71;

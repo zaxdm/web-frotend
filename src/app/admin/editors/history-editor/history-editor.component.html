@@ -1,0 +1,55 @@
+<h2>🛠 Editor Historia</h2>
+
+<!-- TABS -->
+<div class="tabs">
+  <button (click)="activeTab='hero'" [class.active]="activeTab==='hero'">Hero</button>
+  <button (click)="activeTab='timeline'" [class.active]="activeTab==='timeline'">Timeline</button>
+</div>
+
+<hr>
+
+<!-- ================= HERO ================= -->
+<div *ngIf="activeTab==='hero'">
+
+  <h3>Hero sección</h3>
+
+  <label>Título principal</label>
+  <input [(ngModel)]="data.heroTitle">
+
+</div>
+
+<!-- ================= TIMELINE ================= -->
+<div *ngIf="activeTab==='timeline'">
+
+  <h3>Bloques timeline</h3>
+
+  <div *ngFor="let t of data.timeline; let i=index" class="block">
+
+    <h4>Bloque {{i+1}}</h4>
+
+    <label>Imagen</label>
+    <input [(ngModel)]="t.image">
+
+    <label>Alt</label>
+    <input [(ngModel)]="t.alt">
+
+    <h5>Historias</h5>
+
+    <div *ngFor="let s of t.stories; let j=index" class="story">
+      <input placeholder="Año" [(ngModel)]="s.year">
+      <input placeholder="Texto" [(ngModel)]="s.text">
+      <button (click)="deleteStory(i,j)">❌</button>
+    </div>
+
+    <button (click)="addStory(i)">+ historia</button>
+    <button class="delete" (click)="deleteTimeline(i)">Eliminar bloque</button>
+
+    <hr>
+  </div>
+
+  <button (click)="addTimeline()">+ agregar bloque</button>
+
+</div>
+
+<hr>
+<button class="save" (click)="save()">💾 GUARDAR</button>

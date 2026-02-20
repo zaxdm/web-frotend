@@ -1,17 +1,18 @@
 <section class="history-hero">
-  <h1>{{ 'HISTORY.TITLE' | translate }}</h1>
+  <h1>{{ historyText.heroTitle }}</h1>
 </section>
 
-<section class="timeline">
+<section class="timeline" *ngIf="historyText">
+
   <div class="timeline-container">
 
-    <div class="timeline-item" *ngFor="let item of timeline">
+    <div class="timeline-item" *ngFor="let item of historyText.timeline">
 
       <!-- TEXTO -->
       <div class="content">
         <div class="story" *ngFor="let story of item.stories">
           <h3>{{ story.year }}</h3>
-          <p>{{ story.text | translate }}</p>
+          <p>{{ story.text }}</p>
         </div>
       </div>
 

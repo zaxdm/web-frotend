@@ -1,0 +1,205 @@
+<div class="editor-wrapper" *ngIf="form">
+  <div class="editor-header">
+    <div class="header-title">
+      <h2>
+        <span></span>
+        Editar Navbar
+        <span class="header-badge">Administración</span>
+      </h2>
+      <p class="header-description">Personaliza la barra de navegación principal</p>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="saveChanges()">
+    <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+      <mat-tab label="General">
+        <mat-card class="tab-card">
+          <div class="form-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Productos Label</mat-label>
+              <input matInput formControlName="productosLabel" placeholder="Productos" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Acerca de Label</mat-label>
+              <input matInput formControlName="aboutLabel" placeholder="Acerca de" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Contacto Label</mat-label>
+              <input matInput formControlName="contactoLabel" placeholder="Contacto" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Contacto Ruta</mat-label>
+              <input matInput formControlName="contactoRuta" placeholder="/contacto" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Texto “Síguenos”</mat-label>
+              <input matInput formControlName="siguenos" placeholder="Síguenos en" />
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Buscar Placeholder</mat-label>
+              <input matInput formControlName="buscarPlaceholder" placeholder="Buscar..." />
+            </mat-form-field>
+          </div>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="Logo">
+        <mat-card class="tab-card">
+          <div class="form-grid">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Logo Actual (ruta)</mat-label>
+              <input matInput formControlName="logoActual" placeholder="/logo-blanco.png" />
+            </mat-form-field>
+            <div class="logo-preview" *ngIf="form.get('logoActual')?.value">
+              <div class="logo-preview-info">
+                <div class="logo-preview-icon">T</div>
+                <span class="logo-preview-text">{{ form.get('logoActual')?.value }}</span>
+              </div>
+              <span style="color: #64748b; font-size: 0.875rem;">Vista previa</span>
+            </div>
+          </div>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="Menú Acerca de">
+        <mat-card class="tab-card">
+          <div formArrayName="aboutMenu">
+            <mat-expansion-panel *ngFor="let _ of aboutMenuArray.controls; let i = index" class="expansion-item" [formGroupName]="i">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">info</mat-icon>
+                  Item {{ i + 1 }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="form-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="nombre" placeholder="Nosotros" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Ruta</mat-label>
+                  <input matInput formControlName="ruta" placeholder="/acerca-de" />
+                </mat-form-field>
+                <div class="full-width" style="display:flex; justify-content:flex-end;">
+                  <button mat-raised-button color="warn" type="button" (click)="removeAboutItem(i)">
+                    <mat-icon>delete</mat-icon> Eliminar
+                  </button>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+          <button mat-raised-button type="button" (click)="addAboutItem()" style="margin-top:1rem;">
+            <mat-icon>add</mat-icon> Agregar item
+          </button>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="Redes Sociales">
+        <mat-card class="tab-card">
+          <div formArrayName="redes">
+            <mat-expansion-panel *ngFor="let _ of redesArray.controls; let i = index" class="expansion-item" [formGroupName]="i">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">share</mat-icon>
+                  Red {{ i + 1 }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="form-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="nombre" placeholder="Facebook" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Icono</mat-label>
+                  <input matInput formControlName="icon" placeholder="bi bi-facebook" />
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>URL</mat-label>
+                  <input matInput formControlName="url" placeholder="https://facebook.com/..." />
+                </mat-form-field>
+                <div class="full-width" style="display:flex; justify-content:flex-end;">
+                  <button mat-raised-button color="warn" type="button" (click)="removeSocialItem(i)">
+                    <mat-icon>delete</mat-icon> Eliminar
+                  </button>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+          <button mat-raised-button type="button" (click)="addSocialItem()" style="margin-top:1rem;">
+            <mat-icon>add</mat-icon> Agregar red
+          </button>
+        </mat-card>
+      </mat-tab>
+
+      <mat-tab label="Menú Productos">
+        <mat-card class="tab-card">
+          <div formArrayName="productosMenu">
+            <mat-expansion-panel *ngFor="let _ of productosMenuArray.controls; let i = index" class="expansion-item" [formGroupName]="i">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">inventory_2</mat-icon>
+                  Categoría {{ i + 1 }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <div class="form-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Título Categoría</mat-label>
+                  <input matInput formControlName="titulo" placeholder="Brocas Tricónicas" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Ruta Categoría</mat-label>
+                  <input matInput formControlName="ruta" placeholder="/productos/general" />
+                </mat-form-field>
+              </div>
+              <div class="full-width" formArrayName="items">
+                <h4 style="margin-top: 1rem;">Items de la categoría</h4>
+                <div *ngFor="let __ of getItemsArray(i).controls; let j = index" class="form-grid" [formGroupName]="j" style="margin-bottom:.5rem;">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre" placeholder="Nombre del producto" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Ruta</mat-label>
+                    <input matInput formControlName="ruta" placeholder="/productos/..." />
+                  </mat-form-field>
+                  <div class="full-width" style="display:flex; justify-content:flex-end;">
+                    <button mat-stroked-button color="warn" type="button" (click)="removeProductItem(i, j)">
+                      <mat-icon>delete</mat-icon> Eliminar item
+                    </button>
+                  </div>
+                </div>
+                <button mat-raised-button type="button" (click)="addProductItem(i)">
+                  <mat-icon>add</mat-icon> Agregar item
+                </button>
+              </div>
+              <div class="full-width" style="display:flex; justify-content:flex-end; margin-top:1rem;">
+                <button mat-raised-button color="warn" type="button" (click)="removeProductCategory(i)">
+                  <mat-icon>delete</mat-icon> Eliminar categoría
+                </button>
+              </div>
+            </mat-expansion-panel>
+          </div>
+          <button mat-raised-button type="button" (click)="addProductCategory()" style="margin-top:1rem;">
+            <mat-icon>add</mat-icon> Agregar categoría
+          </button>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+
+    <div class="action-bar" style="margin-top: 1rem;">
+      <button type="button" class="btn btn-secondary" (click)="resetForm()">
+        <span>↺</span>
+        Cancelar
+      </button>
+      <button type="submit" class="btn btn-primary">
+        <span>💾</span>
+        Guardar cambios
+      </button>
+    </div>
+  </form>
+
+  <div class="notification" *ngIf="showSuccessMessage">
+    <span>✅</span>
+    <span>Navbar actualizado correctamente</span>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="editor-container" *ngIf="form">
+  <header class="editor-header">
+    <div class="header-content">
+      <h1>Editor de Producto General</h1>
+      <p>Gestiona el encabezado, la lista de productos y la sección de información inferior.</p>
+    </div>
+    <div class="action-buttons">
+      <button class="btn btn-secondary" (click)="resetForm()" type="button">
+        <span>🔄</span> Revertir
+      </button>
+      <button class="btn btn-primary" (click)="saveChanges()" type="button">
+        <span>💾</span> Guardar Cambios
+      </button>
+    </div>
+  </header>
+
+  <form [formGroup]="form">
+    <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+    <mat-tab label="Header">
+      <mat-card class="tab-card">
+        <div class="section-content" formGroupName="headerData">
+          <div class="form-group">
+            <label>Título Principal</label>
+            <input type="text" formControlName="titulo" placeholder="Ej: BROCAS TRICÓNICAS" />
+          </div>
+          <div class="form-group">
+            <label>Descripción</label>
+            <textarea formControlName="descripcion" rows="3" placeholder="Descripción del encabezado"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Breadcrumbs (Migas de Pan)</label>
+            <div class="item-list mt-2" formArrayName="breadcrumbs">
+              <div *ngFor="let _ of breadcrumbsArray.controls; let i = index; trackBy: trackByIndex" class="dynamic-input">
+                <input type="text" [formControlName]="i" placeholder="Ej: PRODUCTOS" />
+                <button class="btn-delete" type="button" (click)="removeBreadcrumb(i)">🗑️</button>
+              </div>
+              <button class="btn-add" type="button" (click)="addBreadcrumb()">+ Añadir Miga</button>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Sección de Información">
+      <mat-card class="tab-card">
+        <div class="section-content" formGroupName="infoSection">
+          <div class="form-group">
+            <label>Texto Informativo</label>
+            <textarea formControlName="texto" rows="4" placeholder="Texto de la sección inferior"></textarea>
+          </div>
+          <div class="grid-2" formGroupName="boton">
+            <div class="form-group">
+              <label>Etiqueta Botón</label>
+              <input type="text" formControlName="label" placeholder="Ej: CONTÁCTANOS" />
+            </div>
+            <div class="form-group">
+              <label>Link Botón</label>
+              <input type="text" formControlName="link" placeholder="Ej: #" />
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Productos">
+      <mat-card class="tab-card">
+        <div class="section-header">
+          <h3>Lista de Productos</h3>
+          <button class="btn-add" type="button" (click)="addProduct()">+ Añadir Producto</button>
+        </div>
+        <div class="section-content" formArrayName="products">
+          <div class="products-admin-grid" >
+            <div *ngFor="let _ of productsArray.controls; let i = index; trackBy: trackByIndex" class="product-admin-card" [formGroupName]="i">
+              <div class="card-admin-header">
+                <span>Producto #{{ i + 1 }}</span>
+                <button class="btn-delete" type="button" (click)="removeProduct(i)">🗑️</button>
+              </div>
+              <div class="form-group">
+                <label>Título</label>
+                <input type="text" formControlName="title" placeholder="Nombre del producto" />
+              </div>
+              <div class="form-group">
+                <label>Imagen (URL/Ruta)</label>
+                <input type="text" formControlName="image" placeholder="Ej: assets/products/bit1.png" />
+              </div>
+              <div class="form-group">
+                <label>Link</label>
+                <input type="text" formControlName="link" placeholder="Ruta de destino" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </mat-tab>
+    </mat-tab-group>
+  </form>
+
+  <div class="success-toast" [class.show]="showSuccessMessage">
+    <span>✅</span> ¡Cambios guardados correctamente!
+  </div>
+</div>

@@ -4,9 +4,20 @@ import { HomeComponent } from './routes/home/home.component';
 import { AcercaDeComponent } from './routes/acerca-de/acerca-de.component';
 import { HistoryComponent } from './routes/history/history.component';
 import { VistaProductosComponent } from './components/vista-productos/vista-productos.component';
-import { MasInfoComponent } from './components/mas-info/mas-info.component';
 import { ProductoGeneralComponent } from './components/producto-general/producto-general.component';
 import { ContactComponent } from './routes/contact/contact.component';
+import { AdminComponent } from './admin/admin/admin.component';
+import { AboutEditorComponent } from './admin/editors/about-editor/about-editor.component';
+import { HomeEditorComponent } from './admin/editors/home-editor/home-editor.component';
+import { ContactEditorComponent } from './admin/editors/contact-editor/contact-editor.component';
+import { ProductsEditorComponent } from './admin/editors/products-editor/products-editor.component';
+import { FooterEditorComponent } from './admin/editors/footer-editor/footer-editor.component';
+import { NavbarEditorComponent } from './admin/editors/navbar-editor/navbar-editor.component';
+import { ProductGeneralEditorComponents } from './admin/editors/product-general-editor/product-general-editor.component';
+import { MasInfoEditorComponent } from './admin/editors/mas-info-editor/mas-info-editor.component';
+import { MasInfoComponent } from './components/mas-info/mas-info.component';
+import { HistoryEditorComponent } from './admin/editors/history-editor/history-editor.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,10 +27,25 @@ export const routes: Routes = [
   { path: 'productos', component: VistaProductosComponent },
   { path: 'productos/general', component: ProductoGeneralComponent },
   { path: 'mas-info', component: MasInfoComponent },
-  { path: 'productos/general',loadComponent: () => import('./components/producto-general/producto-general.component').then(m => m.ProductoGeneralComponent)},
-  { path: 'mas-info', component: MasInfoComponent },
   { path: 'contactos', component: ContactComponent },
 
+
+  // Rutas para Admin 
+  { 
+    path: 'admin', component: AdminComponent,
+    children: [
+      { path: 'about', component: AboutEditorComponent },
+      { path: 'contact', component: ContactEditorComponent },
+      { path: 'home', component: HomeEditorComponent },
+      { path: 'footer', component: FooterEditorComponent },
+      { path: 'navbar', component: NavbarEditorComponent },
+      { path: 'general-product', component: ProductGeneralEditorComponents },
+      { path: 'products', component: ProductsEditorComponent },
+      { path: 'mas-info', component: MasInfoEditorComponent },
+      { path: 'history', component: HistoryEditorComponent },
+
+    ]
+  }, 
 ];
   
 @NgModule({

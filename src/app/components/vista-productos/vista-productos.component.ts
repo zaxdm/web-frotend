@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { ProductService } from '../../services/product.service';
+import { HeroProduct, Feature, Download } from '../../models/product.model';
 
 @Component({
   selector: 'app-vista-productos',
   standalone: true,
-  imports: [RouterModule, TranslateModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './vista-productos.component.html',
   styleUrls: ['./vista-productos.component.css']
 })
@@ -19,24 +22,57 @@ export class VistaProductosComponent implements OnInit {
     { code: 'es', label: 'Español' },
     { code: 'pt', label: 'Português' }
   ];
-
   currentLanguage: string = 'en';
 
   // ===============================
-  // Año actual
+  // AÑO ACTUAL
   // ===============================
   currentYear: number = new Date().getFullYear();
 
-  constructor(private translate: TranslateService) {}
+  // ===============================
+  // PRODUCTO
+  // ===============================
+  heroProduct!: HeroProduct;
 
-  ngOnInit(): void {
-    const savedLang = localStorage.getItem('language') || 'en';
-    this.currentLanguage = savedLang;
-    this.translate.use(savedLang);
+  // ===============================
+  // IMAGEN SELECCIONADA
+  // ===============================
+  selectedImage: string = '';
+
+  changeImage(imgUrl: string) {
+    this.selectedImage = imgUrl;
   }
 
   // ===============================
-  // Cambiar idioma
+  // FEATURES y DESCARGAS (pueden venir del admin)
+  // ===============================
+  features: Feature[] = [];
+  downloads: Download[] = [];
+
+  constructor(
+    private translate: TranslateService,
+    private productService: ProductService
+  ) {}
+
+  ngOnInit(): void {
+    // idioma
+    const savedLang = localStorage.getItem('language') || 'en';
+    this.currentLanguage = savedLang;
+    this.translate.use(savedLang);
+
+    // producto desde service
+    this.heroProduct = this.productService.getProduct();
+
+    // imagen principal
+    this.selectedImage = this.heroProduct.mainImage;
+
+    // features y downloads
+    this.features = this.heroProduct.features || [];
+    this.downloads = this.heroProduct.downloads || [];
+  }
+
+  // ===============================
+  // IDIOMA
   // ===============================
   selectLanguage(langCode: string) {
     this.currentLanguage = langCode;

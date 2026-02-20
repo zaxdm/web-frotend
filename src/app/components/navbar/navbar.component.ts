@@ -1,17 +1,28 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, NavigationEnd, RouterLink } from '@angular/router';
+import { Router, NavigationEnd, RouterLink, RouterModule } from '@angular/router';
 import { TranslateService, TranslateModule } from '@ngx-translate/core';
 import { filter } from 'rxjs/operators';
+import { NavbarService } from '../../services/navbar.service';
+import { NavbarData } from '../../models/navbar.model';
 
 @Component({
   selector: 'app-nvbar',
   standalone: true,
-  imports: [CommonModule, TranslateModule, RouterLink],
+  imports: [CommonModule, TranslateModule, RouterLink, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+
+  // ===============================
+  // 🔥 DATA REAL DEL ADMIN
+  // ===============================
+  navbarData!: NavbarData;
+  aboutMenu: any[] = [];
+  productosMenu: any[] = [];
+  redes: any[] = [];
+  logoActual = '';
 
   // ===============================
   // MENÚS
@@ -22,6 +33,7 @@ export class NavbarComponent implements OnInit {
   searchOpen = false;
   isProductPage = false;
   isContactPage = false;
+  isAboutPage = false;
 
   // ===============================
   // RESPONSIVE
@@ -43,7 +55,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private navbarService: NavbarService
   ) {
     this.translate.setDefaultLang('en');
   }
@@ -52,7 +65,6 @@ export class NavbarComponent implements OnInit {
   // INIT
   // ===============================
   ngOnInit() {
-    // 🔑 MUY IMPORTANTE: detectar tamaño al cargar
     this.updateViewMode();
 
     const savedLang = localStorage.getItem('language') || 'en';
@@ -60,6 +72,14 @@ export class NavbarComponent implements OnInit {
     this.translate.use(this.currentLang);
 
     this.checkProductPage();
+
+    // 🔥 CARGAR NAVBAR
+    this.loadNavbar();
+
+    // 🔥 ESCUCHAR CAMBIOS EN VIVO DEL EDITOR
+    this.navbarService.navbarData$.subscribe(data => {
+      this.applyNavbarData(data);
+    });
 
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -69,12 +89,29 @@ export class NavbarComponent implements OnInit {
   }
 
   // ===============================
+  // 🔥 LOAD NAVBAR
+  // ===============================
+  loadNavbar() {
+    const data = this.navbarService.getNavbar();
+    this.applyNavbarData(data);
+  }
+
+  applyNavbarData(data: NavbarData) {
+    this.navbarData = data;
+    this.aboutMenu = data.aboutMenu;
+    this.productosMenu = data.productosMenu;
+    this.redes = data.redes;
+    this.logoActual = data.logoActual;
+  }
+
+  // ===============================
   // RUTAS
   // ===============================
   private checkProductPage() {
     const url = this.router.url;
     this.isProductPage = url.includes('/producto') || url.includes('/productos');
     this.isContactPage = url.includes('/contactos');
+    this.isAboutPage = url.includes('/acerca-de');
   }
 
   // ===============================
@@ -83,7 +120,6 @@ export class NavbarComponent implements OnInit {
   private updateViewMode() {
     this.isMobileView = window.innerWidth <= this.MOBILE_WIDTH;
 
-    // Al pasar a desktop, cerrar todo
     if (!this.isMobileView) {
       this.menuOpen = false;
       this.showProductos = false;
@@ -146,8 +182,19 @@ export class NavbarComponent implements OnInit {
     this.showProductos = false;
   }
 
+  cerrarMegaAbout() {
+    this.showAbout = false;
+  }
+
+  cerrarMenusAlNavegar() {
+    this.showProductos = false;
+    this.showAbout = false;
+    this.menuOpen = false;
+    this.searchOpen = false;
+  }
+
   // ===============================
-  // BÚSQUEDA (SOLO MÓVIL)
+  // BÚSQUEDA
   // ===============================
   toggleSearch() {
     if (!this.isMobileView) return;
@@ -176,18 +223,4 @@ export class NavbarComponent implements OnInit {
     const lang = this.languages.find(l => l.code === this.currentLang);
     return lang ? lang.label : '';
   }
-  cerrarMegaAbout() {
-    this.showAbout = false;
-  }
-
-  // ===============================
-  // CERRAR MENUS AL NAVEGAR
-  // ===============================
-  cerrarMenusAlNavegar() {
-    this.showProductos = false;
-    this.showAbout = false;
-    this.menuOpen = false;
-    this.searchOpen = false;
-  }
-
 }

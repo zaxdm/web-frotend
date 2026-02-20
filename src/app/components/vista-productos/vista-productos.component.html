@@ -1,82 +1,68 @@
 <div class="page-container">
 
-  <section class="hero-section">
-    <div class="breadcrumbs">{{ 'VISTA_PRODUCTOS.BREADCRUMB' | translate }}</div>
-    
-    <div class="hero-grid">
-      <div class="hero-text">
-        <h1>{{ 'VISTA_PRODUCTOS.TITLE' | translate }}</h1>
-        
-        <p class="description">
-          {{ 'VISTA_PRODUCTOS.DESCRIPTION_1' | translate }}
-        </p>
+  <main class="product-container">
+    <section class="product-info">
+      <nav class="breadcrumb">
+        <span *ngFor="let crumb of heroProduct.breadcrumbs; let last = last">
+          {{ crumb.label }}
+          <span *ngIf="!last"> / </span>
+        </span> 
+      </nav>
+      
+      <h1 class="product-title">
+        {{ heroProduct.title }}:
+        <br>
+        <span>{{ heroProduct.subtitle }}</span>
+      </h1>
 
-        <p class="description">
-          {{ 'VISTA_PRODUCTOS.DESCRIPTION_2' | translate }}
+      <div class="description">
+        <p *ngFor="let desc of heroProduct.descriptions">
+          {{ desc }}
         </p>
-
-        <a href="#" class="contact-link">{{ 'VISTA_PRODUCTOS.CONTACT_MORE' | translate }}</a>
       </div>
 
-      <div class="hero-image-container">
-        <img src="" alt="Ridgeback Drill Bit" class="main-product-img">
-        
-        <div class="thumbnails">
-          <div class="thumb"></div>
-          <div class="thumb"></div>
+      <a [href]="heroProduct.contactLink" class="cta-link">
+        COMUNÍQUESE CON NOSOTROS
+      </a>
+    </section>
+
+    <section class="product-gallery">
+      <div class="main-image">
+        <img [src]="selectedImage" alt="Broca Ridgeback">
+      </div>
+
+      <div class="thumbnails">
+        <div 
+          *ngFor="let thumb of heroProduct.thumbnails" 
+          class="thumb" 
+          [class.active]="selectedImage === thumb"
+          (click)="changeImage(thumb)">
+          <img [src]="thumb" alt="Vista de producto">
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <section class="features-section">
     <div class="features-grid-layout">
       
       <div class="features-content">
-        <h2>{{ 'VISTA_PRODUCTOS.FEATURES_TITLE' | translate }}</h2>
+        <h2>CARACTERÍSTICAS Y BENEFICIOS</h2>
         
         <div class="features-list">
-          <div class="feature-item">
-            <h4>&rarr; {{ 'VISTA_PRODUCTOS.NAIL_NOZZLE' | translate }}</h4>
-            <p>{{ 'VISTA_PRODUCTOS.NAIL_NOZZLE_DESC' | translate }}</p>
-          </div>
-          <div class="feature-item">
-            <h4>&rarr; {{ 'VISTA_PRODUCTOS.RIDGEBACK_FEATURE' | translate }}</h4>
-            <p>{{ 'VISTA_PRODUCTOS.RIDGEBACK_DESC' | translate }}</p>
-          </div>
-          <div class="feature-item">
-            <h4>&rarr; {{ 'VISTA_PRODUCTOS.REINFORCED_SHIRTTAIL' | translate }}</h4>
-            <p>{{ 'VISTA_PRODUCTOS.REINFORCED_DESC' | translate }}</p>
-          </div>
-          <div class="feature-item">
-            <h4>&rarr; {{ 'VISTA_PRODUCTOS.MAX_GAGE' | translate }}</h4>
-            <p>{{ 'VISTA_PRODUCTOS.MAX_GAGE_DESC' | translate }}</p>
-          </div>
-          <div class="feature-item">
-            <h4>&rarr; {{ 'VISTA_PRODUCTOS.VENTED_CONES' | translate }}</h4>
-            <p>{{ 'VISTA_PRODUCTOS.VENTED_DESC' | translate }}</p>
-          </div>
-          <div class="feature-item">
-            <h4>&rarr; {{ 'VISTA_PRODUCTOS.ENHANCED_CUTTING' | translate }}</h4>
-            <p>{{ 'VISTA_PRODUCTOS.ENHANCED_DESC' | translate }}</p>
-          </div>
-          <div class="feature-item">
-            <h4>&rarr; {{ 'VISTA_PRODUCTOS.SP1_BEARING' | translate }}</h4>
-            <p>{{ 'VISTA_PRODUCTOS.SP1_DESC' | translate }}</p>
-          </div>
-          <div class="feature-item">
-            <h4>&rarr; {{ 'VISTA_PRODUCTOS.CENTURION_BEARING' | translate }}</h4>
-            <p>{{ 'VISTA_PRODUCTOS.CENTURION_DESC' | translate }}</p>
+          <div class="feature-item" *ngFor="let feature of features">
+            <h4>&rarr; {{ feature.title }}</h4>
+            <p>{{ feature.description }}</p>
           </div>
         </div>
       </div>
 
       <div class="downloads-content">
-        <h2>{{ 'VISTA_PRODUCTOS.DOWNLOADABLES' | translate }}</h2>
+        <h2>DESCARGABLES</h2>
         <div class="download-card">
-          <h3>{{ 'VISTA_PRODUCTOS.CATALOGUE' | translate }}</h3>
+          <h3>{{ downloads[0].title }}</h3>
           <div class="download-item">
-            <span>{{ 'VISTA_PRODUCTOS.PRODUCT_CATALOGUE' | translate }}</span>
+            <span>{{ downloads[0].description }}</span>
             <span class="icon-download">&#8595;</span>
           </div>
         </div>

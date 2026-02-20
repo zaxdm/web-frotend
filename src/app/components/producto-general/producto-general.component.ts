@@ -1,15 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { RouterModule } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { GeneralProductService } from '../../services/general-product.service';
+
+interface Product {
+  title: string;
+  image: string;
+  link: string;
+}
+
+interface HeaderData {
+  breadcrumbs: string[];
+  titulo: string;
+  descripcion: string;
+}
 
 @Component({
   selector: 'app-producto-general',
   standalone: true,
-  imports: [CommonModule, TranslateModule],     
+  imports: [CommonModule, TranslateModule, RouterModule],     
   templateUrl: './producto-general.component.html',
   styleUrls: ['./producto-general.component.css']
 })
-export class ProductoGeneralComponent implements OnInit {
+export class ProductoGeneralComponent implements OnInit, OnDestroy {
+
+  currentLanguage: string = 'en';
+  private sub = new Subscription();
 
   // ===============================
   // IDIOMAS
@@ -20,14 +38,56 @@ export class ProductoGeneralComponent implements OnInit {
     { code: 'pt', label: 'Português' }
   ];
 
-  currentLanguage: string = 'en';
+  // ===============================
+  // HEADER DINÁMICO
+  // ===============================
+  headerData: HeaderData = { breadcrumbs: [], titulo: '', descripcion: '' };
 
-  constructor(private translate: TranslateService) {}
+  // ===============================
+  // PRODUCTOS DINÁMICOS
+  // ===============================
+  products: Product[] = [];
+
+  // ===============================
+// SECCIÓN INFORMACIÓN DINÁMICA
+// ===============================
+infoSection = {
+  texto: '',
+  boton: { label: '', link: '' }
+};
+
+  constructor(private translate: TranslateService, private generalService: GeneralProductService) {}
 
   ngOnInit(): void {
     const savedLang = localStorage.getItem('language') || 'en';
     this.currentLanguage = savedLang;
     this.translate.use(savedLang);
+    const data = this.generalService.getData();
+    this.applyData(data);
+    this.sub.add(
+      this.generalService.data$.subscribe(d => this.applyData(d))
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
+  }
+
+  private applyData(data: any) {
+    if (!data) return;
+    this.headerData = {
+      breadcrumbs: data.headerData?.breadcrumbs || [],
+      titulo: data.headerData?.titulo || '',
+      descripcion: data.headerData?.descripcion || ''
+    };
+    this.products = Array.isArray(data.products) ? data.products : [];
+    this.infoSection = {
+      texto: data.infoSection?.texto || '',
+      boton: {
+        label: data.infoSection?.boton?.label || '',
+        link: data.infoSection?.boton?.link || '#'
+      }
+    };
   }
 
   selectLanguage(langCode: string) {
@@ -41,39 +101,4 @@ export class ProductoGeneralComponent implements OnInit {
     return lang ? lang.label : '';
   }
 
-  // ===============================
-  // LISTA DE PRODUCTOS
-  // ===============================
-  products = [
-    {
-      title: 'Reverse Circulation Bits',
-      image: 'assets/products/bit1.png',
-      link: '#'
-    },
-    {
-      title: 'Pilot Hole Bits',
-      image: 'assets/products/bit2.png',
-      link: '#'
-    },
-    {
-      title: 'Target™ – HDD Series',
-      image: 'assets/products/bit3.png', 
-      link: '#'
-    },
-    {
-      title: 'Avenger™ – High-Performance Drilling',
-      image: 'assets/products/bit4.png',
-      link: '#'
-    },
-    {
-      title: 'D-Force™ – Drilling in Abrasive Formations',
-      image: 'assets/products/bit5.png',
-      link: '#'
-    },
-    {
-      title: 'Ridgeback™ – Hard Rock Drilling',
-      image: 'assets/products/bit6.png',
-      link: '#'
-    }
-  ];
 }

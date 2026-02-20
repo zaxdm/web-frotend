@@ -5,81 +5,121 @@
   width: 100%;
 }
 
+* {
+    margin: 0;
+}
+
+.product-container {
+  margin: 150px auto;
+  margin-bottom: 100px;
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    gap: 40px;
+}
+
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.breadcrumb {
+    color: #b0b0b0;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+}
+
+.product-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 0.9;
+    color: #212121;
+    margin-bottom: 40px;
+}
+
+.product-title span {
+    color: #212121;
+}
+
+.description p {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+.cta-link {
+    margin-top: auto;
+    color: #2e7d32;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+    border-bottom: 2px solid #2e7d32;
+    align-self: flex-start;
+    padding-bottom: 5px;
+}
+
+.product-gallery {
+    flex: 1.2;
+    background-color: #fafafa;
+    border: 1px solid #f0f0f0;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+}
+
+.main-image img {
+    max-width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
+}
+
+.thumbnails {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.thumb {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    cursor: pointer;
+}
+
+.thumb.active {
+    border: 2px solid #2e7d32;
+}
+
+.thumb img {
+    max-width: 80%;
+    height: auto;
+}
+
 .page-container {
   margin-top: 90px;
 }
 
-/* --- SECCIÓN 1: HERO (Taladro) --- */
-.hero-section {
-  padding: 40px 60px;
-  background-color: #fff;
-}
-
-.breadcrumbs {
-  color: #999;
-  font-size: 0.8rem;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
-  align-items: center;
-}
-
-h1 {
-  font-size: 3.5rem;
-  line-height: 1;
-  text-transform: uppercase;
-  color: #1a1a1a;
-  margin-bottom: 30px;
-  font-weight: 800;
-}
-
-.description {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #444;
-  margin-bottom: 20px;
-}
-
-.contact-link {
-  display: inline-block;
-  margin-top: 20px;
-  color: #5da05c; /* Verde claro */
-  text-decoration: none;
-  font-weight: bold;
-  text-transform: uppercase;
-  border-bottom: 2px solid #5da05c;
-  padding-bottom: 2px;
-}
-
-.hero-image-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-}
-
-.main-product-img {
-  max-width: 80%;
-  height: auto;
-}
-
-/* --- SECCIÓN 2: FEATURES (Fondo Verde) --- */
 .features-section {
-  background-color: #388e3c; /* Verde intenso */
+  background-color: #388e3c;
   color: white;
   padding: 60px;
-  /* Nota: Para el efecto "ondas" del fondo necesitarías una imagen de fondo real */
 }
 
 .features-grid-layout {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* 2 partes features, 1 parte downloads */
+  grid-template-columns: 2fr 1fr;
   gap: 60px;
 }
 
@@ -90,7 +130,6 @@ h1 {
   letter-spacing: 1px;
 }
 
-/* Grid interno para los items de features (2 columnas) */
 .features-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -111,7 +150,6 @@ h1 {
   opacity: 0.9;
 }
 
-/* Tarjeta blanca de descargas */
 .download-card {
   background: white;
   color: #333;
@@ -140,54 +178,36 @@ h1 {
   font-weight: bold;
 }
 
-/* --- SECCIÓN 3: NOTICIAS --- */
-.news-section {
-  background-color: white;
-  padding: 60px;
-  text-align: center;
-}
-
-.news-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
-}
-
-.news-date {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  color: #666;
-  margin-bottom: 15px;
-  letter-spacing: 0.5px;
-  font-weight: bold;
-}
-
-.news-title {
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  color: #222;
-  font-weight: 800;
-  line-height: 1.3;
-}
-
-/* RESPONSIVE (Móviles) */
 @media (max-width: 900px) {
-  .hero-grid, .features-grid-layout, .news-grid {
-    grid-template-columns: 1fr; /* Todo a una columna */
+  .product-container,
+  .features-grid-layout {
+    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 40px;
   }
   
   .features-list {
-    grid-template-columns: 1fr; /* Lista de features a una columna */
+    grid-template-columns: 1fr;
   }
 
-  h1 { font-size: 2.5rem; }
+  .product-title {
+    font-size: 2.5rem;
+  }
   
-  :host { padding: 0; }
   .page-container {
     margin-top: 90px;
   }
-  .hero-section, .features-section, .news-section {
+  
+  .features-section {
     padding: 40px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-container {
+    flex-direction: column;
+  }
+  .product-title {
+    font-size: 2.5rem;
   }
 }

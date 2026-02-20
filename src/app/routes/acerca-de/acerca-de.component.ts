@@ -1,42 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { AboutService } from '../../services/about.service';
+import { Subscription } from 'rxjs';
+
+interface AboutSection {
+  heroTitle: string;
+  paragraphs: string[];
+  paragraphs2: string[];
+  subtitle?: string;
+}
 
 @Component({
   selector: 'app-acerca-de',
   standalone: true,
-  imports: [TranslateModule],
+  imports: [TranslateModule, CommonModule, RouterModule],
   templateUrl: './acerca-de.component.html',
-  styleUrls: ['./acerca-de.component.css']  // CORRECCIÓN
+  styleUrls: ['./acerca-de.component.css']
 })
-export class AcercaDeComponent implements OnInit {
+export class AcercaDeComponent implements OnInit, OnDestroy {
 
-  // ===============================
-  // IDIOMAS
-  // ===============================
-  languages = [
-    { code: 'en', label: 'English' },
-    { code: 'es', label: 'Español' },
-    { code: 'pt', label: 'Português' }
-  ];
+  aboutData!: AboutSection;
+  currentLanguage: string | undefined;
+  private sub = new Subscription();
 
-  currentLanguage: string = 'en';
-
-  constructor(private translate: TranslateService) {}
+  constructor(
+    private translate: TranslateService,
+    private aboutService: AboutService
+  ) {}
 
   ngOnInit(): void {
-    const savedLang = localStorage.getItem('language') || 'en';
+
+    // 🔥 ESCUCHA CAMBIOS EN TIEMPO REAL
+    this.sub.add(
+      this.aboutService.getAboutObservable().subscribe(data => {
+        console.log('Acerca actualizado:', data);
+        this.aboutData = data;
+      })
+    );
+
+    const savedLang = localStorage.getItem('language') || 'es';
     this.currentLanguage = savedLang;
     this.translate.use(savedLang);
   }
 
-  selectLanguage(langCode: string) {
-    this.currentLanguage = langCode;
-    localStorage.setItem('language', langCode);
-    this.translate.use(langCode);
-  }
-
-  get currentLanguageLabel(): string {
-    const lang = this.languages.find(l => l.code === this.currentLanguage);
-    return lang ? lang.label : '';
+  ngOnDestroy(): void {
+    this.sub.unsubscribe();
   }
 }

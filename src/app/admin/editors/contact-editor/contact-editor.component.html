@@ -1,0 +1,238 @@
+<div class="editor-container">
+  <h1>Editor de Contacto</h1>
+
+  <form [formGroup]="contactForm">
+    <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+
+      <!-- HEADER -->
+      <mat-tab label="Header">
+        <mat-card class="tab-card">
+          <div formGroupName="header" class="form-grid">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Subtítulo</mat-label>
+              <input matInput formControlName="subtitle">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Título</mat-label>
+              <input matInput formControlName="title">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Texto ayuda selector</mat-label>
+              <input matInput formControlName="selectHelp">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Etiqueta región</mat-label>
+              <input matInput formControlName="regionLabel">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Placeholder región</mat-label>
+              <input matInput formControlName="regionPlaceholder">
+            </mat-form-field>
+          </div>
+        </mat-card>
+      </mat-tab>
+
+      <!-- BODY -->
+      <mat-tab label="Body">
+        <mat-card class="tab-card">
+          <div formGroupName="body">
+            <!-- LEFT TEXTS -->
+            <h3>Textos izquierda</h3>
+            <div formArrayName="leftTexts">
+              <div *ngFor="let text of leftTextsArray.controls; let i=index" class="array-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Texto {{i+1}}</mat-label>
+                  <textarea matInput [formControlName]="i" rows="3"></textarea>
+                </mat-form-field>
+                <button mat-icon-button color="warn" type="button" (click)="removeLeftText(i)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+            <button mat-raised-button type="button" (click)="addLeftText()">
+              <mat-icon>add</mat-icon> Agregar texto
+            </button>
+
+            <mat-divider></mat-divider>
+
+            <!-- BOLD -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Texto destacado</mat-label>
+              <input matInput formControlName="boldText">
+            </mat-form-field>
+
+            <mat-divider></mat-divider>
+
+            <!-- FORM FIELDS -->
+            <h3>Campos del formulario</h3>
+
+            <div formArrayName="formFields">
+              <mat-expansion-panel *ngFor="let field of formFieldsArray.controls; let i=index">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{ field.get('label')?.value || 'Nuevo campo' }}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div [formGroupName]="i" class="form-grid">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Label</mat-label>
+                    <input matInput formControlName="label">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Placeholder</mat-label>
+                    <input matInput formControlName="placeholder">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Tipo</mat-label>
+                    <mat-select formControlName="type">
+                      <mat-option *ngFor="let t of fieldTypes" [value]="t.value">
+                        {{t.label}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" *ngIf="field.get('type')?.value === 'textarea'">
+                    <mat-label>Filas</mat-label>
+                    <input matInput type="number" formControlName="rows">
+                  </mat-form-field>
+
+                  <mat-checkbox formControlName="required">Requerido</mat-checkbox>
+
+                </div>
+              </mat-expansion-panel>
+            </div>
+
+            <mat-divider></mat-divider>
+
+            <!-- LEGAL TEXT & BUTTON -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Texto legal</mat-label>
+              <textarea matInput formControlName="legalText" rows="4"></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Texto botón</mat-label>
+              <input matInput formControlName="sendButtonLabel">
+            </mat-form-field>
+          </div>
+        </mat-card>
+      </mat-tab>
+
+      <!-- REGIONES -->
+      <mat-tab label="Regiones">
+        <mat-card class="tab-card">
+          <div formArrayName="regions">
+            <mat-expansion-panel *ngFor="let region of regionsArray.controls; let i=index">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ region.get('label')?.value || 'Nueva región' }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <div [formGroupName]="i">
+                <div class="form-grid">
+                  <mat-form-field appearance="outline">
+                    <mat-label>ID</mat-label>
+                    <input matInput formControlName="value">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="label">
+                  </mat-form-field>
+                </div>
+
+                <!-- Contact Info -->
+                <div formGroupName="contact">
+                  <h4>Contacto</h4>
+                  <div class="form-grid">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Nombre del contacto</mat-label>
+                      <input matInput formControlName="name">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Email</mat-label>
+                      <input matInput formControlName="email" type="email">
+                    </mat-form-field>
+                  </div>
+
+                  <!-- Phones -->
+                  <div formArrayName="phones">
+                    <h5>Teléfonos</h5>
+                    <div *ngFor="let phone of getPhonesArray(i).controls; let j=index" class="array-item">
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Teléfono {{j+1}}</mat-label>
+                        <input matInput [formControlName]="j">
+                      </mat-form-field>
+                      <button mat-icon-button color="warn" type="button" (click)="removePhone(i, j)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                    <button mat-raised-button type="button" (click)="addPhone(i)">
+                      <mat-icon>add</mat-icon> Agregar teléfono
+                    </button>
+                  </div>
+
+                  <!-- Office -->
+                  <div formGroupName="office">
+                    <h4>Oficina</h4>
+                    <div class="form-grid">
+                      <mat-form-field appearance="outline">
+                        <mat-label>País</mat-label>
+                        <input matInput formControlName="country">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput formControlName="address">
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Teléfono oficina</mat-label>
+                        <input matInput formControlName="phone">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="actions">
+                  <button mat-raised-button color="warn" type="button" (click)="removeRegion(i)">
+                    Eliminar región
+                  </button>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+
+          <button mat-raised-button type="button" (click)="addRegion()">
+            <mat-icon>add</mat-icon> Agregar región
+          </button>
+        </mat-card>
+      </mat-tab>
+    </mat-tab-group>
+  </form>
+
+  <!-- ACTIONS -->
+  <div class="global-actions">
+    <button mat-raised-button type="button" (click)="resetForm()">
+      Resetear
+    </button>
+    <button mat-raised-button color="primary" (click)="saveChanges()">
+      Guardar cambios
+    </button>
+  </div>
+@if (showSuccessMessage) {
+  <div class="notification">
+    ✅ Contact actualizado correctamente
+  </div>
+}
+</div>
+

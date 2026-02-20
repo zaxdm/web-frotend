@@ -1,0 +1,78 @@
+<div class="editor-container">
+  <h2>🛠 Editor de Producto</h2>
+
+  <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+
+    <!-- TAB: Principal -->
+    <mat-tab label="Principal">
+      <label>Título</label>
+      <input [(ngModel)]="product.title" matInput>
+
+      <label>Subtítulo</label>
+      <input [(ngModel)]="product.subtitle" matInput>
+
+      <label>Imagen principal</label>
+      <input [(ngModel)]="product.mainImage" matInput>
+
+      <label>Link contacto</label>
+      <input [(ngModel)]="product.contactLink" matInput>
+    </mat-tab>
+
+    <!-- TAB: Descripciones -->
+    <mat-tab label="Descripciones">
+      <div *ngFor="let d of product.descriptions; let i = index; trackBy: trackByIndex" class="item-row">
+        <input [(ngModel)]="product.descriptions[i]" matInput>
+        <button mat-button color="warn" (click)="removeDescription(i)">❌</button>
+    </div>
+      <button mat-button (click)="addDescription()">+ Agregar descripción</button>
+    </mat-tab>
+
+    <!-- TAB: Thumbnails -->
+    <mat-tab label="Thumbnails">
+      <div *ngFor="let t of product.thumbnails; let i = index; trackBy: trackByIndex" class="item-row">
+  <input [(ngModel)]="product.thumbnails[i]" matInput>
+  <button mat-button color="warn" (click)="removeThumbnail(i)">❌</button>
+</div>
+      <button mat-button (click)="addThumbnail()">+ Agregar imagen</button>
+    </mat-tab>
+
+    <!-- TAB: Features -->
+    <mat-tab label="Features">
+      <div *ngFor="let f of product.features || []; let i = index" class="item-row">
+        <input placeholder="Título" [(ngModel)]="product.features![i].title" matInput>
+        <input placeholder="Descripción" [(ngModel)]="product.features![i].description" matInput>
+        <button mat-button color="warn" (click)="removeFeature(i)">❌</button>
+      </div>
+      <button mat-button (click)="addFeature()">+ Agregar feature</button>
+    </mat-tab>
+
+    <!-- TAB: Descargables -->
+    <mat-tab label="Descargables">
+      <div *ngFor="let d of product.downloads || []; let i = index" class="item-row">
+        <input placeholder="Título" [(ngModel)]="product.downloads![i].title" matInput>
+        <input placeholder="Descripción" [(ngModel)]="product.downloads![i].description" matInput>
+        <input placeholder="Link" [(ngModel)]="product.downloads![i].link" matInput>
+        <button mat-button color="warn" (click)="removeDownload(i)">❌</button>
+      </div>
+      <button mat-button (click)="addDownload()">+ Agregar descargable</button>
+    </mat-tab>
+
+  </mat-tab-group>
+
+  <hr>
+    <div class="action-bar" style="margin-top: 1rem;">
+      <button type="button" class="btn btn-secondary" (click)="resetForm()">
+        <span>↺</span>
+        Cancelar
+      </button>
+      <button type="submit" class="btn btn-primary">
+        <span>💾</span>
+        Guardar cambios
+      </button>
+    </div>
+
+</div>
+  <div class="notification" *ngIf="showSuccessMessage">
+    <span>✅</span>
+    <span>Navbar actualizado correctamente</span>
+  </div>

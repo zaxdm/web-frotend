@@ -1,0 +1,304 @@
+:host {
+  display: block;
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 2rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.editor-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* ============ HEADER ============ */
+h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 2rem 0;
+  letter-spacing: -0.025em;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+h2::before {
+  content: '🛠';
+  font-size: 2rem;
+}
+
+/* ============ MATERIAL TABS ============ */
+.mat-mdc-tab-group {
+  background: transparent;
+  margin-bottom: 2rem;
+}
+
+.mat-mdc-tab .mdc-tab__text-label {
+  color: #64748b !important;
+}
+
+.mat-mdc-tab.mdc-tab--active .mdc-tab__text-label {
+  color: #0f172a !important;
+  font-weight: 600;
+}
+
+.mat-mdc-tab .mdc-tab-indicator__content--underline {
+  border-color: #0f172a !important;
+}
+
+/* ============ FORM LABELS ============ */
+label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+  margin-bottom: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+label:first-of-type {
+  margin-top: 0;
+}
+
+/* ============ INPUTS ============ */
+input[matInput] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.938rem;
+  color: #0f172a;
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+input[matInput]:hover {
+  border-color: #94a3b8;
+}
+
+input[matInput]:focus {
+  outline: none;
+  border-color: #0f172a;
+  border-width: 2px;
+}
+
+/* ============ ITEM ROW ============ */
+.item-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+  background: #f8fafc;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.item-row:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.item-row input[matInput] {
+  flex: 1;
+  margin-bottom: 0;
+  background: white;
+}
+
+/* ============ BOTONES ============ */
+button[mat-button] {
+  border-radius: 100px !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  padding: 0.5rem 1.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+button[mat-button][color="warn"] {
+  background: #fee2e2 !important;
+  color: #dc2626 !important;
+  min-width: 40px !important;
+  padding: 0.5rem !important;
+}
+
+button[mat-button][color="warn"]:hover {
+  background: #fecaca !important;
+}
+
+button[mat-button]:not([color="warn"]) {
+  background: white !important;
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
+  margin-top: 0.5rem;
+}
+
+button[mat-button]:not([color="warn"]):hover {
+  background: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+}
+
+button[mat-raised-button].save-btn {
+  width: 100%;
+  padding: 1rem !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  border-radius: 100px !important;
+  background: #0f172a !important;
+  color: white !important;
+  margin-top: 1rem;
+  transition: all 0.2s ease !important;
+}
+
+button[mat-raised-button].save-btn:hover {
+  background: #1e293b !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2) !important;
+}
+
+/* ============ DIVIDER ============ */
+hr {
+  margin: 2rem 0 1rem 0;
+  border: none;
+  border-top: 2px solid #e2e8f0;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  :host {
+    padding: 1rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .item-row {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.75rem;
+  }
+
+  .item-row input[matInput] {
+    width: 100%;
+  }
+
+  .item-row button[mat-button][color="warn"] {
+    align-self: flex-end;
+  }
+
+  button[mat-button] {
+    width: 100%;
+  }
+
+  button[mat-button]:not([color="warn"]) {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  label {
+    font-size: 0.813rem;
+  }
+
+  input[matInput] {
+    font-size: 0.875rem;
+    padding: 0.625rem 0.875rem;
+  }
+}
+
+/* ============ NOTIFICATION ============ */
+.notification {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #059669;
+  color: white;
+  padding: 1rem 1.75rem;
+  border-radius: 100px;
+  font-size: 0.938rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ============ ACTION BAR ============ */
+.action-bar {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e2e8f0;
+}
+
+.btn {
+  padding: 0.75rem 2rem;
+  border-radius: 100px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+  border: none;
+  background: none;
+}
+
+.btn-primary {
+  background: #0f172a;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 768px) {
+  .action-bar {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

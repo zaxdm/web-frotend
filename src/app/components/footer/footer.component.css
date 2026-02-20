@@ -2,27 +2,21 @@
 .footer-container {
   position: relative;
   width: 100%;
-  margin-top: 0;
 }
 
 /* =========================
    FOOTER NEWS (TOP SECTION)
 ========================= */
-
 .footer-news {
-  background: #fff;
-  padding: 40px 40px 30px; /* Padding ajustado */
-  bottom: 100%; /* Lo posiciona justo encima del footer */
+  padding: 20px 80px 30px;
   left: 0;
   right: 0;
   z-index: 2;
-  margin-bottom: 0; /* Eliminado el margin negativo */
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05); /* Sutil sombra para separación visual */
+    margin-bottom: -140px; /* AJUSTA este valor negativo (más cercano a 0) */
+
 }
 
 .footer-news__content {
-  max-width: 1400px;
-  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
@@ -33,7 +27,6 @@
   font-size: 14px;
   color: #000;
   opacity: 0.7;
-  margin-bottom: 10px;
   font-weight: 500;
   letter-spacing: 0.5px;
 }
@@ -61,154 +54,54 @@
 }
 
 /* =========================
-   FOOTER (SIN CAMBIOS en el fondo)
+   FOOTER PRINCIPAL
 ========================= */
-
 .footer {
-  background-image: url('/mountain-footer--green.png');
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-color: #000;
-  padding: 90px 40px; /* Mantiene el padding original */
-  color: #fff;
-  width: 100%;
-  box-sizing: border-box;
-  position: relative; /* Necesario para el posicionamiento de .footer-news */
-  min-height: 500px; /* Altura mínima fija */
-}
-
-.footer__content {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
   position: relative;
-  z-index: 1;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 1100px) {
-  .footer-news {
-    padding: 35px 40px 25px;
-  }
-  
-  .footer-news__content {
-    gap: 30px;
-  }
-  
-  .footer-news__item h5 {
-    font-size: 18px;
-  }
-}
-
-@media (max-width: 900px) {
-  .footer-news {
-    padding: 30px 20px 20px;
-    position: relative; /* Cambia a relative en móviles */
-    bottom: auto;
-    margin-bottom: 0;
-  }
-  
-  .footer-news__content {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-  
-  .footer {
-    padding: 60px 20px; /* Padding normal en móviles */
-    min-height: 450px;
-  }
-  
-  /* Asegurar que las noticias no se salgan del fondo en móviles */
-  .footer-container {
-    background: #fff; /* Fondo blanco para la sección de noticias */
-  }
-}
-
-@media (max-width: 600px) {
-  .footer-news {
-    padding: 25px 15px 15px;
-  }
-  
-  .footer-news__item h5 {
-    font-size: 16px;
-  }
-  
-  .footer-news__date {
-    font-size: 13px;
-  }
-  
-  .footer {
-    padding: 50px 15px;
-    min-height: 400px;
-  }
-}
-
-/* Para pantallas muy pequeñas */
-@media (max-width: 400px) {
-  .footer-news__item h5 {
-    font-size: 14px;
-  }
-  
-  .footer {
-    min-height: 380px;
-  }
-}
-
-/* Ajustes para pantallas grandes */
-@media (min-width: 2000px) {
-  .footer-news {
-    padding: 50px 40px 40px;
-  }
-  
-  .footer-news__item h5 {
-    font-size: 24px;
-  }
-  
-  .footer {
-    min-height: 600px;
-  }
-}
-.footer {
-  background-image: url('/mountain-footer--green.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: #000;
-  padding: 90px 40px;
+  padding: 90px 100px;
   color: #fff;
   width: 100%;
   box-sizing: border-box;
+  min-height: 500px;
+  overflow: hidden; /* Para que la imagen no se desborde */
+}
+
+/* Imagen de fondo en HTML */
+.footer-bg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80%; /* Ocupa el 80% de la altura del footer */
+  object-fit: cover;
+  object-position: center top; /* Muestra la parte superior */
+  z-index: 0;
+  pointer-events: none;
 }
 
 .footer__content {
+  position: relative; /* Para estar sobre la imagen de fondo */
+  z-index: 1;
   max-width: 1400px;
   margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 40px;
+  gap: 10px;
   min-height: 400px;
 }
 
-/* IZQUIERDA - MODIFICADO */
+/* IZQUIERDA */
 .footer__left {
   flex: 1;
-  font-size: 16px; /* Tamaño de letra más grande */
-  text-align: center; /* Texto centrado */
+  font-size: 16px;
+  text-align: center;
 }
 
 .footer__menu {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 25px; /* Más espacio debajo */
 }
 
 .footer__menu-row {
@@ -216,22 +109,18 @@
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 8px; /* Espaciado reducido entre elementos */
-  margin-bottom: 5px; /* Espacio entre filas */
-}
-
-.footer__privacy-row {
-  margin-top: 5px;
-  justify-content: center;
+  gap: 8px;
 }
 
 .footer__menu a {
   color: #fff;
   text-decoration: none;
   font-weight: 500;
-  font-size: 16px; /* Letras más grandes */
+  font-size: 12px;
   transition: opacity 0.3s ease;
-  padding: 2px 4px; /* Pequeño padding para mejor clic */
+  padding: 2px 4px;
+  position: relative; /* Asegura que estén sobre la imagen */
+  z-index: 2;
 }
 
 .footer__menu a:hover {
@@ -243,31 +132,27 @@
   font-size: 16px;
 }
 
-.footer__copyright {
-  opacity: 0.7;
-  font-size: 14px; /* Un poco más grande */
-  text-align: center;
-  margin-top: 10px;
-}
-
 /* CENTRO */
 .footer__center {
   flex: 0 0 auto;
   text-align: center;
-  margin-top: -120px;
+  top: 30px;
+  position: relative;
+  z-index: 2;
 }
 
 .footer__logo {
   display: block;
-  width: auto; /* Logo un poco más grande */
-  height: 200px; /* Mantener proporción */
+  height: 200px;
   max-height: 900px;
 }
 
-/* DERECHA - MODIFICADO */
+/* DERECHA */
 .footer__right {
   flex: 1;
-  text-align: center; /* Centrado también a la derecha */
+  text-align: center;
+  position: relative;
+  z-index: 2;
 }
 
 .footer__contact {
@@ -275,14 +160,14 @@
 }
 
 .footer__contact p {
-  margin: 0 0 12px;
-  font-size: 16px; /* Más grande */
+  font-weight: 600;
+  margin: 0 0 10px;
+  font-size: 12px;
   line-height: 1.4;
 }
 
 .footer__contact a {
   color: #fff;
-  font-weight: 600;
   text-decoration: none;
   transition: opacity 0.3s ease;
 }
@@ -291,128 +176,192 @@
   opacity: 0.8;
 }
 
-/* REDES */
-.footer__socials {
-  list-style: none;
-  display: flex;
-  justify-content: center; /* Centrado */
-  gap: 16px; /* Espaciado un poco mayor */
-  margin-top: 20px;
-  padding: 0;
+/* =========================
+   STICKY SIDES (LATERALES FIJOS)
+========================= */
+.sticky-side {
+  position: fixed;
+  bottom: 40px;
+  color: #ffffff;
+  font-family: "Titillium Web";
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  z-index: 1000;
+  writing-mode: vertical-rl;
+  align-items: center;
 }
 
-.footer__socials a {
-  width: 38px;
-  height: 38px;
+.left-side {
+  left: 30px;
+  transform: rotate(180deg);
+}
+
+.right-side {
+  right: 30px;
+  display: flex;
+}
+
+.social-iconos {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.social-iconos a {
+  width: 20px;
+  height: 20px;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px solid rgba(255,255,255,0.4);
   color: #fff;
-  font-size: 20px;
+  font-size: 12px;
   transition: all 0.3s ease;
 }
 
-.footer__socials a:hover {
-  background-color: rgba(255,255,255,0.1);
-  transform: translateY(-2px);
+.social-iconos a:hover {
+  transform: rotate(-90deg) scale(1.2);
 }
 
-
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-  .footer__content {
-    gap: 30px;
-  }
-  
-  .footer__menu a,
-  .separator,
-  .footer__contact p {
-    font-size: 15px;
-  }
-}
-
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 900px) {
-  .footer {
-    padding: 60px 20px;
+
+  .footer{
+    min-height:650px;
+  }
+
+    /* Ajuste para la imagen de fondo en móvil */
+  .footer-bg {
+    object-position: center; /* Mantiene el centro en móvil */
+  height: 650px;
   }
   
   .footer__content {
     flex-direction: column;
     text-align: center;
-    gap: 40px;
-    min-height: auto;
+    min-height: 260px;
   }
 
-  .footer__left,
-  .footer__right {
-    text-align: center;
+  .footer-news {
+    position: absolute;   /* lo monta encima */
+    left: 0;
     width: 100%;
+  transform: translateY(130px);
+
   }
 
-  .footer__menu-row {
-    justify-content: center;
+  .carrusel-mobile {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 12px;
+
   }
-  
-  .footer__menu {
-    margin-bottom: 20px;
-  }
-  
-  .footer__logo {
-    width: 160px;
-    margin: 0 auto;
-  }
-  
-  .footer__socials {
-    justify-content: center;
-  }
+
+  .news-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 15px;
+  transform: translateY(-15px);
+
+
 }
 
-@media (max-width: 600px) {
-  .footer {
-    padding: 50px 15px;
+.news-indicators span {
+  width: 35px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.3); /* color base */
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+.news-indicators span.active {
+  background: #ffffff; /* más blanco para activo */
+  transform: scaleX(1.2);
+}
+
+  .footer-news__item {
+    flex: 0 0 100%;              /* ocupa toda la pantalla */
+    scroll-snap-align: start;
+    padding: 18px;
+    min-height: 90px;
   }
-  
-  .footer__menu-row {
-    flex-direction: column; /* En móviles muy pequeños, en columna */
-    gap: 5px;
+
+  .footer-news__date {
+    font-size: 11px;
+    opacity: .7;
+    color: #ffffff; /* rojo */
   }
-  
-  .separator {
-    display: none; /* Ocultar separadores en móviles */
-  }
-  
-  .footer__menu a,
-  .footer__contact p,
-  .footer__copyright {
+
+  .footer-news__item h5 a {
     font-size: 14px;
+    line-height: 1.4;
+    color: #ffffff;
   }
-  
-  .footer__socials a {
-    width: 34px;
-    height: 34px;
-    background-size: 18px;
-  }
-}
 
-/* Ajustes para pantallas grandes */
-@media (min-width: 2000px) {
-  .footer__content {
-    max-width: 1800px;
+  .footer__contact {
+    margin-bottom: 25px;
+  transform: translateY(-20px);
+
   }
-  
-  .footer__menu a,
-  .footer__contact p {
-    font-size: 18px;
-  }
-  
-  .footer__copyright {
-    font-size: 16px;
-  }
-  
+
   .footer__logo {
-    width: 200px;
+  transform: translateY(200px);
+
   }
+
+  /* scroll suave */
+
+
+  /* ocultar barra */
+  .carrusel-mobile::-webkit-scrollbar {
+    display: none;
+  }
+
+  .footer__menu-row {
+    display: none;
+  }
+
+  /* Ajustes para los elementos sticky en móvil */
+  .sticky-side {
+    position: static !important;   
+    writing-mode: horizontal-tb;
+    transform: none;
+    right: auto;
+    width: 100%;
+    display: flex;
+    color: #ffffff;
+    justify-content: center;
+  }
+  .left-side{
+  transform: translateY(410px);
+  color: #ffffff7a;
+
+  }
+
+  .right-side {
+    justify-content: center;
+    text-align: center;
+    transform: translateY(130px);
+  }
+
+  .social-iconos {
+    flex-direction: row;
+    gap: 14px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .follow-text {
+    font-size: 12px;
+    letter-spacing: 2px;
+  }
+
+
 }
 

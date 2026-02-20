@@ -6,7 +6,6 @@
   height: 80vh;
   background: url('/header-1.jpg') center / cover no-repeat;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -21,13 +20,7 @@
 ========================= */
 
 .timeline {
-  padding: 100px 20px;
-  background: #fff;
-}
-
-.timeline-container {
-  max-width: 1200px;
-  margin: 0 auto;
+  padding: 100px 180px;
 }
 
 /* ITEM BASE */
@@ -35,8 +28,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  gap: 60px;
-  margin-bottom: 120px;
+  gap: 150px;
+  margin-bottom: 100px;
 }
 
 /* TEXTO */
@@ -46,6 +39,7 @@
   margin-bottom: 12px;
   color: #000;
 }
+  
 
 .timeline p {
   font-size: 15px;
@@ -56,7 +50,6 @@
 
 /* IMÁGENES */
 .timeline .media img {
-  max-width: 300px; /* prueba 300 / 340 / 380 */
   width: 100%;
   height: auto;
 }
@@ -95,10 +88,4 @@
     direction: ltr;
   }
 }
-.story {
-  margin-bottom: 28px;
-}
 
-.story:last-child {
-  margin-bottom: 0;
-}

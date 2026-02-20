@@ -1,0 +1,134 @@
+<div class="editor-container">
+  <h2>📄 Editor de Página "Más Información"</h2>
+
+  <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+
+    <!-- TAB: Hero Section -->
+    <mat-tab label="Hero">
+      <h3>Sección Hero</h3>
+      
+      <label>Título principal</label>
+      <input [(ngModel)]="data.hero.titulo" matInput>
+
+      <label>Subtítulo</label>
+      <input [(ngModel)]="data.hero.subtitulo" matInput>
+
+      <label>Imagen de fondo (URL)</label>
+      <input [(ngModel)]="data.hero.imagenFondo" matInput>
+
+      <h4>Botón (opcional)</h4>
+      <div class="item-row" *ngIf="data.hero.boton">
+        <input placeholder="Texto del botón" [(ngModel)]="data.hero.boton!.label" matInput>
+        <input placeholder="URL del botón" [(ngModel)]="data.hero.boton!.url" matInput>
+        <button mat-button color="warn" (click)="removeHeroButton()">❌</button>
+      </div>
+      <button mat-button (click)="addHeroButton()" *ngIf="!data.hero.boton">+ Agregar botón</button>
+    </mat-tab>
+
+    <!-- TAB: Secciones de Contenido (contentSections) -->
+    <mat-tab label="Contenido">
+      <div class="sections-container">
+        <div *ngFor="let section of data.contentSections; let i = index; trackBy: trackByIndex" class="section-card">
+          <div class="section-header">
+            <h3>Sección de Contenido #{{i + 1}}</h3>
+            <button mat-button color="warn" (click)="removeContentSection(i)" *ngIf="data.contentSections.length > 1">❌ Eliminar sección</button>
+          </div>
+          
+          <label>Título</label>
+          <input [(ngModel)]="section.titulo" matInput>
+
+          <h4>Párrafos</h4>
+          <div *ngFor="let p of section.parrafos; let j = index; trackBy: trackByIndex" class="item-row">
+            <input [value]="p" (input)="updateContentParagraph(i, j, $event)" matInput>
+            <button mat-button color="warn" (click)="removeContentParagraph(i, j)">❌</button>
+          </div>
+          <button mat-button (click)="addContentParagraph(i)">+ Agregar párrafo</button>
+
+
+          <label>URL de Imagen (opcional)</label>
+          <input [(ngModel)]="section.imagen" matInput>
+        </div>
+
+        <button mat-button class="add-section-btn" (click)="addContentSection()">
+          + Agregar nueva sección de contenido
+        </button>
+      </div>
+    </mat-tab>
+
+    <!-- TAB: Secciones de Información (sections) -->
+    <mat-tab label="Secciones Informativas">
+      <div class="sections-container">
+        <div *ngFor="let section of data.sections; let i = index; trackBy: trackByIndex" class="section-card">
+          <div class="section-header">
+            <h3>Sección Informativa #{{i + 1}}</h3>
+            <button mat-button color="warn" (click)="removeInfoSection(i)" *ngIf="data.sections.length > 0">❌ Eliminar sección</button>
+          </div>
+          
+          <label>Título</label>
+          <input [(ngModel)]="section.titulo" matInput>
+
+          <label>URL de Imagen</label>
+          <input [(ngModel)]="section.imagen" matInput>
+
+          <h4>Párrafos</h4>
+          <div *ngFor="let p of section.parrafos; let j = index; trackBy: trackByIndex" class="item-row">
+            <input [value]="p" (input)="updateInfoParagraph(i, j, $event)" matInput>
+            <button mat-button color="warn" (click)="removeInfoParagraph(i, j)">❌</button>
+          </div>
+          <button mat-button (click)="addInfoParagraph(i)">+ Agregar párrafo</button>
+
+          <div class="checkbox-row">
+            <label>
+              <input type="checkbox" [(ngModel)]="section.reverse">
+              Invertir orden (imagen a la derecha)
+            </label>
+          </div>
+        </div>
+
+        <button mat-button class="add-section-btn" (click)="addInfoSection()">
+          + Agregar nueva sección informativa
+        </button>
+      </div>
+    </mat-tab>
+
+    <!-- TAB: Banner Inferior -->
+    <mat-tab label="Banner Inferior">
+      <h3>Banner Inferior</h3>
+      
+      <div *ngIf="data.bottomBanner; else noBanner">
+        <label>Título</label>
+        <input [(ngModel)]="data.bottomBanner!.titulo" matInput>
+
+        <label>Texto</label>
+        <input [(ngModel)]="data.bottomBanner!.texto" matInput>
+
+        <label>Imagen de fondo (URL)</label>
+        <input [(ngModel)]="data.bottomBanner!.imagen" matInput>
+
+        <button mat-button color="warn" (click)="removeBottomBanner()">❌ Eliminar banner</button>
+      </div>
+      
+      <ng-template #noBanner>
+        <button mat-button (click)="addBottomBanner()">+ Agregar banner</button>
+      </ng-template>
+    </mat-tab>
+
+  </mat-tab-group>
+
+  <hr>
+  <div class="action-bar" style="margin-top: 1rem;">
+    <button type="button" class="btn btn-secondary" (click)="resetForm()">
+      <span>↺</span>
+      Cancelar
+    </button>
+    <button type="button" class="btn btn-primary" (click)="save()">
+      <span>💾</span>
+      Guardar cambios
+    </button>
+  </div>
+</div>
+
+<div class="notification" *ngIf="showSuccessMessage">
+  <span>✅</span>
+  <span>Página actualizada correctamente</span>
+</div>

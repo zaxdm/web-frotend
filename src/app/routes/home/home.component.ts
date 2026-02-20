@@ -3,6 +3,8 @@ import { Subject } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { RouterModule } from '@angular/router';
+import { HomeService } from '../../services/home.service';
+import { HomeData, Card, AboutSection, HeroSection } from '../../models/home.model';
 
 @Component({
   selector: 'app-home',
@@ -13,33 +15,42 @@ import { RouterModule } from '@angular/router';
 })
 export class HomeComponent implements OnInit, OnDestroy {
 
-  // ===============================
-  // DROPDOWN IDIOMA
-  // ===============================
-  dropdownOpen: boolean = false;
+  dropdownOpen = false;
 
-  // ===============================
-  // IDIOMAS
-  // ===============================
   languages = [
     { code: 'en', label: 'English' },
     { code: 'es', label: 'Español' },
     { code: 'pt', label: 'Português' }
   ];
-
   currentLanguage: string = 'en';
 
-  // ===============================
-  // DESTRUCCIÓN OBSERVABLES
-  // ===============================
   private destroy$ = new Subject<void>();
 
-  constructor(private translate: TranslateService) {}
+  // 🔥 DATA REAL (del editor)
+  hero!: HeroSection;
+  cards: Card[] = [];
+  about!: AboutSection;
+
+  constructor(
+    private translate: TranslateService,
+    private homeService: HomeService
+  ) {}
 
   ngOnInit() {
+    // idioma
     const savedLang = localStorage.getItem('language') || 'en';
     this.currentLanguage = savedLang;
     this.translate.use(savedLang);
+
+    // 🔥 cargar data del editor
+    this.loadHomeData();
+  }
+
+  loadHomeData() {
+    const data: HomeData = this.homeService.getHome();
+    this.hero = data.hero;
+    this.cards = data.cards;
+    this.about = data.about;
   }
 
   ngOnDestroy() {
@@ -65,9 +76,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     document.body.classList.remove('language-open');
   }
 
-  // ===============================
-  // CAMBIAR IDIOMA
-  // ===============================
   selectLanguage(langCode: string) {
     this.currentLanguage = langCode;
     localStorage.setItem('language', langCode);
@@ -80,9 +88,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     return lang ? lang.label : '';
   }
 
-  // ===============================
-  // SCROLL
-  // ===============================
   @HostListener('window:scroll')
   onWindowScroll() {
     if (this.dropdownOpen && window.scrollY > 350) {

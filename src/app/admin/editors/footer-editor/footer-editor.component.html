@@ -1,0 +1,217 @@
+<div class="editor-container">
+  <h1>Editor de Footer</h1>
+  
+  <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+    <!-- Pestaña: Contacto y Logo -->
+    <mat-tab label="Contacto & Logo">
+      <mat-card class="tab-card">
+        <form [formGroup]="footerForm">
+          <div class="form-grid">
+            <!-- Sección Contacto -->
+            <div class="full-width section-group">
+              <h3>
+                <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">phone</mat-icon>
+                Información de Contacto
+              </h3>
+              <div class="form-grid" style="margin-top: 1rem;">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Teléfono</mat-label>
+                  <input matInput formControlName="telefono" placeholder="+34 123 456 789">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" placeholder="info@ejemplo.com">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Sección Logo Central -->
+            <div class="full-width section-group" style="margin-top: 2rem;">
+              <h3>
+                <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">image</mat-icon>
+                Logo Central
+              </h3>
+              <div class="form-grid" style="margin-top: 1rem;">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>URL del Logo</mat-label>
+                  <input matInput formControlName="logoCentro" placeholder="/assets/logo.svg">
+                </mat-form-field>
+
+                <!-- Vista previa del logo -->
+                <div class="logo-preview" *ngIf="footerForm.get('logoCentro')?.value">
+                  <div class="logo-placeholder">
+                    <mat-icon>image</mat-icon>
+                    <span class="logo-text">{{ footerForm.get('logoCentro')?.value }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sección Copyright -->
+<div class="full-width section-group" style="margin-top: 2rem;">
+  <h3>
+    <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">copyright</mat-icon>
+    Copyright del Footer
+  </h3>
+
+  <div class="form-grid" style="margin-top: 1rem;">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>© Texto copyright</mat-label>
+      <input matInput formControlName="copyright" placeholder="© Texto copyright ">
+      <mat-hint>Este texto aparece abajo del footer</mat-hint>
+    </mat-form-field>
+  </div>
+</div>
+
+
+            </div>
+          </div>
+        </form>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Pestaña: Menú Izquierdo -->
+    <mat-tab label="Menú Izquierdo">
+      <mat-card class="tab-card">
+        <form [formGroup]="footerForm">
+          <div formArrayName="menuIzquierda">
+            <mat-expansion-panel *ngFor="let item of menuIzquierdaArray.controls; let i = index; trackBy: trackByIndex" class="expansion-item">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">menu</mat-icon>
+                  {{item.get('label')?.value || 'Item de menú'}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              
+              <div [formGroupName]="i" class="form-grid">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Label</mat-label>
+                  <input matInput formControlName="label" placeholder="Acerca de este sitio web">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Ruta</mat-label>
+                  <input matInput formControlName="ruta" placeholder="/about-this-website">
+                </mat-form-field>
+
+                <div class="full-width" style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                  <button mat-raised-button color="warn" type="button" (click)="removeMenuItem(i)">
+                    <mat-icon>delete</mat-icon> Eliminar item
+                  </button>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+          <button mat-raised-button type="button" (click)="addMenuItem()" style="margin-top: 1rem;">
+            <mat-icon>add</mat-icon> Agregar nuevo item al menú
+          </button>
+        </form>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Pestaña: Noticias -->
+    <mat-tab label="Noticias">
+      <mat-card class="tab-card">
+        <form [formGroup]="footerForm">
+          <div formArrayName="noticias">
+            <mat-expansion-panel *ngFor="let noticia of noticiasArray.controls; let i = index; trackBy: trackByIndex" class="expansion-item">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">news</mat-icon>
+                  {{noticia.get('titulo')?.value || 'Nueva noticia'}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              
+              <div [formGroupName]="i" class="form-grid">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Fecha</mat-label>
+                  <input matInput formControlName="fecha" placeholder="2022-02-25">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Título</mat-label>
+                  <input matInput formControlName="titulo" placeholder="Título de la noticia">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>URL (opcional)</mat-label>
+                  <input matInput formControlName="url" placeholder="/noticias/titulo">
+                </mat-form-field>
+
+                <div class="full-width" style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                  <button mat-raised-button color="warn" type="button" (click)="removeNoticia(i)">
+                    <mat-icon>delete</mat-icon> Eliminar noticia
+                  </button>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+          <button mat-raised-button type="button" (click)="addNoticia()" style="margin-top: 1rem;">
+            <mat-icon>add</mat-icon> Agregar nueva noticia
+          </button>
+        </form>
+      </mat-card>
+    </mat-tab>
+
+    <!-- Pestaña: Redes Sociales -->
+    <mat-tab label="Redes Sociales">
+      <mat-card class="tab-card">
+        <form [formGroup]="footerForm">
+          <div formArrayName="redes">
+            <mat-expansion-panel *ngFor="let red of redesArray.controls; let i = index; trackBy: trackByIndex" class="expansion-item">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">share</mat-icon>
+                  {{red.get('nombre')?.value || 'Red social'}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              
+              <div [formGroupName]="i" class="form-grid">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Icono</mat-label>
+                  <input matInput formControlName="icon" placeholder="bi bi-facebook">
+                  <mat-hint>Clase del icono (Bootstrap Icons)</mat-hint>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Nombre</mat-label>
+                  <input matInput formControlName="nombre" placeholder="Facebook">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>URL</mat-label>
+                  <input matInput formControlName="url" placeholder="https://facebook.com/...">
+                </mat-form-field>
+
+                <div class="full-width" style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                  <button mat-raised-button color="warn" type="button" (click)="removeRed(i)">
+                    <mat-icon>delete</mat-icon> Eliminar red social
+                  </button>
+                </div>
+              </div>
+            </mat-expansion-panel>
+          </div>
+          <button mat-raised-button type="button" (click)="addRed()" style="margin-top: 1rem;">
+            <mat-icon>add</mat-icon> Agregar nueva red social
+          </button>
+        </form>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
+
+  <!-- Mensaje de éxito -->
+  <div class="success-message" *ngIf="showSuccessMessage">
+    <mat-icon>check_circle</mat-icon>
+    <span>¡Cambios guardados correctamente en LocalStorage!</span>
+  </div>
+
+  <!-- Acciones principales -->
+  <div class="actions">
+    <button mat-raised-button type="button" (click)="resetForm()">
+      <mat-icon>refresh</mat-icon> Resetear cambios
+    </button>
+    <button mat-raised-button color="primary" (click)="saveChanges()">
+      <mat-icon>save</mat-icon> Guardar todos los cambios
+    </button>
+  </div>
+</div>

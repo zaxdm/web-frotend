@@ -1,18 +1,18 @@
-<section class="contact-container">
+<section class="contact-container" *ngIf="content; else loading">
 
   <!-- HEADER -->
   <div class="contact-header">
-    <span class="subtitle">CONTACT US</span>
-    <h1>SELECT YOUR REGION</h1>
+    <span class="subtitle">{{ content.header.subtitle }}</span>
+    <h1>{{ content.header.title }}</h1>
 
     <!-- REGION SELECT -->
     <div class="region-select-wrapper">
       <mat-form-field appearance="outline" class="region-select">
-        <mat-label>Country or Region</mat-label>
+        <mat-label>{{ content.header.regionLabel }}</mat-label>
         <input
           matInput
           type="text"
-          placeholder="Type to search..."
+          [placeholder]="content.header.regionPlaceholder"
           [formControl]="regionControl"
           [matAutocomplete]="auto"
         />
@@ -33,6 +33,7 @@
         
         <mat-autocomplete
           #auto="matAutocomplete"
+          [displayWith]="displayFn"
           (optionSelected)="selectRegion($event.option.value)"
           class="region-autocomplete"
         >
@@ -48,15 +49,14 @@
       </mat-form-field>
       
       <!-- Help text -->
-      <p class="select-help">Start typing to search for your region</p>
+      <p class="select-help">{{ content.header.selectHelp }}</p>
     </div>
   </div>
 
-  <!-- REGION INFO PANEL (con animación) -->
+  <!-- REGION INFO PANEL -->
   <div 
     class="region-panel" 
     *ngIf="selectedRegion"
-    [@slideInOut]
   >
     <div class="panel-arrow"></div>
     
@@ -71,18 +71,18 @@
           {{ selectedRegion.label | uppercase }} REGIONAL CONTACT
         </span>
 
-        <h3>{{ selectedRegion.contact?.name }}</h3>
+        <h3>{{ selectedRegion.contact.name }}</h3>
 
         <div class="contact-info">
-          <div class="contact-item" *ngFor="let phone of selectedRegion.contact?.phones">
+          <div class="contact-item" *ngFor="let phone of selectedRegion.contact.phones">
             <mat-icon class="contact-icon">phone</mat-icon>
             <span>Mobile: {{ phone }}</span>
           </div>
           
           <div class="contact-item email">
             <mat-icon class="contact-icon">email</mat-icon>
-            <a [href]="'mailto:' + selectedRegion.contact?.email" class="email-link">
-              {{ selectedRegion.contact?.email }}
+            <a [href]="'mailto:' + selectedRegion.contact.email" class="email-link">
+              {{ selectedRegion.contact.email }}
             </a>
           </div>
         </div>
@@ -96,17 +96,17 @@
 
         <p class="country">
           <mat-icon class="contact-icon">flag</mat-icon>
-          {{ selectedRegion.contact?.office?.country }}
+          {{ selectedRegion.contact.office.country }}
         </p>
 
         <div class="office-info">
           <div class="contact-item">
             <mat-icon class="contact-icon">location_on</mat-icon>
-            <span>{{ selectedRegion.contact?.office?.address }}</span>
+            <span>{{ selectedRegion.contact.office.address }}</span>
           </div>
           <div class="contact-item">
             <mat-icon class="contact-icon">phone</mat-icon>
-            <span>Office Phone: {{ selectedRegion.contact?.office?.phone }}</span>
+            <span>Office Phone: {{ selectedRegion.contact.office.phone }}</span>
           </div>
         </div>
       </div>
@@ -117,72 +117,98 @@
   <div class="contact-content">
     <!-- LEFT TEXT -->
     <div class="contact-info">
-      <p>
-        Wherever your operation is located:<br />
-        our tools, services, engineers and specialists are always there for you.
+      <p *ngFor="let text of content.body.leftTexts">
+        {{ text }}
       </p>
 
-      <p>
-        Use the drop down menu to find the closest regional Terelion sales office.
-      </p>
-
-      <p class="bold">
-        Find your contact people in your region!
+      <p class="bold" *ngIf="content.body.boldText">
+        {{ content.body.boldText }}
       </p>
     </div>
 
     <!-- FORM -->
     <form class="contact-form">
       <div class="row">
+        <!-- Primera fila: Nombre y Apellido -->
         <mat-form-field appearance="outline">
-          <mat-label>First name</mat-label>
-          <input matInput placeholder="Enter first name" required />
+          <mat-label>{{ content.body.formFields[0].label }}</mat-label>
+          <input 
+            matInput 
+            [placeholder]="content.body.formFields[0].placeholder" 
+            [required]="content.body.formFields[0].required" 
+          />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Last name</mat-label>
-          <input matInput placeholder="Enter last name" required />
+          <mat-label>{{ content.body.formFields[1].label }}</mat-label>
+          <input 
+            matInput 
+            [placeholder]="content.body.formFields[1].placeholder" 
+            [required]="content.body.formFields[1].required" 
+          />
         </mat-form-field>
       </div>
 
       <div class="row">
+        <!-- Segunda fila: Email y Teléfono -->
         <mat-form-field appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" placeholder="your.email@example.com" required />
+          <mat-label>{{ content.body.formFields[2].label }}</mat-label>
+          <input 
+            matInput 
+            [type]="content.body.formFields[2].type || 'text'"
+            [placeholder]="content.body.formFields[2].placeholder" 
+            [required]="content.body.formFields[2].required" 
+          />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Phone</mat-label>
-          <input matInput placeholder="+1 (123) 456-7890" />
+          <mat-label>{{ content.body.formFields[3].label }}</mat-label>
+          <input 
+            matInput 
+            [placeholder]="content.body.formFields[3].placeholder" 
+            [required]="content.body.formFields[3].required" 
+          />
         </mat-form-field>
       </div>
 
+      <!-- Campo Empresa -->
       <mat-form-field appearance="outline" class="full">
-        <mat-label>Company</mat-label>
-        <input matInput placeholder="Your company name" />
+        <mat-label>{{ content.body.formFields[4].label }}</mat-label>
+        <input 
+          matInput 
+          [placeholder]="content.body.formFields[4].placeholder" 
+          [required]="content.body.formFields[4].required" 
+        />
       </mat-form-field>
 
+      <!-- Campo Comentarios -->
       <mat-form-field appearance="outline" class="full">
-        <mat-label>Comments or questions</mat-label>
+        <mat-label>{{ content.body.formFields[5].label }}</mat-label>
         <textarea
           matInput
-          rows="6"
-          placeholder="Type your message here..."
+          [rows]="content.body.formFields[5].rows || 6"
+          [placeholder]="content.body.formFields[5].placeholder"
+          [required]="content.body.formFields[5].required"
         ></textarea>
       </mat-form-field>
 
       <div class="actions">
         <button mat-flat-button color="primary" class="send-button">
           <mat-icon>send</mat-icon>
-          SEND E-MAIL
+          {{ content.body.sendButtonLabel }}
         </button>
       </div>
 
       <p class="legal">
-        Terelion, LLC will use the personal data you provided above to respond to your question or comment.
-        Terelion, LLC does this to fulfill our legitimate interest in providing you efficient support.
-        Your personal data will be stored as long as necessary to meet the purpose set out above.
+        {{ content.body.legalText }}
       </p>
     </form>
   </div>
 </section>
+
+<ng-template #loading>
+  <div class="loading-container">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Cargando...</p>
+  </div>
+</ng-template>

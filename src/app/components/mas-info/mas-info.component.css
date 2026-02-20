@@ -26,11 +26,29 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  background-image: url('https://www.terelion.com/wp-content/uploads/2021/07/home-page-banner.jpg');
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
+  justify-content: center;
   align-items: center;
+  text-align: center;
+  color: #fff;
+  padding: 0 20px;
+}
+
+.hero-section .hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ================= INFO SECTION ================= */
@@ -40,161 +58,145 @@
   font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #333;
   text-align: center;
-
-  .intro-container {
-    max-width: 900px;
-    margin: 0 auto 100px;
-
-    .main-heading {
-      font-size: 2.3rem;
-      font-weight: 800;
-      margin-bottom: 30px;
-      letter-spacing: -1px;
-    }
-
-    .intro-body {
-      font-size: 1rem;
-      line-height: 1.6;
-      color: #555;
-      text-align: center;
-
-      p {
-        margin-bottom: 20px;
-      }
-    }
-
-    .contact-btn {
-      display: inline-block;
-      margin-top: 20px;
-      text-decoration: none;
-      color: #4a7c59;
-      font-weight: 700;
-      text-transform: uppercase;
-      border-bottom: 2px solid #4a7c59;
-      padding-bottom: 5px;
-      transition: opacity 0.3s;
-
-      &:hover {
-        opacity: 0.7;
-      }
-    }
-  }
-
-  /* ================= TRUST CONTAINER ================= */
-  .trust-container {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    margin: 0 auto;
-
-    &.grid-layout {
-      @media (max-width: 768px) {
-        flex-direction: column;
-      }
-    }
-
-    &.reverse {
-      flex-direction: row-reverse;
-    }
-
-    &.section-lower {
-      padding-top: 100px; /* separa la segunda sección hacia abajo */
-    }
-
-    .section-upper {
-      flex: 1;
-      background-color: rgba(255, 255, 255, 0.15); /* cuadro transparente */
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 490px;
-      margin: 0; /* elimina márgenes fijos */
-      line-height: 1.6;
-      backdrop-filter: blur(5px);
-      margin-left: 100px;
-    }
-
-    .section-lowesr{
-        flex: 1;
-      background-color: rgba(255, 255, 255, 0.15); /* cuadro transparente */
-      padding: 20px;
-      border-radius: 10px;
-      max-width: 498px;
-
-      margin: 0; /* elimina márgenes fijos */
-      line-height: 1.6;
-      backdrop-filter: blur(5px);
-      margin-right: 100px;
-    }
-
-    /* ===== TEXT CONTENT ===== */
-    .text-content {
-    
-      .sub-heading {
-        font-size: 1.4rem;
-        font-weight: 800;
-        margin-bottom: 25px;
-        letter-spacing: -1.5px; /* letras más pegadas */
-        transform: scaleY(1.2); /* letras un poco más altas */
-        text-align: center;
-      }
-
-      p {
-        font-size: 13.5px;
-        line-height: 1.7;
-        margin-bottom: 15px;
-        text-align: justify;
-      }
-    }
-
-    /* ===== IMAGE CONTENT ===== */
-    .image-content1 {
-      flex: 1;
-
-      img {
-        width: 450px;
-        height: auto;
-        display: block;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      }
-    }
-
-    .image-content2 {
-      flex: 1;
-
-      img {
-          margin-left: 140px; /* 🔹 mueve la imagen 100px a la derecha */
-
-        width: 450px;
-        height: auto;
-        display: block;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      }
-    }
-  }
-  /* 🔹 Mover el texto a la izquierda SOLO en la sección reverse */
-/* 🔹 mover el texto a la izquierda SOLO en la sección reverse */
-.trust-container.reverse .text-content.section-lowesr {
-  margin-left: -120px;   /* ajusta el valor si lo quieres más/menos a la izquierda */
-  margin-right: 130px;       /* evita conflictos */
-}
 }
 
+.intro-container {
+  max-width: 900px;
+  margin: 0 auto 100px;
+}
 
+.main-heading {
+  font-size: 2.3rem;
+  font-weight: 800;
+  margin-bottom: 30px;
+  letter-spacing: -1px;
+}
 
+.intro-body {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #555;
+  text-align: center;
+}
 
+.intro-body p {
+  margin-bottom: 20px;
+}
 
+.contact-btn {
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #4a7c59;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-bottom: 2px solid #4a7c59;
+  padding-bottom: 5px;
+  transition: opacity 0.3s;
+}
 
+.contact-btn:hover {
+  opacity: 0.7;
+}
 
+/* ================= TRUST CONTAINER ================= */
+/* ================= TRUST CONTAINER PRO ================= */
+.trust-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 0 40px;
+}
 
+.trust-container.reverse {
+  flex-direction: row-reverse;
+}
 
+.trust-container p{
+  text-align: justify;
+  color: #555;
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
 
+/* TEXTO */
+.text-content{
+  flex: 1;
+  max-width: 520px;
+}
+.text-content p{
+  text-align:left;
+}
+.text-content h3{
+  text-align: center;
+}
+
+.text-content .sub-heading {
+  font-size: 1.4rem;
+  font-weight: 900;
+  margin-bottom: 1px;
+  letter-spacing: -0.5px;
+  text-align: left;
+}
+
+/* IMAGEN */
+.image-content1,
+.image-content2{
+  flex:1;
+  display:flex;
+  justify-content:center;
+}
+
+.image-content1 img,
+.image-content2 img {
+  width: 500px;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+  transition: transform .3s ease;
+  
+}
+
+.image-content1 img:hover,
+.image-content2 img:hover{
+  transform: scale(1.02);
+}
+
+@media (max-width: 900px){
+
+  .trust-container,
+  .trust-container.reverse{
+    flex-direction: column;
+    text-align:center;
+    gap:30px;
+  }
+
+  .text-content .sub-heading{
+    text-align:center;
+  }
+
+  .trust-container p{
+    text-align:center;
+  }
+
+  .image-content1 img,
+  .image-content2 img{
+    width:100%;
+  }
+}
+
+/* ================= BOTTOM BANNER ================= */
 .bottom-banner {
   position: relative;
   overflow: hidden;
-  /* Ajustamos la altura para que se sienta como un banner de cierre */
-  min-height: 113vh; 
+  min-height: 113vh;
   display: flex;
-  align-items: center; /* Centra el contenido verticalmente */
+  align-items: center;
   justify-content: center;
   padding: 80px 0;
 }
@@ -206,8 +208,7 @@
   height: 100%;
   object-fit: cover;
   z-index: 1;
-  /* Añadimos un filtro sutil si la imagen original es muy clara */
-  filter: brightness(0.8); 
+  filter: brightness(0.8);
 }
 
 .bottom-banner .overlay-content {
@@ -218,8 +219,8 @@
 }
 
 .banner-title {
-    color: rgb(15, 15, 15);
-  font-size: 2rem; /* Ajustado al estilo Terelion */
+  color: rgb(15, 15, 15);
+  font-size: 2rem;
   font-weight: 800;
   text-transform: uppercase;
   margin-bottom: 20px;
@@ -232,24 +233,23 @@
   max-width: 700px;
   margin: 0 auto;
 }
+
 .text-center {
   background-color: #f0000000;
   text-align: center;
-
   display: inline-block;
   padding: 10px 20px;
-  border-radius: 12px;  
-  margin: 0 auto;          
-      max-width: 500px;
-
+  border-radius: 12px;
+  margin: 0 auto;
+  max-width: 500px;
 }
 
-
-/* Ajuste para móviles */
+/* ================= MEDIA QUERIES ================= */
 @media (max-width: 768px) {
   .banner-title {
     font-size: 1.8rem;
   }
+  
   .bottom-banner {
     min-height: 400px;
   }
