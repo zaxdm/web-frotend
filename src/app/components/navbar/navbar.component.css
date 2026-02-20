@@ -410,7 +410,7 @@ a{
 /* Página de producto y contacto - texto negro */
 .navbar.nav-product-page .nav-links a,
 .navbar.nav-contact-page .nav-links a {
-  color: #000000;
+  color: #ffffff;
 }
 
 .navbar.nav-product-page .hamburger-btn svg rect,
