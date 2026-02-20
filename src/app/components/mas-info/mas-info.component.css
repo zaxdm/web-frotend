@@ -53,23 +53,17 @@
 
 /* ================= INFO SECTION ================= */
 .info-section {
-  padding: 60px 20px;
-  background-color: #ffffff;
-  font-family: 'Helvetica Neue', Arial, sans-serif;
   color: #333;
-  text-align: center;
 }
 
-.intro-container {
-  max-width: 900px;
-  margin: 0 auto 100px;
-}
+.intro-container{
+  /* Eliminamos el padding de 2000px */
+  padding: 40px 200px; 
+  margin: 0 auto;
 
+}
 .main-heading {
-  font-size: 2.3rem;
-  font-weight: 800;
-  margin-bottom: 30px;
-  letter-spacing: -1px;
+  font-size: 2.2rem;
 }
 
 .intro-body {
@@ -143,52 +137,25 @@
 }
 
 /* IMAGEN */
-.image-content1,
-.image-content2{
-  flex:1;
-  display:flex;
-  justify-content:center;
+.image-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
-.image-content1 img,
-.image-content2 img {
+.image-content img {
   width: 500px;
   max-width: 100%;
   height: auto;
-  display: block;
   border-radius: 4px;
   box-shadow: 0 8px 30px rgba(0,0,0,0.08);
   transition: transform .3s ease;
-  
 }
 
-.image-content1 img:hover,
-.image-content2 img:hover{
+.image-content img:hover {
   transform: scale(1.02);
 }
 
-@media (max-width: 900px){
-
-  .trust-container,
-  .trust-container.reverse{
-    flex-direction: column;
-    text-align:center;
-    gap:30px;
-  }
-
-  .text-content .sub-heading{
-    text-align:center;
-  }
-
-  .trust-container p{
-    text-align:center;
-  }
-
-  .image-content1 img,
-  .image-content2 img{
-    width:100%;
-  }
-}
 
 /* ================= BOTTOM BANNER ================= */
 .bottom-banner {
@@ -235,22 +202,90 @@
 }
 
 .text-center {
-  background-color: #f0000000;
   text-align: center;
   display: inline-block;
   padding: 10px 20px;
   border-radius: 12px;
   margin: 0 auto;
-  max-width: 500px;
+}
+.cen2 {
+  text-align: center;
+  display: block; /* Cambiado de inline-block para que ocupe todo el ancho */
+  padding: 40px 20px; /* Eliminamos el padding de 410px */
+}
+/* ================= RESPONSIVE ================= */
+/* ================= MOBILE STACK ================= */
+@media (max-width: 900px) {
+  /* hero */
+  .display-1 {font-size: 2rem;}
+  .lead {font-size: 0.9rem;}
+
+  /* intro principal */
+  .main-heading{font-size: 1.4rem;}
+  .intro-body p{font-size: 0.8rem;}
+
+  /* sección con imagen */
+  .trust-container .sub-heading {
+    font-size: 1.2rem;  /* antes era 1.4rem */
+    text-align: justify; /* centrado en móviles */
+  }
+  .trust-container p {
+    font-size: 0.9rem;  /* un poco más pequeño que en desktop */
+    line-height: 1.5;   /* más compacto para móviles */
+    text-align: justify;  /* centrado para mejor lectura */
+  }
+
+  /* Banner final */
+  .bottom-banner .banner-title{
+    font-size: 1.6rem;
+  text-transform: none;
+    
+  }
+
+
+  /* BANNER FINAL */
+  .banner-bg  {display: none;}
+  .container-narrow {display: none;}
 }
 
-/* ================= MEDIA QUERIES ================= */
+/* ================= RESPONSIVE FIX ================= */
 @media (max-width: 768px) {
-  .banner-title {
-    font-size: 1.8rem;
+  .info-section {
+    padding: 60px 20px;
+    text-align: center;
+  }
+
+  .cen2 {
+    padding: 0;
+  }
+
+  .bottom-banner {
+    min-height: auto;
+    padding: 60px 20px;
+  }
+
+  /* 👇 Imagen primero */
+  .image-content {
+    order: -1;
+    width: 100%;
+  }  
+
+  /* 👇 Texto después */
+  .text-content {
+    flex-direction: column;
+    order: 1;
+    max-width: 100%;
+    text-align: center;
   }
   
-  .bottom-banner {
-    min-height: 400px;
+
+
+.trust-container, 
+  .trust-container.reverse {
+    flex-direction: column !important; /* Forzamos el orden vertical */
+    gap: 30px;
+    padding: 0 20px;
   }
+
 }
+

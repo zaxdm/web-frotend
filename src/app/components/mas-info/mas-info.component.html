@@ -47,8 +47,8 @@
 
       <!-- IMAGEN -->
       <div 
-        *ngIf="section.imagen"
-        [ngClass]="i % 2 === 0 ? 'image-content1' : 'image-content2'">
+  *ngIf="section.imagen"
+  class="image-content">
         
         <img [src]="section.imagen" [alt]="section.titulo" />
       </div>
@@ -63,7 +63,7 @@
   <section class="bottom-banner" *ngIf="bottomBanner">
     <img [src]="bottomBanner.imagen" class="banner-bg show-for-large" />
 
-    <div class="overlay-content text-center">
+    <div class="overlay-content  cen2">
       <h2 class="banner-title">{{ bottomBanner.titulo }}</h2>
 
       <div class="container-narrow">
