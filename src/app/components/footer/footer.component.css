@@ -231,13 +231,13 @@
 @media (max-width: 900px) {
 
   .footer{
-    min-height:650px;
+    min-height:750px;
   }
 
     /* Ajuste para la imagen de fondo en móvil */
   .footer-bg {
     object-position: center; /* Mantiene el centro en móvil */
-  height: 650px;
+  height: 750px;
   }
   
   .footer__content {
@@ -247,19 +247,18 @@
   }
 
   .footer-news {
+    padding: 20px 40px 30px;
     position: absolute;   /* lo monta encima */
     left: 0;
     width: 100%;
-  transform: translateY(130px);
-
-  }
+    transform: translateY(130px);
+  } 
 
   .carrusel-mobile {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     gap: 12px;
-
   }
 
   .news-indicators {
@@ -306,12 +305,12 @@
 
   .footer__contact {
     margin-bottom: 25px;
-  transform: translateY(-20px);
+  transform: translateY(-5px);
 
   }
 
   .footer__logo {
-  transform: translateY(200px);
+  transform: translateY(240px);
 
   }
 
@@ -339,7 +338,8 @@
     justify-content: center;
   }
   .left-side{
-  transform: translateY(410px);
+  padding: 0 0;
+  transform: translateY(480px);
   color: #ffffff7a;
 
   }
@@ -347,7 +347,7 @@
   .right-side {
     justify-content: center;
     text-align: center;
-    transform: translateY(130px);
+    transform: translateY(200px);
   }
 
   .social-iconos {
