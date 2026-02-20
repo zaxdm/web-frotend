@@ -10,12 +10,13 @@
 }
 
 .product-container {
-  margin: 150px auto;
+  padding: 100px 120px 100px; /* arriba - lados - abajo */
   margin-bottom: 100px;
-    display: flex;
-    max-width: 1200px;
-    width: 100%;
-    gap: 40px;
+  display: flex;
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .product-info {
@@ -24,6 +25,11 @@
     flex-direction: column;
 }
 
+.info-product{
+  margin-right: 60px;
+}
+
+/* ENLACES PRODUCTOS / BROCAS DE RODILLO CÓNICO */
 .breadcrumb {
     color: #b0b0b0;
     font-size: 0.8rem;
@@ -32,11 +38,12 @@
 }
 
 .product-title {
-    font-size: 3.5rem;
+    font-size: 3rem;
     font-weight: 900;
     line-height: 0.9;
     color: #212121;
     margin-bottom: 40px;
+    text-transform: uppercase;
 }
 
 .product-title span {
@@ -69,7 +76,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px;
 }
 
 .main-image img {
@@ -114,7 +120,8 @@
 .features-section {
   background-color: #388e3c;
   color: white;
-  padding: 60px;
+  padding: 100px 145px 100px; /* arriba - lados - abajo */
+
 }
 
 .features-grid-layout {
@@ -178,36 +185,69 @@
   font-weight: bold;
 }
 
+
+
+/* -----------------
+-----------------
+---RESPONSIVE---
+----------------
+---------------- */
+
 @media (max-width: 900px) {
-  .product-container,
-  .features-grid-layout {
-    flex-direction: column;
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .breadcrumb span{
+    font-size: 8px;
   }
-  
   .features-list {
     grid-template-columns: 1fr;
   }
 
-  .product-title {
-    font-size: 2.5rem;
-  }
-  
-  .page-container {
-    margin-top: 90px;
-  }
-  
-  .features-section {
-    padding: 40px 20px;
+  .info-product h1 {
+    font-size: 30px;
   }
 }
 
-@media (max-width: 768px) {
+/* ================= RESPONSIVE STACK ================= */
+
+@media (max-width: 900px) {
+
+  /* PRODUCTO: uno debajo del otro */
   .product-container {
     flex-direction: column;
+    padding: 60px 20px;
+    gap: 40px;
   }
-  .product-title {
-    font-size: 2.5rem;
+
+  .info-product {
+    margin-right: 0;
   }
+
+  .product-gallery {
+    width: 100%;
+    min-height: 400px;
+        flex-direction: column;
+    align-items: center;
+  }
+
+  /* Thumbnails abajo en móvil */
+  .thumbnails {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  /* FEATURES: columna */
+  .features-section {
+    padding: 60px 20px;
+  }
+
+  .features-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .features-list {
+    grid-template-columns: 1fr;
+  }
+
 }
