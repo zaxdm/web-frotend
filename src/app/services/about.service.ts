@@ -58,11 +58,11 @@ export class AboutService {
       paragraphs: Array.isArray(saved.paragraphs) && saved.paragraphs.length ? saved.paragraphs : defaults.paragraphs,
       paragraphs2: Array.isArray(saved.paragraphs2) ? saved.paragraphs2 : defaults.paragraphs2
     };
-  }
+  } 
 
   private getDefaultData(): AboutSection {
     return {
-      heroTitle: 'ACERCA DE NOSOTROS',
+      heroTitle: 'SOBRE NOSOTROS',
       subtitle: 'Nuestra misión, valores y equipo',
       paragraphs: ['Terelion ofrece soluciones que impulsan sus objetivos.'],
       paragraphs2: []
