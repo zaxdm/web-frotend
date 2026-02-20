@@ -7,7 +7,7 @@
   --nav-height: 90px;
   font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
-
+ 
 /* ================= NAVBAR PRINCIPAL ================= */
 .navbar {
   position: absolute;
@@ -214,13 +214,11 @@
 }
 
 .search-input-field {
-  flex: 1;
   background: transparent;
   border: none;
   border-bottom: 2px solid white;
   color: white;
-  font-size: 18px;
-  padding: 10px 5px;
+  font-size: 15px;
   outline: none;
 }
 
