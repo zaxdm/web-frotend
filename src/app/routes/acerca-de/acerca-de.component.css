@@ -60,4 +60,8 @@
 .dos h1{
   font-size: 18px;
 }
+.about-hero {
+    min-height: 50vh;   /* 👈 controla qué tan largo es */
+
+}
 }
