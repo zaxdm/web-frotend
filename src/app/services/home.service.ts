@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { HomeData } from '../models/home.model';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({ providedIn: 'root' })
 export class HomeService {
@@ -27,13 +29,28 @@ export class HomeService {
     }
   };
 
+  constructor(private http: HttpClient) {}
+
+  async loadFromBackend(): Promise<void> {
+    try {
+      const data = await this.http.get<HomeData>(`${API_BASE_URL}/home`).toPromise();
+      if (data) {
+        this.homeData = data;
+        localStorage.setItem('homeData', JSON.stringify(data));
+      }
+    } catch {}
+  }
+
   getHome(): HomeData {
     const saved = localStorage.getItem('homeData');
     return saved ? JSON.parse(saved) : this.homeData;
   }
 
-  updateHome(data: HomeData) {
+  async updateHome(data: HomeData) {
     this.homeData = data;
     localStorage.setItem('homeData', JSON.stringify(data));
+    try {
+      await this.http.put<HomeData>(`${API_BASE_URL}/home`, data).toPromise();
+    } catch {}
   }
 }

@@ -21,7 +21,8 @@ export class HomeEditorComponent implements OnInit {
 
   constructor(private homeService: HomeService) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+    await this.homeService.loadFromBackend();
     this.resetForm();
   }
 
