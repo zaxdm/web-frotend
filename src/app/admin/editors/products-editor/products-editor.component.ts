@@ -19,6 +19,7 @@ export class ProductsEditorComponent implements OnInit {
 
   product!: HeroProduct;
   originalProduct!: HeroProduct; // Para guardar el estado inicial
+  downloadsFiles: (File | null)[] = [];
 
   constructor(private productService: ProductService) {}
 
@@ -33,6 +34,7 @@ export class ProductsEditorComponent implements OnInit {
     if (!this.product.features) this.product.features = [];
     if (!this.product.descriptions) this.product.descriptions = [];
     if (!this.product.thumbnails) this.product.thumbnails = [];
+    this.downloadsFiles = Array(this.product.downloads.length).fill(null);
   }   
 
   showSuccessMessage = false;
@@ -42,7 +44,11 @@ export class ProductsEditorComponent implements OnInit {
   }
 
   save() {
-    this.productService.updateProduct(this.product);
+    if (!this.downloadsFiles || this.downloadsFiles.every(f => f == null)) {
+      this.productService.updateProduct(this.product);
+    } else {
+      this.productService.updateProductWithFiles(this.product, this.downloadsFiles);
+    }
     this.showSuccessMessage = true;
     setTimeout(() => this.showSuccessMessage = false, 3000);
   }
@@ -50,6 +56,7 @@ export class ProductsEditorComponent implements OnInit {
   resetForm() {
     // Restaurar el producto al estado original
     this.product = JSON.parse(JSON.stringify(this.originalProduct));
+    this.downloadsFiles = Array(this.product.downloads.length).fill(null);
   }
 
   // --- Descripciones ---
@@ -84,9 +91,32 @@ export class ProductsEditorComponent implements OnInit {
   addDownload() {
     this.product.downloads = this.product.downloads || [];
     this.product.downloads.push({ title: '', description: '', link: '' });
+    this.downloadsFiles.push(null);
   }
 
   removeDownload(index: number) {
     this.product.downloads?.splice(index, 1);
+    this.downloadsFiles.splice(index, 1);
+  }
+
+  onFileSelected(index: number, event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files && input.files[0] ? input.files[0] : null;
+    this.downloadsFiles[index] = file;
+  }
+
+  onDropFile(index: number, event: DragEvent) {
+    event.preventDefault();
+    const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0] ? event.dataTransfer.files[0] : null;
+    this.downloadsFiles[index] = file;
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+  }
+
+  fileName(index: number): string {
+    const f = this.downloadsFiles[index];
+    return f ? f.name : '';
   }
 }

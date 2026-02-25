@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Region, ContactPageContent } from '../models/contact.model';
+import { API_BASE_URL } from '../api.config';
+
+
 
 @Injectable({ providedIn: 'root' })
 export class ContactService {
@@ -75,6 +79,10 @@ export class ContactService {
   public content$ = new BehaviorSubject<ContactPageContent>(this._content);
   public regions$ = new BehaviorSubject<Region[]>(this._regions);
 
+  constructor(private http: HttpClient) {
+    this.loadFromBackend();
+  }
+
   // =============================
   // UPDATE CONTENT
   // =============================
@@ -82,14 +90,14 @@ export class ContactService {
     this._content = JSON.parse(JSON.stringify(content));
     localStorage.setItem(this.STORAGE_CONTENT, JSON.stringify(this._content));
     this.content$.next(this._content);
-    console.log('💾 Content guardado en localStorage');
+    this.syncBackend().catch(() => {});
   }
 
   updateRegions(regions: Region[]) {
     this._regions = JSON.parse(JSON.stringify(regions));
     localStorage.setItem(this.STORAGE_REGIONS, JSON.stringify(this._regions));
     this.regions$.next(this._regions);
-    console.log('💾 Regiones guardadas en localStorage');
+    this.syncBackend().catch(() => {});
   }
 
   // RESET TOTAL
@@ -100,5 +108,35 @@ export class ContactService {
     this._regions = this.defaultRegions;
     this.content$.next(this._content);
     this.regions$.next(this._regions);
+  }
+
+  // =============================
+  // BACKEND SYNC
+  // =============================
+  private async loadFromBackend(): Promise<void> {
+    try {
+      const res = await this.http.get<any>(`${API_BASE_URL}/contact-page`).toPromise();
+      const content = res?.content as ContactPageContent | undefined;
+      const regions = res?.regions as Region[] | undefined;
+      if (content) {
+        this._content = content;
+        localStorage.setItem(this.STORAGE_CONTENT, JSON.stringify(this._content));
+        this.content$.next(this._content);
+      }
+      if (regions) {
+        this._regions = regions;
+        localStorage.setItem(this.STORAGE_REGIONS, JSON.stringify(this._regions));
+        this.regions$.next(this._regions);
+      }
+    } catch {}
+  }
+
+  private async syncBackend(): Promise<void> {
+    try {
+      await this.http.put(`${API_BASE_URL}/contact-page`, {
+        regions: this._regions,
+        content: this._content
+      }).toPromise();
+    } catch {}
   }
 }

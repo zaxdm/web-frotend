@@ -51,7 +51,13 @@
       <div *ngFor="let d of product.downloads || []; let i = index" class="item-row">
         <input placeholder="Título" [(ngModel)]="product.downloads![i].title" matInput>
         <input placeholder="Descripción" [(ngModel)]="product.downloads![i].description" matInput>
-        <input placeholder="Link" [(ngModel)]="product.downloads![i].link" matInput>
+        <div class="upload-row">
+          <input type="file" accept="application/pdf" (change)="onFileSelected(i, $event)">
+          <div class="dropzone" (dragover)="onDragOver($event)" (drop)="onDropFile(i, $event)">
+            Arrastra aquí el PDF
+          </div>
+          <div class="filename">{{ fileName(i) }}</div>
+        </div>
         <button mat-button color="warn" (click)="removeDownload(i)">❌</button>
       </div>
       <button mat-button (click)="addDownload()">+ Agregar descargable</button>
@@ -65,7 +71,7 @@
         <span>↺</span>
         Cancelar
       </button>
-      <button type="submit" class="btn btn-primary">
+      <button type="button" class="btn btn-primary" (click)="save()">
         <span>💾</span>
         Guardar cambios
       </button>
@@ -74,5 +80,5 @@
 </div>
   <div class="notification" *ngIf="showSuccessMessage">
     <span>✅</span>
-    <span>Navbar actualizado correctamente</span>
+    <span>Producto actualizado correctamente</span>
   </div>
