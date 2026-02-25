@@ -1,5 +1,9 @@
 <div class="editor-container">
-  <h1>Editor de Footer</h1>
+  <h1>
+    <span></span>
+    Editor de Footer
+    <span class="header-badge">Footer</span>
+  </h1>
   
   <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
     <!-- Pestaña: Contacto y Logo -->
@@ -199,19 +203,16 @@
     </mat-tab>
   </mat-tab-group>
 
-  <!-- Mensaje de éxito -->
-  <div class="success-message" *ngIf="showSuccessMessage">
-    <mat-icon>check_circle</mat-icon>
-    <span>¡Cambios guardados correctamente en LocalStorage!</span>
+    <!-- BOTONES ACCIONES -->
+  <div class="actions">
+    <button mat-raised-button color="warn" (click)="resetForm()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="saveChanges()">
+      <mat-icon>save</mat-icon> Guardar cambios
+    </button>
   </div>
 
-  <!-- Acciones principales -->
-  <div class="actions">
-    <button mat-raised-button type="button" (click)="resetForm()">
-      <mat-icon>refresh</mat-icon> Resetear cambios
-    </button>
-    <button mat-raised-button color="primary" (click)="saveChanges()">
-      <mat-icon>save</mat-icon> Guardar todos los cambios
-    </button>
-  </div>
-</div>
+  @if (showSuccessMessage) {
+    <div class="notification">
+      ✅ Footer actualizado correctamente
+    </div>
+  }

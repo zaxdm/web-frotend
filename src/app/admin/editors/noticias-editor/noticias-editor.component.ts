@@ -1,61 +1,89 @@
+// noticias-editor.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NoticiasService } from '../../../services/noticias.service'; // Ajusta la ruta según tu carpeta
+
+// Angular Material
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { NoticiasService } from '../../../services/noticias.service';
 import { Noticia } from '../../../models/noticias.model';
 
 @Component({
   selector: 'app-noticias-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatTabsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTooltipModule
+  ],
   templateUrl: './noticias-editor.component.html',
   styleUrls: ['./noticias-editor.component.css']
 })
 export class NoticiasEditorComponent implements OnInit {
   noticia: Noticia = {
-  id: 0,
-  categoria: '',
-  titulo: '',
-  fechaPublicacion: '',
-  parrafos: [],
-  contactoNombre: '',
-  contactoEmail: '',
-  firmaNombre: '',
-  firmaCargo: ''
-};
+    id: 0,
+    categoria: '',
+    titulo: '',
+    fechaPublicacion: '',
+    parrafos: [],
+    contactoNombre: '',
+    contactoEmail: '',
+    firmaNombre: '',
+    firmaCargo: ''
+  };
 
-  tabActiva: string = 'header'; // Pestaña inicial
+  noticiaOriginal!: Noticia;
+  showSuccessMessage = false;
 
   constructor(private noticiasService: NoticiasService) { }
 
   ngOnInit() {
-    // Nos suscribimos a los datos para que el editor siempre tenga lo último
+    this.loadData();
+  }
+
+  loadData(): void {
     this.noticiasService.getNoticia().subscribe(data => {
       this.noticia = { ...data };
+      this.noticiaOriginal = JSON.parse(JSON.stringify(data));
     });
   }
 
-  setTab(tabName: string) {
-    this.tabActiva = tabName;
+  trackByIndex(index: number): number {
+    return index;
   }
 
-  // Método para guardar los cambios en el servicio
-  guardarCambios() {
-    this.noticiasService.updateNoticia(this.noticia);
-    alert('¡Noticia actualizada correctamente!');
-  }
-
-  // Permite añadir nuevos párrafos dinámicamente
+  // ================= PÁRRAFOS =================
   agregarParrafo() {
     this.noticia.parrafos.push('');
   }
 
-  // Eliminar un párrafo específico
   eliminarParrafo(index: number) {
     this.noticia.parrafos.splice(index, 1);
   }
 
-  trackByFn(index: any) {
-    return index;
+  // ================= GUARDAR =================
+  guardarCambios() {
+    this.noticiasService.updateNoticia(this.noticia);
+    this.showSuccessMessage = true;
+    setTimeout(() => this.showSuccessMessage = false, 3000);
+    this.noticiaOriginal = JSON.parse(JSON.stringify(this.noticia));
+  }
+
+  // ================= RESET =================
+  resetForm() {
+    this.noticia = JSON.parse(JSON.stringify(this.noticiaOriginal));
   }
 }

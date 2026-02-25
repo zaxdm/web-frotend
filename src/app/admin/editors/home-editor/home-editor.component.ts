@@ -2,18 +2,31 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HomeService } from '../../../services/home.service';
-import { HomeData, Card, AboutSection, HeroSection } from '../../../models/home.model';
+import { HomeData } from '../../../models/home.model';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-home-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule,     CommonModule,
+  imports: [
+    CommonModule,
     FormsModule,
-    MatTabsModule, MatIconModule, MatCardModule ],
+    MatTabsModule,
+    MatIconModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatSelectModule
+  ],
   templateUrl: './home-editor.component.html',
   styleUrls: ['./home-editor.component.css']
 })
@@ -28,8 +41,8 @@ export class HomeEditorComponent implements OnInit {
     this.resetForm();
   }
 
-    trackByIndex(index: number, item: any): number {
-    return index; // Usa el índice como identificador único
+  trackByIndex(index: number, item: any): number {
+    return index;
   }
 
   saveChanges() {
@@ -39,7 +52,10 @@ export class HomeEditorComponent implements OnInit {
   }
 
   resetForm() {
-    this.homeData = JSON.parse(JSON.stringify(this.homeService.getHome()));
+    const data = this.homeService.getHome();
+    if (data) {
+      this.homeData = JSON.parse(JSON.stringify(data));
+    }
   }
 
   addHeroLine() {
@@ -51,11 +67,11 @@ export class HomeEditorComponent implements OnInit {
   }
 
   addCard() {
-    this.homeData.cards.push({ 
-      image: '', 
-      title: '', 
-      buttonText: '', 
-      type: 'history' 
+    this.homeData.cards.push({
+      image: '',
+      title: '',
+      buttonText: '',
+      type: 'history'
     });
   }
 

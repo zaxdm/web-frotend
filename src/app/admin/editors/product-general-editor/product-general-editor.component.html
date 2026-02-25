@@ -1,101 +1,173 @@
+<!-- product-general-editor.component.html -->
 <div class="editor-container" *ngIf="form">
-  <header class="editor-header">
-    <div class="header-content">
-      <h1>Editor de Producto General</h1>
-      <p>Gestiona el encabezado, la lista de productos y la sección de información inferior.</p>
-    </div>
-    <div class="action-buttons">
-      <button class="btn btn-secondary" (click)="resetForm()" type="button">
-        <span>🔄</span> Revertir
-      </button>
-      <button class="btn btn-primary" (click)="saveChanges()" type="button">
-        <span>💾</span> Guardar Cambios
-      </button>
-    </div>
-  </header>
+  <h1>
+    <span></span>
+    Editor de Producto General
+    <span class="header-badge">Productos</span>
+  </h1>
 
   <form [formGroup]="form">
     <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
-    <mat-tab label="Header">
-      <mat-card class="tab-card">
-        <div class="section-content" formGroupName="headerData">
-          <div class="form-group">
-            <label>Título Principal</label>
-            <input type="text" formControlName="titulo" placeholder="Ej: BROCAS TRICÓNICAS" />
-          </div>
-          <div class="form-group">
-            <label>Descripción</label>
-            <textarea formControlName="descripcion" rows="3" placeholder="Descripción del encabezado"></textarea>
-          </div>
-          <div class="form-group">
-            <label>Breadcrumbs (Migas de Pan)</label>
-            <div class="item-list mt-2" formArrayName="breadcrumbs">
-              <div *ngFor="let _ of breadcrumbsArray.controls; let i = index; trackBy: trackByIndex" class="dynamic-input">
-                <input type="text" [formControlName]="i" placeholder="Ej: PRODUCTOS" />
-                <button class="btn-delete" type="button" (click)="removeBreadcrumb(i)">🗑️</button>
-              </div>
-              <button class="btn-add" type="button" (click)="addBreadcrumb()">+ Añadir Miga</button>
-            </div>
-          </div>
-        </div>
-      </mat-card>
-    </mat-tab>
+      <!-- ================= HEADER ================= -->
+      <mat-tab label="Header">
+        <mat-card class="tab-card">
+          <div class="form-grid" formGroupName="headerData">
+            <div class="full-width section-group">
+              <h3>
+                <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">header</mat-icon>
+                Encabezado de la Página
+              </h3>
+              
+              <div class="form-grid" style="margin-top: 1rem;">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Título Principal</mat-label>
+                  <input matInput formControlName="titulo" placeholder="Ej: BROCAS TRICÓNICAS">
+                </mat-form-field>
 
-    <mat-tab label="Sección de Información">
-      <mat-card class="tab-card">
-        <div class="section-content" formGroupName="infoSection">
-          <div class="form-group">
-            <label>Texto Informativo</label>
-            <textarea formControlName="texto" rows="4" placeholder="Texto de la sección inferior"></textarea>
-          </div>
-          <div class="grid-2" formGroupName="boton">
-            <div class="form-group">
-              <label>Etiqueta Botón</label>
-              <input type="text" formControlName="label" placeholder="Ej: CONTÁCTANOS" />
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Descripción</mat-label>
+                  <textarea matInput formControlName="descripcion" rows="3" placeholder="Descripción del encabezado"></textarea>
+                </mat-form-field>
+              </div>
             </div>
-            <div class="form-group">
-              <label>Link Botón</label>
-              <input type="text" formControlName="link" placeholder="Ej: #" />
-            </div>
-          </div>
-        </div>
-      </mat-card>
-    </mat-tab>
 
-    <mat-tab label="Productos">
-      <mat-card class="tab-card">
-        <div class="section-header">
-          <h3>Lista de Productos</h3>
-          <button class="btn-add" type="button" (click)="addProduct()">+ Añadir Producto</button>
-        </div>
-        <div class="section-content" formArrayName="products">
-          <div class="products-admin-grid" >
-            <div *ngFor="let _ of productsArray.controls; let i = index; trackBy: trackByIndex" class="product-admin-card" [formGroupName]="i">
-              <div class="card-admin-header">
-                <span>Producto #{{ i + 1 }}</span>
-                <button class="btn-delete" type="button" (click)="removeProduct(i)">🗑️</button>
-              </div>
-              <div class="form-group">
-                <label>Título</label>
-                <input type="text" formControlName="title" placeholder="Nombre del producto" />
-              </div>
-              <div class="form-group">
-                <label>Imagen (URL/Ruta)</label>
-                <input type="text" formControlName="image" placeholder="Ej: assets/products/bit1.png" />
-              </div>
-              <div class="form-group">
-                <label>Link</label>
-                <input type="text" formControlName="link" placeholder="Ruta de destino" />
+            <!-- Breadcrumbs -->
+            <div class="full-width section-group" style="margin-top: 2rem;">
+              <h4 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <mat-icon style="color: #3b82f6;">link</mat-icon>
+                Breadcrumbs (Migas de Pan)
+              </h4>
+              
+              <div formArrayName="breadcrumbs">
+                <div *ngFor="let _ of breadcrumbsArray.controls; let i = index; trackBy: trackByIndex" style="margin-bottom: 0.5rem;">
+                  <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <mat-form-field appearance="outline" style="flex: 1;">
+                      <mat-label>Miga #{{i + 1}}</mat-label>
+                      <input matInput [formControlName]="i" placeholder="Ej: PRODUCTOS">
+                    </mat-form-field>
+                    <button mat-icon-button color="warn" type="button" (click)="removeBreadcrumb(i)" matTooltip="Eliminar miga">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                
+                <button mat-raised-button type="button" (click)="addBreadcrumb()" style="margin-top: 0.5rem;">
+                  <mat-icon>add</mat-icon> Añadir miga de pan
+                </button>
               </div>
             </div>
           </div>
-        </div>
-      </mat-card>
-    </mat-tab>
+        </mat-card>
+      </mat-tab>
+
+      <!-- ================= SECCIÓN DE INFORMACIÓN ================= -->
+      <mat-tab label="Sección de Información">
+        <mat-card class="tab-card">
+          <div class="form-grid" formGroupName="infoSection">
+            <div class="full-width section-group">
+              <h3>
+                <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">info</mat-icon>
+                Sección Informativa
+              </h3>
+              
+              <div class="form-grid" style="margin-top: 1rem;">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Texto Informativo</mat-label>
+                  <textarea matInput formControlName="texto" rows="4" placeholder="Texto de la sección inferior"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <!-- Botón -->
+            <div class="full-width section-group" style="margin-top: 2rem;" formGroupName="boton">
+              <h4 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <mat-icon style="color: #3b82f6;">smart_button</mat-icon>
+                Botón de Acción
+              </h4>
+              
+              <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                <mat-form-field appearance="outline">
+                  <mat-label>Etiqueta del Botón</mat-label>
+                  <input matInput formControlName="label" placeholder="Ej: CONTÁCTANOS">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Link del Botón</mat-label>
+                  <input matInput formControlName="link" placeholder="Ej: /contacto">
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </mat-tab>
+
+      <!-- ================= PRODUCTOS ================= -->
+      <mat-tab label="Productos">
+        <mat-card class="tab-card">
+          <div class="form-grid">
+            <div class="full-width section-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h3 style="display: flex; align-items: center; gap: 0.5rem; margin: 0;">
+                  <mat-icon style="color: #3b82f6;">inventory_2</mat-icon>
+                  Lista de Productos
+                </h3>
+                <button mat-raised-button type="button" (click)="addProduct()">
+                  <mat-icon>add</mat-icon> Añadir Producto
+                </button>
+              </div>
+              
+              <div formArrayName="products" class="products-grid">
+                <mat-expansion-panel *ngFor="let _ of productsArray.controls; let i = index; trackBy: trackByIndex" class="expansion-item">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">prod</mat-icon>
+                      {{ getProductTitle(i) || 'Producto #' + (i + 1) }}
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <div [formGroupName]="i" class="form-grid">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Título del Producto</mat-label>
+                      <input matInput formControlName="title" placeholder="Nombre del producto">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Imagen (URL/Ruta)</mat-label>
+                      <input matInput formControlName="image" placeholder="assets/products/bit1.png">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Link del Producto</mat-label>
+                      <input matInput formControlName="link" placeholder="/productos/broca">
+                    </mat-form-field>
+
+                    <div class="full-width" style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+                      <button mat-raised-button color="warn" type="button" (click)="removeProduct(i)">
+                        <mat-icon>delete</mat-icon> Eliminar producto
+                      </button>
+                    </div>
+                  </div>
+                </mat-expansion-panel>
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </mat-tab>
     </mat-tab-group>
   </form>
 
-  <div class="success-toast" [class.show]="showSuccessMessage">
-    <span>✅</span> ¡Cambios guardados correctamente!
+  @if (showSuccessMessage) {
+    <div class="notification">
+      ✅ Producto general actualizado correctamente
+    </div>
+  }
+
+  <!-- Acciones principales -->
+    <!-- BOTONES ACCIONES -->
+  <div class="actions">
+    <button mat-raised-button color="warn" (click)="resetForm()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="saveChanges()">
+      <mat-icon>save</mat-icon> Guardar cambios
+    </button>
   </div>
 </div>

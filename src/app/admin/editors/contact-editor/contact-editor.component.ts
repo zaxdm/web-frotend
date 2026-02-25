@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, FormArray, AbstractControl } from '@angular/forms';
 import { ContactService } from '../../../services/contact.service';
 import { Region, ContactPageContent } from '../../../models/contact.model';
 
@@ -77,6 +77,12 @@ export class ContactEditorComponent implements OnInit {
       }),
       regions: this.fb.array([])
     });
+  }
+
+    getTextPreview(control: AbstractControl): string {
+    const value = control?.value;
+    if (!value) return '';
+    return value.length > 30 ? value.substring(0, 30) + '...' : value;
   }
 
   ngOnInit() {

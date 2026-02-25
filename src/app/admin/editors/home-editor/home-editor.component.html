@@ -5,156 +5,136 @@
     <span></span>
     Editor Home
     <span class="header-badge">Página Principal</span>
-  </h1> 
+  </h1>
 
-  <form (ngSubmit)="saveChanges()">
+  <!-- TABS -->
+  <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
 
-    <!-- ========================= -->
-    <!-- TABS -->
-    <!-- ========================= -->
-    <mat-tab-group animationDuration="300ms" dynamicHeight>
+    <!-- HERO -->
+    <mat-tab label="Hero">
+      <mat-card class="tab-card">
+        <h3>Hero sección</h3>
 
-      <!-- ========================= -->
-      <!-- TAB HERO -->
-      <!-- ========================= -->
-      <mat-tab label="🎯 Hero">
-        <div class="tab-content">
+        <div *ngFor="let line of homeData.hero.titleLines; let i=index; trackBy: trackByIndex" class="flex-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Línea hero {{i+1}}</mat-label>
+            <input matInput [(ngModel)]="homeData.hero.titleLines[i]" [name]="'heroLine'+i">
+          </mat-form-field>
+          <button mat-icon-button color="warn" (click)="removeHeroLine(i)" matTooltip="Eliminar línea">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
 
-          <!-- TITULO -->
-          <div class="form-group">
-            <label>Líneas del título</label>
+        <button mat-raised-button color="primary" (click)="addHeroLine()">
+          <mat-icon>add</mat-icon> Agregar línea
+        </button>
 
-            <div *ngFor="let line of homeData.hero.titleLines; let i=index; trackBy: trackByIndex" class="flex-row">
-              <input
-                class="form-control"
-                [(ngModel)]="homeData.hero.titleLines[i]"
-                [name]="'heroLine'+i"
-                placeholder="Línea hero"
-              >
-              <button type="button" class="btn-remove" (click)="removeHeroLine(i)">✕</button>
-            </div>
+        <div class="form-grid" style="margin-top:1rem;">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Texto botón</mat-label>
+            <input matInput [(ngModel)]="homeData.hero.buttonText" name="heroButtonText">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Link botón</mat-label>
+            <input matInput [(ngModel)]="homeData.hero.buttonLink" name="heroButtonLink">
+          </mat-form-field>
+        </div>
+      </mat-card>
+    </mat-tab>
 
-            <button type="button" class="btn-add" (click)="addHeroLine()">➕ Agregar línea</button>
-          </div>
+    <!-- ABOUT -->
+    <mat-tab label="About">
+      <mat-card class="tab-card">
+        <h3>About sección</h3>
 
-          <!-- BOTON -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Título</mat-label>
+          <input matInput [(ngModel)]="homeData.about.title" name="aboutTitle">
+        </mat-form-field>
+
+        <div *ngFor="let p of homeData.about.paragraphs; let i=index; trackBy: trackByIndex" class="flex-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Párrafo {{i+1}}</mat-label>
+            <textarea matInput [(ngModel)]="homeData.about.paragraphs[i]" rows="3" [name]="'aboutPara'+i"></textarea>
+          </mat-form-field>
+          <button mat-icon-button color="warn" (click)="removeAboutParagraph(i)" matTooltip="Eliminar párrafo">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="addAboutParagraph()">
+          <mat-icon>add</mat-icon> Agregar párrafo
+        </button>
+
+        <div class="form-grid" style="margin-top:1rem;">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Texto link</mat-label>
+            <input matInput [(ngModel)]="homeData.about.linkText" name="aboutLinkText">
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>URL link</mat-label>
+            <input matInput [(ngModel)]="homeData.about.linkUrl" name="aboutLinkUrl">
+          </mat-form-field>
+        </div>
+      </mat-card>
+    </mat-tab>
+
+    <!-- CARDS -->
+    <mat-tab label="Cards">
+      <mat-card class="tab-card">
+        <h3>Cards</h3>
+
+        <div *ngFor="let card of homeData.cards; let i=index; trackBy: trackByIndex" class="card-editor">
           <div class="form-grid">
-            <div class="form-group">
-              <label>Texto botón</label>
-              <input class="form-control" [(ngModel)]="homeData.hero.buttonText" name="heroButtonText">
-            </div>
-
-            <div class="form-group">
-              <label>Link botón</label>
-              <input class="form-control" [(ngModel)]="homeData.hero.buttonLink" name="heroButtonLink">
-            </div>
-          </div>
-
-        </div>
-      </mat-tab>
-
-      <!-- ========================= -->
-      <!-- TAB ABOUT -->
-      <!-- ========================= -->
-      <mat-tab label="ℹ️ About">
-        <div class="tab-content">
-
-          <div class="form-group">
-            <label>Título</label>
-            <input class="form-control" [(ngModel)]="homeData.about.title" name="aboutTitle">
-          </div>
-
-          <div class="form-group">
-            <label>Párrafos</label>
-
-            <div *ngFor="let p of homeData.about.paragraphs; let i=index; trackBy: trackByIndex">
-              <textarea
-                class="form-control"
-                [(ngModel)]="homeData.about.paragraphs[i]"
-                [name]="'aboutPara'+i"
-                rows="3">
-              </textarea>
-
-              <button type="button" class="btn-remove" (click)="removeAboutParagraph(i)">✕</button>
-            </div>
-
-            <button type="button" class="btn-add" (click)="addAboutParagraph()">➕ Agregar párrafo</button>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Imagen</mat-label>
+              <input matInput [(ngModel)]="card.image" [name]="'img'+i">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Título</mat-label>
+              <input matInput [(ngModel)]="card.title" [name]="'title'+i">
+            </mat-form-field>
           </div>
 
           <div class="form-grid">
-            <div class="form-group">
-              <label>Texto link</label>
-              <input class="form-control" [(ngModel)]="homeData.about.linkText" name="aboutLinkText">
-            </div>
-
-            <div class="form-group">
-              <label>URL link</label>
-              <input class="form-control" [(ngModel)]="homeData.about.linkUrl" name="aboutLinkUrl">
-            </div>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Texto botón</mat-label>
+              <input matInput [(ngModel)]="card.buttonText" [name]="'btn'+i">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Tipo</mat-label>
+              <select matNativeControl [(ngModel)]="card.type" [name]="'type'+i">
+                <option value="history">Historia</option>
+                <option value="product">Producto</option>
+              </select>
+            </mat-form-field>
           </div>
 
+          <button mat-raised-button color="warn" (click)="removeCard(i)">
+            <mat-icon>delete</mat-icon> Eliminar card
+          </button>
+          <hr>
         </div>
-      </mat-tab>
 
-      <!-- ========================= -->
-      <!-- TAB CARDS -->
-      <!-- ========================= -->
-      <mat-tab label="🃏 Cards">
-        <div class="tab-content">
+        <button mat-raised-button color="primary" (click)="addCard()">
+          <mat-icon>add</mat-icon> Agregar card
+        </button>
+      </mat-card>
+    </mat-tab>
 
-          <div *ngFor="let card of homeData.cards; let i=index; trackBy: trackByIndex" class="card-editor">
+  </mat-tab-group>
 
-            <h3>Card {{ i + 1 }}</h3>
+  <!-- BOTONES ACCIONES -->
+  <div class="actions">
+    <button mat-raised-button color="warn" (click)="resetForm()">Cancelar</button>
+    <button mat-raised-button color="primary" (click)="saveChanges()">
+      <mat-icon>save</mat-icon> Guardar cambios
+    </button>
+  </div>
 
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Imagen</label>
-                <input class="form-control" [(ngModel)]="card.image" [name]="'img'+i">
-              </div>
-
-              <div class="form-group">
-                <label>Título</label>
-                <input class="form-control" [(ngModel)]="card.title" [name]="'title'+i">
-              </div>
-            </div>
-
-            <div class="form-grid">
-              <div class="form-group">
-                <label>Texto botón</label>
-                <input class="form-control" [(ngModel)]="card.buttonText" [name]="'btn'+i">
-              </div>
-
-              <div class="form-group">
-                <label>Tipo</label>
-                <select class="form-control" [(ngModel)]="card.type" [name]="'type'+i">
-                  <option value="history">Historia</option>
-                  <option value="product">Producto</option>
-                </select>
-              </div>
-            </div>
-
-            <button type="button" class="btn-remove" (click)="removeCard(i)">Eliminar card</button>
-            <hr>
-          </div>
-
-          <button type="button" class="btn-add" (click)="addCard()">➕ Agregar card</button>
-
-        </div>
-      </mat-tab>
-
-    </mat-tab-group>
-
-    <!-- BOTONES -->
-    <div class="action-bar">
-      <button type="button" class="btn-secondary" (click)="resetForm()">Cancelar</button>
-      <button type="submit" class="btn-primary">💾 Guardar cambios</button>
-    </div>
-
-  </form>
-
-  <!-- NOTIFICACION -->
-  @if (showSuccessMessage) {
-    <div class="notification">Home actualizado correctamente</div>
-  }
+  <!-- NOTIFICACIÓN -->
+  <div *ngIf="showSuccessMessage" class="notification">
+    ✅ Home actualizado correctamente
+  </div>
 
 </div>

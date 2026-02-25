@@ -13,7 +13,7 @@ import { ContactEditorComponent } from './admin/editors/contact-editor/contact-e
 import { ProductsEditorComponent } from './admin/editors/products-editor/products-editor.component';
 import { FooterEditorComponent } from './admin/editors/footer-editor/footer-editor.component';
 import { NavbarEditorComponent } from './admin/editors/navbar-editor/navbar-editor.component';
-import { ProductGeneralEditorComponents } from './admin/editors/product-general-editor/product-general-editor.component';
+import { ProductGeneralEditorComponent } from './admin/editors/product-general-editor/product-general-editor.component';
 import { MasInfoEditorComponent } from './admin/editors/mas-info-editor/mas-info-editor.component';
 import { MasInfoComponent } from './components/mas-info/mas-info.component';
 import { HistoryEditorComponent } from './admin/editors/history-editor/history-editor.component';
@@ -42,7 +42,7 @@ export const routes: Routes = [
       { path: 'home', component: HomeEditorComponent },
       { path: 'footer', component: FooterEditorComponent },
       { path: 'navbar', component: NavbarEditorComponent },
-      { path: 'general-product', component: ProductGeneralEditorComponents },
+      { path: 'general-product', component: ProductGeneralEditorComponent },
       { path: 'products', component: ProductsEditorComponent },
       { path: 'mas-info', component: MasInfoEditorComponent },
       { path: 'history', component: HistoryEditorComponent },

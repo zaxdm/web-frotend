@@ -1,54 +1,98 @@
-<h2>🛠 Editor Historia</h2>
+<div class="editor-container">
+  <h1>
+    <span></span>
+    Editor Historia
+    <span class="header-badge">Historia</span>
+  </h1>
 
-<!-- TABS -->
-<div class="tabs">
-  <button (click)="activeTab='hero'" [class.active]="activeTab==='hero'">Hero</button>
-  <button (click)="activeTab='timeline'" [class.active]="activeTab==='timeline'">Timeline</button>
-</div>
+  <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+    <!-- ================= HERO ================= -->
+    <mat-tab label="Hero">
+      <mat-card class="tab-card">
+        <h3>Hero sección</h3>
 
-<hr>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Título principal</mat-label>
+          <input matInput [(ngModel)]="data.heroTitle" placeholder="Título del hero">
+        </mat-form-field>
+      </mat-card>
+    </mat-tab>
 
-<!-- ================= HERO ================= -->
-<div *ngIf="activeTab==='hero'">
+    <!-- ================= TIMELINE ================= -->
+    <mat-tab label="Timeline">
+      <mat-card class="tab-card">
+        <h3>Bloques del timeline</h3>
 
-  <h3>Hero sección</h3>
+        <mat-accordion multi>
+          <mat-expansion-panel *ngFor="let t of data.timeline; let i=index">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                <mat-icon style="margin-right:0.5rem;color:#3b82f6;">timeline</mat-icon>
+                Bloque {{i+1}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
 
-  <label>Título principal</label>
-  <input [(ngModel)]="data.heroTitle">
+            <div class="form-grid">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Imagen</mat-label>
+                <input matInput [(ngModel)]="t.image" placeholder="URL de la imagen">
+              </mat-form-field>
 
-</div>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Alt</mat-label>
+                <input matInput [(ngModel)]="t.alt" placeholder="Texto alternativo">
+              </mat-form-field>
+            </div>
 
-<!-- ================= TIMELINE ================= -->
-<div *ngIf="activeTab==='timeline'">
+            <h4>Historias</h4>
+            <div *ngFor="let s of t.stories; let j=index" class="story-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Año</mat-label>
+                <input matInput [(ngModel)]="s.year">
+              </mat-form-field>
 
-  <h3>Bloques timeline</h3>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Texto</mat-label>
+                <input matInput [(ngModel)]="s.text">
+              </mat-form-field>
 
-  <div *ngFor="let t of data.timeline; let i=index" class="block">
+              <button mat-icon-button color="warn" (click)="deleteStory(i,j)" matTooltip="Eliminar historia">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
 
-    <h4>Bloque {{i+1}}</h4>
+            <div class="block-actions">
+              <button mat-raised-button color="primary" (click)="addStory(i)">
+                <mat-icon>add</mat-icon> Agregar historia
+              </button>
+              <button mat-raised-button color="warn" (click)="deleteTimeline(i)">
+                <mat-icon>delete</mat-icon> Eliminar bloque
+              </button>
+            </div>
 
-    <label>Imagen</label>
-    <input [(ngModel)]="t.image">
+          </mat-expansion-panel>
+        </mat-accordion>
 
-    <label>Alt</label>
-    <input [(ngModel)]="t.alt">
+        <button mat-raised-button color="primary" style="margin-top:1rem;" (click)="addTimeline()">
+          <mat-icon>add</mat-icon> Agregar bloque
+        </button>
 
-    <h5>Historias</h5>
+      </mat-card>
+    </mat-tab>
+  </mat-tab-group>
 
-    <div *ngFor="let s of t.stories; let j=index" class="story">
-      <input placeholder="Año" [(ngModel)]="s.year">
-      <input placeholder="Texto" [(ngModel)]="s.text">
-      <button (click)="deleteStory(i,j)">❌</button>
-    </div>
-
-    <button (click)="addStory(i)">+ historia</button>
-    <button class="delete" (click)="deleteTimeline(i)">Eliminar bloque</button>
-
-    <hr>
+  <!-- ================= MENSAJE ÉXITO ================= -->
+  <div *ngIf="showSuccessMessage" class="notification">
+    ✅ Historia actualizada correctamente
   </div>
 
-  <button (click)="addTimeline()">+ agregar bloque</button>
-
+    <!-- ================= ACCIONES ================= -->
+  <div class="actions">
+    <button mat-raised-button color="warn" (click)="resetForm()">
+      <mat-icon>refresh</mat-icon> Cancelar
+    </button>
+    <button mat-raised-button color="primary" (click)="save()">
+      <mat-icon>save</mat-icon> Guardar cambios
+    </button>
+  </div>
 </div>
-<hr>
-<button class="save" (click)="save()">💾 GUARDAR</button>

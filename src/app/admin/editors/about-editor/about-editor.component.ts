@@ -1,8 +1,7 @@
+// about-editor.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
-import { AboutService } from '../../../services/about.service';
-import { AboutSection } from '../../../models/about.model';
 import { Subscription } from 'rxjs';
 
 // Angular Material
@@ -14,6 +13,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
+
+import { AboutService } from '../../../services/about.service';
+import { AboutSection } from '../../../models/about.model';
 
 @Component({
   selector: 'app-about-editor',
@@ -34,8 +36,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
   styleUrls: ['./about-editor.component.css']
 })
 export class AboutEditorComponent implements OnInit, OnDestroy {
-
   aboutForm!: FormGroup;
+  originalData!: AboutSection;
   showSuccessMessage = false;
   showErrorMessage = false;
   private subscription: Subscription = new Subscription();
@@ -49,10 +51,12 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
     this.initializeForm();
     this.loadData();
 
-    // 🔥 Detectar cambios automáticamente
-    this.aboutForm.valueChanges.subscribe(() => {
-      this.aboutForm.markAsDirty();
-    });
+    // Detectar cambios automáticamente
+    this.subscription.add(
+      this.aboutForm.valueChanges.subscribe(() => {
+        this.aboutForm.markAsDirty();
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -75,6 +79,7 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
   private loadData(): void {
     const data = this.aboutService.getAbout();
     console.log('Cargando datos iniciales:', data);
+    this.originalData = JSON.parse(JSON.stringify(data));
     this.updateFormWithData(data);
   }
 
@@ -87,7 +92,7 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
       subtitle: { text: data.subtitle || '' }
     });
 
-    // 🟢 Párrafos principales (SIN required para evitar bloqueo)
+    // Párrafos principales
     if (data.paragraphs && data.paragraphs.length > 0) {
       data.paragraphs.forEach(p => {
         this.paragraphsArray.push(
@@ -100,7 +105,7 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
       );
     }
 
-    // 🟢 Párrafos secundarios
+    // Párrafos secundarios
     if (data.paragraphs2 && data.paragraphs2.length > 0) {
       data.paragraphs2.forEach(p => {
         this.paragraphs2Array.push(
@@ -114,6 +119,13 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
 
   private clearFormArray(arr: FormArray): void {
     while (arr.length) arr.removeAt(0);
+  }
+
+  // Helper para obtener vista previa del párrafo
+  getParagraphPreview(control: AbstractControl): string {
+    const value = control?.value;
+    if (!value) return '';
+    return value.length > 30 ? value.substring(0, 30) + '...' : value;
   }
 
   // Getters
@@ -141,7 +153,7 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
     return control?.value?.length || 0;
   }
 
-  // 🔵 Agregar párrafos
+  // Agregar párrafos
   addParagraph(): void {
     this.paragraphsArray.push(
       this.fb.control('', [Validators.maxLength(500)])
@@ -168,12 +180,7 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
     this.aboutForm.markAsDirty();
   }
 
-  // 🟢 BOTÓN SIEMPRE ACTIVO
-  canSave(): boolean {
-    return true;
-  }
-
-  // 🔥 GUARDAR
+  // Guardar
   saveChanges(): void {
     console.log('=== GUARDANDO ===');
 
@@ -192,7 +199,8 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
 
       this.showSuccessMessage = true;
       setTimeout(() => this.showSuccessMessage = false, 3000);
-
+      
+      this.originalData = JSON.parse(JSON.stringify(updated));
       console.log('Guardado OK');
 
     } catch (error) {
@@ -202,9 +210,9 @@ export class AboutEditorComponent implements OnInit, OnDestroy {
     }
   }
 
+  // Reset
   resetForm(): void {
-    const data = this.aboutService.getAbout();
-    this.updateFormWithData(data);
+    this.updateFormWithData(this.originalData);
     this.aboutForm.markAsPristine();
     this.aboutForm.markAsUntouched();
   }

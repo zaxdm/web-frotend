@@ -1,8 +1,9 @@
+// navbar-editor.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormArray } from '@angular/forms';
-import { NavbarService } from '../../../services/navbar.service';
-import { NavbarData } from '../../../models/navbar.model';
+
+// Angular Material
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -11,6 +12,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
+
+import { NavbarService } from '../../../services/navbar.service';
+import { NavbarData } from '../../../models/navbar.model';
 
 @Component({
   selector: 'app-navbar-editor',
@@ -32,39 +36,71 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class NavbarEditorComponent implements OnInit {
   form!: FormGroup;
+  originalData!: NavbarData;
   showSuccessMessage = false;
 
-  constructor(private navbarService: NavbarService, private fb: FormBuilder) {}
+  constructor(
+    private navbarService: NavbarService, 
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.resetForm();
   }
 
-  saveChanges() {
-    const v = this.form.value;
-    const updated: NavbarData = {
-      productosLabel: v.productosLabel,
-      aboutLabel: v.aboutLabel,
-      contactoLabel: v.contactoLabel,
-      contactoRuta: v.contactoRuta,
-      siguenos: v.siguenos,
-      buscarPlaceholder: v.buscarPlaceholder,
-      logoActual: v.logoActual,
-      aboutMenu: v.aboutMenu.map((i: any) => ({ nombre: i.nombre, ruta: i.ruta })),
-      redes: v.redes.map((r: any) => ({ nombre: r.nombre, icon: r.icon, url: r.url })),
-      productosMenu: v.productosMenu.map((c: any) => ({
-        titulo: c.titulo,
-        ruta: c.ruta,
-        items: c.items.map((it: any) => ({ nombre: it.nombre, ruta: it.ruta }))
-      }))
-    };
-    this.navbarService.updateNavbar(updated);
-    this.showSuccessMessage = true;
-    setTimeout(() => this.showSuccessMessage = false, 3000);
+  trackByIndex(index: number): number {
+    return index;
   }
 
+  // Helpers para títulos en expansion panels
+  getAboutItemTitle(index: number): string {
+    const item = this.aboutMenuArray.at(index);
+    return item?.get('nombre')?.value || '';
+  }
+
+  getSocialTitle(index: number): string {
+    const item = this.redesArray.at(index);
+    return item?.get('nombre')?.value || '';
+  }
+
+  getCategoryTitle(index: number): string {
+    const category = this.productosMenuArray.at(index);
+    return category?.get('titulo')?.value || '';
+  }
+
+  // ================= GUARDAR =================
+  saveChanges() {
+    if (this.form.valid) {
+      const v = this.form.value;
+      const updated: NavbarData = {
+        productosLabel: v.productosLabel,
+        aboutLabel: v.aboutLabel,
+        contactoLabel: v.contactoLabel,
+        contactoRuta: v.contactoRuta,
+        siguenos: v.siguenos,
+        buscarPlaceholder: v.buscarPlaceholder,
+        logoActual: v.logoActual,
+        aboutMenu: v.aboutMenu.map((i: any) => ({ nombre: i.nombre, ruta: i.ruta })),
+        redes: v.redes.map((r: any) => ({ nombre: r.nombre, icon: r.icon, url: r.url })),
+        productosMenu: v.productosMenu.map((c: any) => ({
+          titulo: c.titulo,
+          ruta: c.ruta,
+          items: c.items.map((it: any) => ({ nombre: it.nombre, ruta: it.ruta }))
+        }))
+      };
+      
+      this.navbarService.updateNavbar(updated);
+      this.showSuccessMessage = true;
+      setTimeout(() => this.showSuccessMessage = false, 3000);
+      this.originalData = JSON.parse(JSON.stringify(updated));
+    }
+  }
+
+  // ================= RESET =================
   resetForm() {
     const data = this.navbarService.getNavbar();
+    this.originalData = JSON.parse(JSON.stringify(data));
+    
     this.form = this.fb.group({
       productosLabel: [data.productosLabel],
       aboutLabel: [data.aboutLabel],
@@ -91,29 +127,38 @@ export class NavbarEditorComponent implements OnInit {
     });
   }
 
+  // ================= GETTERS =================
   get aboutMenuArray(): FormArray {
     return this.form.get('aboutMenu') as FormArray;
-  }
-  addAboutItem() {
-    this.aboutMenuArray.push(this.fb.group({ nombre: [''], ruta: [''] }));
-  }
-  removeAboutItem(index: number) {
-    this.aboutMenuArray.removeAt(index);
   }
 
   get redesArray(): FormArray {
     return this.form.get('redes') as FormArray;
   }
-  addSocialItem() {
-    this.redesArray.push(this.fb.group({ nombre: [''], icon: [''], url: [''] }));
-  }
-  removeSocialItem(index: number) {
-    this.redesArray.removeAt(index);
-  }
 
   get productosMenuArray(): FormArray {
     return this.form.get('productosMenu') as FormArray;
   }
+
+  // ================= ABOUT MENU =================
+  addAboutItem() {
+    this.aboutMenuArray.push(this.fb.group({ nombre: [''], ruta: [''] }));
+  }
+
+  removeAboutItem(index: number) {
+    this.aboutMenuArray.removeAt(index);
+  }
+
+  // ================= REDES SOCIALES =================
+  addSocialItem() {
+    this.redesArray.push(this.fb.group({ nombre: [''], icon: [''], url: [''] }));
+  }
+
+  removeSocialItem(index: number) {
+    this.redesArray.removeAt(index);
+  }
+
+  // ================= PRODUCTOS MENU =================
   addProductCategory() {
     this.productosMenuArray.push(
       this.fb.group({
@@ -123,6 +168,7 @@ export class NavbarEditorComponent implements OnInit {
       })
     );
   }
+
   removeProductCategory(index: number) {
     this.productosMenuArray.removeAt(index);
   }
@@ -130,9 +176,11 @@ export class NavbarEditorComponent implements OnInit {
   getItemsArray(categoryIndex: number): FormArray {
     return this.productosMenuArray.at(categoryIndex).get('items') as FormArray;
   }
+
   addProductItem(categoryIndex: number) {
     this.getItemsArray(categoryIndex).push(this.fb.group({ nombre: [''], ruta: [''] }));
   }
+
   removeProductItem(categoryIndex: number, itemIndex: number) {
     this.getItemsArray(categoryIndex).removeAt(itemIndex);
   }

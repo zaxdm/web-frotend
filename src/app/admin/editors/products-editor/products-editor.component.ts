@@ -1,49 +1,70 @@
+// products-editor.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+// Angular Material
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 import { ProductService } from '../../../services/product.service';
 import { HeroProduct, Feature, Download } from '../../../models/product.model';
-import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-products-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule, MatCardModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatTabsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatExpansionModule,
+    MatTooltipModule
+  ],
   templateUrl: './products-editor.component.html',
-  styleUrl: './products-editor.component.css'
+  styleUrls: ['./products-editor.component.css']
 })
 export class ProductsEditorComponent implements OnInit {
-
   product!: HeroProduct;
-  originalProduct!: HeroProduct; // Para guardar el estado inicial
+  originalProduct!: HeroProduct;
   downloadsFiles: (File | null)[] = [];
+  showSuccessMessage = false;
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.product = this.productService.getProduct();
+    this.loadData();
+  }
 
-    // guardar copia inicial
+  loadData(): void {
+    this.product = this.productService.getProduct();
     this.originalProduct = JSON.parse(JSON.stringify(this.product));
 
-    // asegurar arrays
+    // Inicializar arrays si no existen
     if (!this.product.downloads) this.product.downloads = [];
     if (!this.product.features) this.product.features = [];
     if (!this.product.descriptions) this.product.descriptions = [];
     if (!this.product.thumbnails) this.product.thumbnails = [];
+
     this.downloadsFiles = Array(this.product.downloads.length).fill(null);
-  }   
+  }
 
-  showSuccessMessage = false;
-
-  trackByIndex(index: number, item: any) {
+  trackByIndex(index: number): number {
     return index;
   }
 
-  save() {
+  // ================= GUARDAR =================
+  save(): void {
     if (!this.downloadsFiles || this.downloadsFiles.every(f => f == null)) {
       this.productService.updateProduct(this.product);
     } else {
@@ -51,67 +72,71 @@ export class ProductsEditorComponent implements OnInit {
     }
     this.showSuccessMessage = true;
     setTimeout(() => this.showSuccessMessage = false, 3000);
+    this.originalProduct = JSON.parse(JSON.stringify(this.product));
   }
 
-  resetForm() {
-    // Restaurar el producto al estado original
+  // ================= RESET =================
+  resetForm(): void {
     this.product = JSON.parse(JSON.stringify(this.originalProduct));
     this.downloadsFiles = Array(this.product.downloads.length).fill(null);
   }
 
-  // --- Descripciones ---
-  addDescription() {
+  // ================= DESCRIPCIONES =================
+  addDescription(): void {
     this.product.descriptions.push('');
   }
 
-  removeDescription(index: number) {
+  removeDescription(index: number): void {
     this.product.descriptions.splice(index, 1);
   }
 
-  // --- Thumbnails ---
-  addThumbnail() {
+  // ================= THUMBNAILS =================
+  addThumbnail(): void {
     this.product.thumbnails.push('');
   }
 
-  removeThumbnail(index: number) {
+  removeThumbnail(index: number): void {
     this.product.thumbnails.splice(index, 1);
   }
 
-  // --- Features ---
-  addFeature() {
+  // ================= FEATURES =================
+  addFeature(): void {
     this.product.features = this.product.features || [];
     this.product.features.push({ title: '', description: '' });
   }
 
-  removeFeature(index: number) {
+  removeFeature(index: number): void {
     this.product.features?.splice(index, 1);
   }
 
-  // --- Downloads ---
-  addDownload() {
+  // ================= DOWNLOADS =================
+  addDownload(): void {
     this.product.downloads = this.product.downloads || [];
     this.product.downloads.push({ title: '', description: '', link: '' });
     this.downloadsFiles.push(null);
   }
 
-  removeDownload(index: number) {
+  removeDownload(index: number): void {
     this.product.downloads?.splice(index, 1);
     this.downloadsFiles.splice(index, 1);
   }
 
-  onFileSelected(index: number, event: Event) {
+  removeSelectedFile(index: number): void {
+    this.downloadsFiles[index] = null;
+  }
+
+  onFileSelected(index: number, event: Event): void {
     const input = event.target as HTMLInputElement;
-    const file = input.files && input.files[0] ? input.files[0] : null;
-    this.downloadsFiles[index] = file;
+    this.downloadsFiles[index] = input.files && input.files[0] ? input.files[0] : null;
   }
 
-  onDropFile(index: number, event: DragEvent) {
+  onDropFile(index: number, event: DragEvent): void {
     event.preventDefault();
-    const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0] ? event.dataTransfer.files[0] : null;
+    const file = event.dataTransfer?.files[0] ?? null;
     this.downloadsFiles[index] = file;
   }
 
-  onDragOver(event: DragEvent) {
+  onDragOver(event: DragEvent): void {
     event.preventDefault();
   }
 
