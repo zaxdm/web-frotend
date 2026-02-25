@@ -3,11 +3,15 @@ import { FormsModule } from '@angular/forms';
 import { HistoryService } from '../../../services/history.service';
 import { HistoryData } from '../../../models/history.model';
 import { CommonModule } from '@angular/common';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-history-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './history-editor.component.html',
   styleUrls: ['./history-editor.component.css']
 })

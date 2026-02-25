@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { AboutSection } from '../models/about.model';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({ providedIn: 'root' })
 export class AboutService {
@@ -10,7 +12,7 @@ export class AboutService {
   private aboutDataSubject = new BehaviorSubject<AboutSection>(this._aboutData);
   public aboutData$ = this.aboutDataSubject.asObservable();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     const saved = localStorage.getItem(this.STORAGE_KEY);
     if (saved) {
       try {
@@ -21,6 +23,7 @@ export class AboutService {
       }
     }
     this.aboutDataSubject.next(this._aboutData);
+    this.loadFromBackend();
   }
 
   getAbout(): AboutSection {
@@ -42,11 +45,24 @@ export class AboutService {
     this._aboutData = validated;
     this.aboutDataSubject.next(this._aboutData);
     this.saveToLocalStorage();
+    this.http.put(`${API_BASE_URL}/about`, { aboutData: validated }).toPromise().catch(() => {});
   }
 
   private saveToLocalStorage(): void {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._aboutData));
+    } catch {}
+  }
+
+  private async loadFromBackend(): Promise<void> {
+    try {
+      const res = await this.http.get<any>(`${API_BASE_URL}/about`).toPromise();
+      const data = res?.aboutData as AboutSection | undefined;
+      if (data) {
+        this._aboutData = this.mergeWithDefaults(data);
+        this.aboutDataSubject.next(this._aboutData);
+        this.saveToLocalStorage();
+      }
     } catch {}
   }
 

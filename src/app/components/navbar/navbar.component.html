@@ -1,5 +1,5 @@
 <!-- SECCIÓN NAVBAR PRINCIPAL -->
-<nav class="navbar" [class.nav-active]="showProductos || showAbout || menuOpen" [class.nav-product-page]="isProductPage" [class.nav-contact-page]="isContactPage" [class.nav-about-page]="isAboutPage">
+<nav class="navbar" [class.nav-active]="showProductos || showAbout || menuOpen" [class.nav-product-page]="isProductPage" [class.nav-contact-page]="isContactPage" [class.nav-about-page]="isAboutPage" [class.nav-Noticias-page]="isNoticiasPage">
   
   <div class="nav-left">
     <button class="hamburger-btn" (click)="toggleMenu()" [class.active]="menuOpen" aria-label="Menu">
@@ -75,9 +75,9 @@
 
           <div class="language-selector-simple">
             <p *ngFor="let lang of languages">
-              <span class="lang" [class.active]="currentLang === lang.code" (click)="selectLanguage(lang.code)">
+              <!-- <span class="lang" [class.active]="currentLang === lang.code" (click)="selectLanguage(lang.code)">
                 {{ lang.label }}
-              </span>
+              </span> -->
             </p>
           </div>
         </div>
@@ -102,7 +102,7 @@
   </div>
 
   <div class="nav-right">
-    <div class="right-item language-selector" *ngIf="!isMobileView">
+    <!-- <div class="right-item language-selector" *ngIf="!isMobileView">
       <button class="language-btn" (click)="toggleLangDropdown()">
         <span class="label-text">{{ currentLanguageLabel }}</span>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
@@ -118,7 +118,7 @@
           {{ lang.label }}
         </button>
       </div>
-    </div>
+    </div> -->
 
     <div class="right-item search-trigger" (click)="toggleSearch()">
       <input

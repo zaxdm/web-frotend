@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { HistoryData } from '../models/history.model';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({ providedIn: 'root' })
 export class HistoryService {
@@ -8,8 +10,9 @@ export class HistoryService {
   private dataSubject = new BehaviorSubject<HistoryData | null>(null);
   data$ = this.dataSubject.asObservable();
 
-  constructor(){
+  constructor(private http: HttpClient){
     this.loadInitial();
+    this.loadFromBackend();
   }
 
   // =========================
@@ -53,9 +56,20 @@ export class HistoryService {
     this.dataSubject.next(clone);
 
     console.log('🔥 history actualizado', clone);
+    this.http.put(`${API_BASE_URL}/history`, clone).toPromise().catch(() => {});
   }
 
   getData(): HistoryData | null{
     return this.dataSubject.value;
+  }
+
+  private async loadFromBackend(): Promise<void> {
+    try {
+      const res = await this.http.get<HistoryData>(`${API_BASE_URL}/history`).toPromise();
+      if (res) {
+        localStorage.setItem('historyData', JSON.stringify(res));
+        this.dataSubject.next(res);
+      }
+    } catch {}
   }
 }

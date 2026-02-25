@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { GeneralProductData } from '../models/general-product';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({ providedIn: 'root' })
 export class GeneralProductService {
@@ -9,7 +11,7 @@ export class GeneralProductService {
   private _data: GeneralProductData = this.getDefaultData();
   public data$ = new BehaviorSubject<GeneralProductData>(this._data);
 
-  constructor() {
+  constructor(private http: HttpClient) {
     const saved = localStorage.getItem(this.STORAGE_KEY);
     if (saved) {
       try {
@@ -19,6 +21,7 @@ export class GeneralProductService {
       }
     }
     this.data$.next(this._data);
+    this.loadFromBackend();
   }
 
   getData(): GeneralProductData {
@@ -29,12 +32,24 @@ export class GeneralProductService {
     this._data = JSON.parse(JSON.stringify(data));
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._data));
     this.data$.next(this._data);
+    this.http.put(`${API_BASE_URL}/general-product-page`, this._data).toPromise().catch(() => {});
   }
 
   reset() {
     this._data = this.getDefaultData();
     localStorage.removeItem(this.STORAGE_KEY);
     this.data$.next(this._data);
+  }
+
+  private async loadFromBackend(): Promise<void> {
+    try {
+      const res = await this.http.get<GeneralProductData>(`${API_BASE_URL}/general-product-page`).toPromise();
+      if (res) {
+        this._data = res;
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._data));
+        this.data$.next(this._data);
+      }
+    } catch {}
   }
 
   private getDefaultData(): GeneralProductData {

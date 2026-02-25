@@ -6,11 +6,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MasInfoService } from '../../../services/mas-info.service';
 import { MasInfoData, InfoSection } from '../../../models/masinfo.model';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-mas-info-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule],
+  imports: [CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './mas-info-editor.component.html',
   styleUrls: ['./mas-info-editor.component.css']
 })

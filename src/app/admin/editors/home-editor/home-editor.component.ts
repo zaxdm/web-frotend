@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HomeService } from '../../../services/home.service';
 import { HomeData, Card, AboutSection, HeroSection } from '../../../models/home.model';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 
 @Component({
@@ -11,7 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   standalone: true,
   imports: [CommonModule, FormsModule,     CommonModule,
     FormsModule,
-    MatTabsModule],
+    MatTabsModule, MatIconModule, MatCardModule ],
   templateUrl: './home-editor.component.html',
   styleUrls: ['./home-editor.component.css']
 })
@@ -24,6 +26,10 @@ export class HomeEditorComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     await this.homeService.loadFromBackend();
     this.resetForm();
+  }
+
+    trackByIndex(index: number, item: any): number {
+    return index; // Usa el índice como identificador único
   }
 
   saveChanges() {

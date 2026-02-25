@@ -6,11 +6,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ProductService } from '../../../services/product.service';
 import { HeroProduct, Feature, Download } from '../../../models/product.model';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-products-editor',
   standalone: true,
-  imports: [CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule],
+  imports: [CommonModule, FormsModule, MatTabsModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './products-editor.component.html',
   styleUrl: './products-editor.component.css'
 })

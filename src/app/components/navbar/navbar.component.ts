@@ -32,6 +32,7 @@ export class NavbarComponent implements OnInit {
   searchOpen = false;
   isProductPage = false;
   isContactPage = false;
+  isNoticiasPage = false;
   isAboutPage = false;
 
   // ===============================
@@ -106,6 +107,7 @@ export class NavbarComponent implements OnInit {
     const url = this.router.url;
     this.isProductPage = url.includes('/producto') || url.includes('/productos');
     this.isContactPage = url.includes('/contactos');
+    this.isNoticiasPage = url.toLowerCase().includes('/noticias');
     this.isAboutPage = url.includes('/acerca-de');
   }
 

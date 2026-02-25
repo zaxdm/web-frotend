@@ -5,7 +5,7 @@
     <span></span>
     Editor Home
     <span class="header-badge">Página Principal</span>
-  </h1>
+  </h1> 
 
   <form (ngSubmit)="saveChanges()">
 
@@ -24,7 +24,7 @@
           <div class="form-group">
             <label>Líneas del título</label>
 
-            <div *ngFor="let line of homeData.hero.titleLines; let i=index" class="flex-row">
+            <div *ngFor="let line of homeData.hero.titleLines; let i=index; trackBy: trackByIndex" class="flex-row">
               <input
                 class="form-control"
                 [(ngModel)]="homeData.hero.titleLines[i]"
@@ -67,7 +67,7 @@
           <div class="form-group">
             <label>Párrafos</label>
 
-            <div *ngFor="let p of homeData.about.paragraphs; let i=index">
+            <div *ngFor="let p of homeData.about.paragraphs; let i=index; trackBy: trackByIndex">
               <textarea
                 class="form-control"
                 [(ngModel)]="homeData.about.paragraphs[i]"
@@ -102,7 +102,7 @@
       <mat-tab label="🃏 Cards">
         <div class="tab-content">
 
-          <div *ngFor="let card of homeData.cards; let i=index" class="card-editor">
+          <div *ngFor="let card of homeData.cards; let i=index; trackBy: trackByIndex" class="card-editor">
 
             <h3>Card {{ i + 1 }}</h3>
 

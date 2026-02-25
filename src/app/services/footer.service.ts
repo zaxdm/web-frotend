@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { FooterData } from '../models/footer.model';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({ providedIn: 'root' })
 export class FooterService {
@@ -32,6 +34,10 @@ export class FooterService {
  
   public footerData$ = new BehaviorSubject<FooterData>(this.getFooter());
 
+  constructor(private http: HttpClient) {
+    this.loadFromBackend();
+  }
+
   getFooter(): FooterData {
     const saved = localStorage.getItem('footerData');
     return saved ? JSON.parse(saved) : this.footerData;
@@ -41,5 +47,18 @@ export class FooterService {
     this.footerData = data;
     localStorage.setItem('footerData', JSON.stringify(data));
     this.footerData$.next(this.getFooter());
+    this.http.put(`${API_BASE_URL}/footer`, { content: data }).toPromise().catch(() => {});
+  }
+
+  private async loadFromBackend(): Promise<void> {
+    try {
+      const res = await this.http.get<any>(`${API_BASE_URL}/footer`).toPromise();
+      const content = res?.content as FooterData | undefined;
+      if (content) {
+        this.footerData = content;
+        localStorage.setItem('footerData', JSON.stringify(content));
+        this.footerData$.next(this.footerData);
+      }
+    } catch {}
   }
 }

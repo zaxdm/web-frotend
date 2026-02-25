@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { NavbarData } from '../models/navbar.model';
+import { API_BASE_URL } from '../api.config';
 
 @Injectable({ providedIn: 'root' })
 export class NavbarService {
@@ -35,6 +37,10 @@ export class NavbarService {
   private navbarSubject = new BehaviorSubject<NavbarData>(this.getNavbar());
   public navbarData$ = this.navbarSubject.asObservable();
 
+  constructor(private http: HttpClient) {
+    this.loadFromBackend();
+  }
+
   getNavbar(): NavbarData {
     const saved = localStorage.getItem('navbarData');
     return saved ? JSON.parse(saved) : this.navbarData;
@@ -44,5 +50,17 @@ export class NavbarService {
     this.navbarData = data;
     localStorage.setItem('navbarData', JSON.stringify(data));
     this.navbarSubject.next(data);
+    this.http.put(`${API_BASE_URL}/navbar`, data).toPromise().catch(() => {});
+  }
+
+  private async loadFromBackend(): Promise<void> {
+    try {
+      const res = await this.http.get<NavbarData>(`${API_BASE_URL}/navbar`).toPromise();
+      if (res) {
+        this.navbarData = res;
+        localStorage.setItem('navbarData', JSON.stringify(res));
+        this.navbarSubject.next(res);
+      }
+    } catch {}
   }
 }
