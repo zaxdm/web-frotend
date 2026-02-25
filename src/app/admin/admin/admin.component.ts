@@ -9,8 +9,6 @@ import { RouterModule, RouterOutlet } from '@angular/router';
   template: `
     <div class="admin-container">
       <nav class="admin-menu">
-         <a routerLink="" routerLinkActive="active">----</a>
-        <a routerLink="" routerLinkActive="active">----</a>
         <a routerLink="home" routerLinkActive="active">Home</a>
         <a routerLink="footer" routerLinkActive="active">Footer</a>
         <a routerLink="navbar" routerLinkActive="active">Nav-bar</a>

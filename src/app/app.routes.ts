@@ -1,11 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// Public components
+import { PrincipalComponent } from '../app/principales/principal/principal.component';
 import { HomeComponent } from './routes/home/home.component';
 import { AcercaDeComponent } from './routes/acerca-de/acerca-de.component';
 import { HistoryComponent } from './routes/history/history.component';
 import { VistaProductosComponent } from './components/vista-productos/vista-productos.component';
 import { ProductoGeneralComponent } from './components/producto-general/producto-general.component';
 import { ContactComponent } from './routes/contact/contact.component';
+import { MasInfoComponent } from './components/mas-info/mas-info.component';
+import { NoticiasComponent } from './components/noticias/noticias.component';
+
+// Admin components
+import { PrincipalAdminComponent } from '../app/principales/principal-admin/principal-admin.component';
 import { AdminComponent } from './admin/admin/admin.component';
 import { AboutEditorComponent } from './admin/editors/about-editor/about-editor.component';
 import { HomeEditorComponent } from './admin/editors/home-editor/home-editor.component';
@@ -15,28 +23,33 @@ import { FooterEditorComponent } from './admin/editors/footer-editor/footer-edit
 import { NavbarEditorComponent } from './admin/editors/navbar-editor/navbar-editor.component';
 import { ProductGeneralEditorComponent } from './admin/editors/product-general-editor/product-general-editor.component';
 import { MasInfoEditorComponent } from './admin/editors/mas-info-editor/mas-info-editor.component';
-import { MasInfoComponent } from './components/mas-info/mas-info.component';
 import { HistoryEditorComponent } from './admin/editors/history-editor/history-editor.component';
-import { NoticiasComponent } from './components/noticias/noticias.component';
 import { NoticiasEditorComponent } from './admin/editors/noticias-editor/noticias-editor.component';
 
-
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'acerca-de', component: AcercaDeComponent },
-  { path: 'his', component: HistoryComponent },
-  { path: 'productos', component: VistaProductosComponent },
-  { path: 'productos/general', component: ProductoGeneralComponent },
-  { path: 'mas-info', component: MasInfoComponent },
-  { path: 'contactos', component: ContactComponent },
-  { path: 'noticias', component: NoticiasComponent},
-
-
-  // Rutas para Admin 
-  { 
-    path: 'admin', component: AdminComponent,
+  // -------------------- Public routes --------------------
+  {
+    path: '',
+    component: PrincipalComponent, // layout público con navbar + footer
     children: [
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomeComponent },
+      { path: 'acerca-de', component: AcercaDeComponent },
+      { path: 'his', component: HistoryComponent },
+      { path: 'productos', component: VistaProductosComponent },
+      { path: 'productos/general', component: ProductoGeneralComponent },
+      { path: 'mas-info', component: MasInfoComponent },
+      { path: 'contactos', component: ContactComponent },
+      { path: 'noticias', component: NoticiasComponent },
+    ]
+  },
+
+  // -------------------- Admin routes --------------------
+  {
+    path: 'admin',
+    component: PrincipalAdminComponent, // layout admin sin navbar ni footer
+    children: [
+      { path: '', component: AdminComponent },
       { path: 'about', component: AboutEditorComponent },
       { path: 'contact', component: ContactEditorComponent },
       { path: 'home', component: HomeEditorComponent },
@@ -47,11 +60,10 @@ export const routes: Routes = [
       { path: 'mas-info', component: MasInfoEditorComponent },
       { path: 'history', component: HistoryEditorComponent },
       { path: 'noticias', component: NoticiasEditorComponent },
-
     ]
-  }, 
+  },
 ];
-  
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
