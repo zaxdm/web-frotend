@@ -1,4 +1,4 @@
-/* products-editor.component.css */
+/* product-editor.component.css */
 
 .editor-container {
   max-width: 1200px;
@@ -63,39 +63,14 @@ h1 {
   border: 1px solid #e5e7eb;
 }
 
-/* SECTION GROUPS */
-.section-group {
-  margin-bottom: 1rem;
-}
-
-.section-group h3 {
+.tab-card h3 {
   color: #111827;
   font-size: 1.2rem;
   font-weight: 500;
-  margin: 1rem 0 1rem 0;
+  margin: 0 0 1.5rem 0;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid #059669;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.section-group h3 mat-icon {
-  color: #059669 !important;
-}
-
-.section-group h4 {
-  color: #374151;
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 1.5rem 0 0.5rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.section-group h4 mat-icon {
-  color: #059669 !important;
+  display: inline-block;
 }
 
 /* FORM FIELDS - WHITE THEME */
@@ -127,96 +102,134 @@ h1 {
 ::ng-deep textarea.mat-input-element {
   line-height: 1.6;
   color: #111827 !important;
-  min-height: 60px;
-}
-
-::ng-deep .mat-hint {
-  color: #9ca3af !important;
+  min-height: 80px;
 }
 
 /* FORM GRID */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
-  margin: 0.5rem 0;
+  margin: 1rem 0;
 }
 
-/* EXPANSION PANELS - WHITE THEME */
-::ng-deep .expansion-item {
-  background-color: #ffffff !important;
-  border: 1px solid #e5e7eb !important;
-  border-radius: 8px !important;
-  margin-bottom: 1rem !important;
-  transition: all 0.3s ease !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-}
-
-::ng-deep .expansion-item:hover {
-  border-color: #059669 !important;
-  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1) !important;
-}
-
-::ng-deep .expansion-item .mat-expansion-panel-header {
-  padding: 1rem !important;
-  background-color: #f9fafb !important;
-  border-radius: 8px 8px 0 0 !important;
-}
-
-::ng-deep .expansion-item .mat-expansion-panel-header:hover {
-  background-color: #f3f4f6 !important;
-}
-
-::ng-deep .expansion-item .mat-expansion-panel-header-title {
-  color: #111827 !important;
-  font-weight: 500;
+/* FLEX ROW */
+.flex-row {
   display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-::ng-deep .expansion-item .mat-expansion-panel-header-title mat-icon {
-  color: #059669 !important;
-}
-
-::ng-deep .expansion-item .mat-expansion-indicator::after {
-  color: #059669 !important;
-}
-
-::ng-deep .expansion-item .mat-expansion-panel-body {
-  padding: 1.5rem !important;
-  background-color: #ffffff;
-  border-radius: 0 0 8px 8px;
-}
-
-/* PARAGRAPH ROWS */
-[style*="display: flex; gap: 0.5rem; align-items: center;"] {
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
   padding: 0.5rem;
-  background-color: #f9fafb;
-  border-radius: 4px;
+  background-color: #ffffff;
+  border-radius: 8px;
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
 }
 
-[style*="display: flex; gap: 0.5rem; align-items: center;"]:hover {
+.flex-row:hover {
   border-color: #059669;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+}
+
+.flex-row .full-width {
+  flex: 1;
+}
+
+.flex-row button {
+  margin-top: 0.5rem;
+}
+
+/* CARD EDITOR */
+.card-editor {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.card-editor:hover {
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+}
+
+.card-editor hr {
+  margin: 1.5rem 0 0 0;
+  border: none;
+  border-top: 2px dashed #e5e7eb;
+}
+
+/* UPLOAD SECTION */
+.upload-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.dropzone {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dropzone:hover {
+  border-color: #059669;
+  color: #059669;
   background-color: #f0fdf4;
 }
 
-/* CHECKBOX - WHITE THEME */
-::ng-deep .mat-checkbox-frame {
-  border-color: #d1d5db !important;
+.dropzone mat-icon {
+  color: #059669;
+  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
 }
 
-::ng-deep .mat-checkbox-checked .mat-checkbox-background {
-  background-color: #059669 !important;
+.filename {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background-color: #f0fdf4;
+  border-radius: 8px;
+  border: 1px solid #059669;
+  color: #059669;
+  font-size: 0.9rem;
 }
 
-::ng-deep .mat-checkbox-label {
-  color: #374151 !important;
+.filename mat-icon {
+  color: #059669;
+  font-size: 1.2rem;
+  width: 1.2rem;
+  height: 1.2rem;
 }
 
-/* BUTTONS - WHITE THEME */
+/* BUTTONS */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e5e7eb;
+}
+
 button[mat-raised-button] {
   font-weight: 500 !important;
   text-transform: uppercase;
@@ -226,25 +239,13 @@ button[mat-raised-button] {
   padding: 0.5rem 1.5rem !important;
 }
 
-button[mat-raised-button]:not([color]):not([color="primary"]):not([color="warn"]) {
-  background-color: #f3f4f6 !important;
-  color: #374151 !important;
-  border: 1px solid #e5e7eb !important;
-}
-
-button[mat-raised-button]:not([color]):not([color="primary"]):not([color="warn"]):hover {
-  background-color: #e5e7eb !important;
-  border-color: #059669 !important;
-  transform: translateY(-1px);
-}
-
 button[mat-raised-button][color="primary"] {
   background-color: #059669 !important;
   color: #ffffff !important;
   border: 1px solid #059669 !important;
 }
 
-button[mat-raised-button][color="primary"]:hover {
+button[mat-raised-button][color="primary"]:hover:not(:disabled) {
   background-color: #047857 !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2) !important;
@@ -275,89 +276,32 @@ button[mat-icon-button]:hover {
   background-color: rgba(5, 150, 105, 0.1) !important;
 }
 
-button[mat-raised-button] mat-icon {
-  margin-right: 0.5rem;
-  color: inherit;
+button[mat-icon-button][color="warn"]:hover {
+  background-color: rgba(220, 38, 38, 0.1) !important;
 }
 
-/* ADD BUTTONS - WHITE THEME */
-button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"]) {
+/* ADD BUTTONS */
+button[mat-raised-button][color="primary"]:not(.actions button) {
   margin: 0.5rem 0;
-  width: 100%;
   background-color: #ffffff !important;
   color: #059669 !important;
   border: 2px dashed #d1d5db !important;
+  width: 100%;
   padding: 1rem !important;
 }
 
-button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"]):hover {
+button[mat-raised-button][color="primary"]:not(.actions button):hover {
   border-color: #059669 !important;
   background-color: #f0fdf4 !important;
   transform: translateY(-2px);
 }
 
-/* UPLOAD CONTAINER - WHITE THEME */
-.upload-container {
-  background-color: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 1.5rem;
-  text-align: center;
+button[mat-raised-button] mat-icon {
+  margin-right: 0.5rem;
+  color: inherit;
 }
 
-.dropzone {
-  border: 2px dashed #d1d5db;
-  border-radius: 8px;
-  padding: 2rem;
-  text-align: center;
-  color: #6b7280;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.dropzone:hover {
-  border-color: #059669;
-  color: #059669;
-  background-color: #f0fdf4;
-}
-
-.dropzone mat-icon {
-  color: #059669;
-}
-
-.dropzone span:last-child {
-  color: #9ca3af;
-  font-size: 0.8rem;
-}
-
-/* FILENAME DISPLAY */
-.filename {
-  font-size: 0.9rem;
-  color: #059669;
-  padding: 0.5rem;
-  background-color: #f0fdf4;
-  border-radius: 4px;
-  border: 1px solid #059669;
-  margin-top: 0.5rem;
-}
-
-/* ACTIONS */
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 2px solid #e5e7eb;
-}
-
-/* NOTIFICATION - WHITE THEME */
+/* NOTIFICATION */
 .notification {
   position: fixed;
   bottom: 2rem;
@@ -389,7 +333,7 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
   width: 100%;
 }
 
-/* PLACEHOLDER COLOR - WHITE THEME */
+/* PLACEHOLDER COLOR */
 ::ng-deep .mat-input-element::placeholder {
   color: #9ca3af !important;
 }
@@ -398,7 +342,7 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
   color: #6b7280 !important;
 }
 
-/* TOOLTIP - WHITE THEME */
+/* TOOLTIP */
 ::ng-deep .mat-tooltip {
   background-color: #1f2937 !important;
   color: #ffffff !important;
@@ -426,13 +370,19 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
     gap: 1rem;
   }
 
-  [style*="display: flex; gap: 0.5rem; align-items: center;"] {
+  .flex-row {
     flex-direction: column;
-    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.75rem;
   }
 
-  [style*="display: flex; gap: 0.5rem; align-items: center;"] button {
+  .flex-row button {
     align-self: flex-end;
+    margin-top: 0;
+  }
+
+  .card-editor {
+    padding: 1rem;
   }
 
   .actions {
@@ -451,16 +401,16 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
     text-align: center;
   }
 
-  ::ng-deep .expansion-item .mat-expansion-panel-body {
-    padding: 1rem !important;
-  }
-
   .dropzone {
     padding: 1.5rem 1rem;
   }
+
+  button[mat-raised-button][color="primary"]:not(.actions button) {
+    padding: 0.75rem !important;
+  }
 }
 
-/* SCROLLBAR - WHITE THEME */
+/* SCROLLBAR */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -489,13 +439,23 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
   background-color: #059669 !important;
 }
 
-/* FILE INPUT LABEL */
-input[type="file"] + .dropzone {
-  margin-top: 0.5rem;
+/* CARD EDITOR BUTTON */
+.card-editor button[mat-raised-button][color="warn"] {
+  margin-top: 1rem;
+  width: 100%;
 }
 
-/* REMOVE FILE BUTTON */
-button[mat-raised-button]:has(mat-icon[matIconName="clear"]) {
-  margin-top: 0.5rem;
-  width: 100%;
+/* HR STYLING */
+.card-editor hr {
+  margin-top: 1.5rem;
+}
+
+/* FEATURES AND DOWNLOADS SPECIFIC */
+.card-editor .form-grid {
+  margin-bottom: 0.5rem;
+}
+
+/* UPLOAD ROW ICONS */
+.upload-row mat-icon {
+  color: #059669;
 }

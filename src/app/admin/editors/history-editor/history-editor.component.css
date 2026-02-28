@@ -73,13 +73,6 @@ h1 {
   display: inline-block;
 }
 
-.tab-card h4 {
-  color: #374151;
-  font-size: 1.1rem;
-  margin: 1.5rem 0 1rem 0;
-  font-weight: 500;
-}
-
 /* FORM FIELDS - WHITE THEME */
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
   color: #d1d5db !important;
@@ -106,14 +99,6 @@ h1 {
   caret-color: #059669 !important;
 }
 
-::ng-deep .mat-hint {
-  color: #9ca3af !important;
-}
-
-::ng-deep .mat-form-field.mat-focused .mat-hint {
-  color: #059669 !important;
-}
-
 /* FORM GRID */
 .form-grid {
   display: grid;
@@ -122,28 +107,35 @@ h1 {
   margin: 1rem 0;
 }
 
-/* STORY GRID - WHITE THEME */
-.story-grid {
-  display: grid;
-  grid-template-columns: 100px 1fr auto;
+/* FLEX ROW */
+.flex-row {
+  display: flex;
   gap: 1rem;
   align-items: center;
   margin-bottom: 1rem;
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: #ffffff;
   border-radius: 8px;
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
 }
 
-.story-grid:hover {
+.flex-row:hover {
   border-color: #059669;
   box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
-  background-color: #f9fafb;
 }
 
-.story-grid .full-width {
-  margin: 0;
+.flex-row .full-width {
+  flex: 1;
+}
+
+.flex-row .year-field {
+  width: 100px;
+  min-width: 100px;
+}
+
+.flex-row button {
+  align-self: center;
 }
 
 /* EXPANSION PANELS - WHITE THEME */
@@ -179,6 +171,10 @@ h1 {
   gap: 0.5rem;
 }
 
+::ng-deep .mat-expansion-panel-header-title mat-icon {
+  color: #059669 !important;
+}
+
 ::ng-deep .mat-expansion-indicator::after {
   color: #059669 !important;
 }
@@ -189,13 +185,8 @@ h1 {
   border-radius: 0 0 8px 8px;
 }
 
-/* PANEL ICONS */
-::ng-deep .mat-expansion-panel-header-title mat-icon {
-  color: #059669 !important;
-}
-
-/* BLOCK ACTIONS */
-.block-actions {
+/* PANEL ACTIONS */
+.panel-actions {
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
@@ -204,7 +195,16 @@ h1 {
   border-top: 1px solid #e5e7eb;
 }
 
-/* BUTTONS - WHITE THEME */
+/* BUTTONS */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e5e7eb;
+}
+
 button[mat-raised-button] {
   font-weight: 500 !important;
   text-transform: uppercase;
@@ -220,7 +220,7 @@ button[mat-raised-button][color="primary"] {
   border: 1px solid #059669 !important;
 }
 
-button[mat-raised-button][color="primary"]:hover {
+button[mat-raised-button][color="primary"]:hover:not(:disabled) {
   background-color: #047857 !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2) !important;
@@ -251,12 +251,11 @@ button[mat-icon-button]:hover {
   background-color: rgba(5, 150, 105, 0.1) !important;
 }
 
-button[mat-raised-button] mat-icon {
-  margin-right: 0.5rem;
-  color: inherit;
+button[mat-icon-button][color="warn"]:hover {
+  background-color: rgba(220, 38, 38, 0.1) !important;
 }
 
-/* ADD BUTTONS - WHITE THEME */
+/* ADD BUTTONS */
 button[mat-raised-button][color="primary"][style*="margin-top"] {
   width: 100%;
   background-color: #ffffff !important;
@@ -272,17 +271,12 @@ button[mat-raised-button][color="primary"][style*="margin-top"]:hover {
   transform: translateY(-2px);
 }
 
-/* ACTIONS */
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 2px solid #e5e7eb;
+button[mat-raised-button] mat-icon {
+  margin-right: 0.5rem;
+  color: inherit;
 }
 
-/* NOTIFICATION - WHITE THEME */
+/* NOTIFICATION */
 .notification {
   position: fixed;
   bottom: 2rem;
@@ -314,7 +308,7 @@ button[mat-raised-button][color="primary"][style*="margin-top"]:hover {
   width: 100%;
 }
 
-/* PLACEHOLDER COLOR - WHITE THEME */
+/* PLACEHOLDER COLOR */
 ::ng-deep .mat-input-element::placeholder {
   color: #9ca3af !important;
 }
@@ -323,7 +317,7 @@ button[mat-raised-button][color="primary"][style*="margin-top"]:hover {
   color: #6b7280 !important;
 }
 
-/* TOOLTIP - WHITE THEME */
+/* TOOLTIP */
 ::ng-deep .mat-tooltip {
   background-color: #1f2937 !important;
   color: #ffffff !important;
@@ -351,22 +345,27 @@ button[mat-raised-button][color="primary"][style*="margin-top"]:hover {
     gap: 1rem;
   }
 
-  .story-grid {
-    grid-template-columns: 1fr;
+  .flex-row {
+    flex-direction: column;
+    align-items: stretch;
     gap: 0.75rem;
     padding: 0.75rem;
   }
 
-  .story-grid button {
-    justify-self: flex-end;
+  .flex-row .year-field {
+    width: 100%;
   }
 
-  .block-actions {
+  .flex-row button {
+    align-self: flex-end;
+  }
+
+  .panel-actions {
     flex-direction: column;
     gap: 0.5rem;
   }
 
-  .block-actions button {
+  .panel-actions button {
     width: 100%;
   }
 
@@ -389,9 +388,13 @@ button[mat-raised-button][color="primary"][style*="margin-top"]:hover {
   ::ng-deep .mat-expansion-panel-body {
     padding: 1rem !important;
   }
+
+  button[mat-raised-button][color="primary"][style*="margin-top"] {
+    padding: 0.75rem !important;
+  }
 }
 
-/* SCROLLBAR - WHITE THEME */
+/* SCROLLBAR */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -420,37 +423,23 @@ button[mat-raised-button][color="primary"][style*="margin-top"]:hover {
   background-color: #059669 !important;
 }
 
-::ng-deep .mat-expansion-panel-content {
-  font-family: inherit;
-}
-
-/* YEAR INPUT SPECIFIC */
-::ng-deep .story-grid .mat-form-field:first-child {
+/* YEAR FIELD SPECIFIC */
+.year-field {
   min-width: 100px;
 }
 
-/* TIMELINE SPECIFIC */
-.timeline-block {
-  margin-bottom: 1rem;
+@media (max-width: 768px) {
+  .year-field {
+    width: 100%;
+  }
 }
 
-.story-item {
-  position: relative;
-}
-
-/* ICON STYLES */
+/* ICONS */
 .mat-icon {
   color: #059669;
 }
 
-/* BLOCK ACTIONS BUTTONS SPECIFIC */
-.block-actions button[mat-raised-button][color="primary"] {
-  background-color: #ffffff !important;
-  color: #059669 !important;
-  border: 2px dashed #d1d5db !important;
-}
-
-.block-actions button[mat-raised-button][color="primary"]:hover {
-  background-color: #f0fdf4 !important;
-  border-color: #059669 !important;
+/* MARGIN UTILITIES */
+[style*="margin-top: 1rem;"] {
+  margin-top: 1rem !important;
 }

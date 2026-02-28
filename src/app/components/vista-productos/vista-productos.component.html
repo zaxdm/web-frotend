@@ -61,12 +61,19 @@
 
       <div class="downloads-content">
         <h2>DESCARGABLES</h2>
-        <div class="download-card">
-          <h3>{{ downloads[0].title }}</h3>
+  <div class="download-card" *ngFor="let download of downloads">
+    <h3>{{ download.title }}</h3>
           <div class="download-item">
-            <span>{{ downloads[0].description }}</span>
-            <span class="icon-download">&#8595;</span>
-          </div>
+      <span>{{ download.description }}</span>
+      <!-- ✅ Agregar enlace de descarga -->
+      <a [href]="download.link" 
+         target="_blank" 
+         download
+         [class.disabled]="!download.link"
+         class="icon-download">
+        &#8595;
+      </a>
+    </div>
         </div>
       </div>
 

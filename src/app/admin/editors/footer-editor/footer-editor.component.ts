@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule } from '@angular
 import { FooterService } from '../../../services/footer.service';
 import { FooterData } from '../../../models/footer.model';
 
-// Angular Material
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -39,6 +38,16 @@ export class FooterEditorComponent implements OnInit {
   footerForm: FormGroup;
   showSuccessMessage = false;
 
+  iconosSociales = [
+    { class: 'bi bi-facebook',  nombre: 'Facebook' },
+    { class: 'bi bi-instagram', nombre: 'Instagram' },
+    { class: 'bi bi-twitter-x', nombre: 'X / Twitter' },
+    { class: 'bi bi-linkedin',  nombre: 'LinkedIn' },
+    { class: 'bi bi-youtube',   nombre: 'YouTube' },
+    { class: 'bi bi-tiktok',    nombre: 'TikTok' },
+    { class: 'bi bi-whatsapp',  nombre: 'WhatsApp' },
+  ];
+
   constructor(
     private fb: FormBuilder,
     private footerService: FooterService
@@ -48,7 +57,7 @@ export class FooterEditorComponent implements OnInit {
       email: [''],
       logoCentro: [''],
       copyright: [''],
-      followText: [''], // 🔥 NUEVO editable
+      followText: [''],
       menuIzquierda: this.fb.array([]),
       noticias: this.fb.array([]),
       redes: this.fb.array([])
@@ -57,13 +66,10 @@ export class FooterEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.footerService.footerData$.subscribe(data => {
-      if (data) {
-        this.setFormValues(data);
-      }
+      if (data) this.setFormValues(data);
     });
   }
 
-  // ================= GETTERS =================
   get menuIzquierdaArray(): FormArray {
     return this.footerForm.get('menuIzquierda') as FormArray;
   }
@@ -76,112 +82,99 @@ export class FooterEditorComponent implements OnInit {
     return this.footerForm.get('redes') as FormArray;
   }
 
-  // ================= CARGAR DATA =================
   private setFormValues(data: FooterData) {
-
     this.footerForm.patchValue({
       telefono: data.contacto.telefono,
       email: data.contacto.email,
       logoCentro: data.logoCentro,
       copyright: data.copyright,
-      followText: data.followText   // 🔥 cargar
+      followText: data.followText
     });
 
-    // MENU
     this.menuIzquierdaArray.clear();
     data.menuIzquierda.forEach(item => {
-      this.menuIzquierdaArray.push(this.fb.group({
-        label: [item.label],
-        ruta: [item.ruta]
-      }));
+      this.menuIzquierdaArray.push(this.fb.group({ label: [item.label], ruta: [item.ruta] }));
     });
 
-    // NOTICIAS
     this.noticiasArray.clear();
     data.noticias.forEach(item => {
-      this.noticiasArray.push(this.fb.group({
-        fecha: [item.fecha],
-        titulo: [item.titulo],
-        url: [item.url]
-      }));
+      this.noticiasArray.push(this.fb.group({ fecha: [item.fecha], titulo: [item.titulo], url: [item.url] }));
     });
 
-    // REDES
     this.redesArray.clear();
     data.redes.forEach(item => {
-      this.redesArray.push(this.fb.group({
-        icon: [item.icon],
-        nombre: [item.nombre],
-        url: [item.url]
-      }));
+      this.redesArray.push(this.fb.group({ icon: [item.icon], nombre: [item.nombre], url: [item.url] }));
     });
   }
 
-  // ================= MENU =================
   addMenuItem() {
-    this.menuIzquierdaArray.push(this.fb.group({
-      label: [''],
-      ruta: ['']
-    }));
+    this.menuIzquierdaArray.push(this.fb.group({ label: [''], ruta: [''] }));
   }
 
   removeMenuItem(index: number) {
     this.menuIzquierdaArray.removeAt(index);
   }
 
-  // ================= NOTICIAS =================
   addNoticia() {
-    this.noticiasArray.push(this.fb.group({
-      fecha: [''],
-      titulo: [''],
-      url: ['']
-    }));
+    this.noticiasArray.push(this.fb.group({ fecha: [''], titulo: [''], url: [''] }));
   }
 
   removeNoticia(index: number) {
     this.noticiasArray.removeAt(index);
   }
 
-  // ================= REDES =================
   addRed() {
-    this.redesArray.push(this.fb.group({
-      icon: [''],
-      nombre: [''],
-      url: ['']
-    }));
+    this.redesArray.push(this.fb.group({ icon: [''], nombre: [''], url: [''] }));
   }
 
   removeRed(index: number) {
     this.redesArray.removeAt(index);
   }
 
-  // ================= GUARDAR =================
+  selectIcon(index: number, iconClass: string) {
+    this.redesArray.at(index).get('icon')?.setValue(iconClass);
+  }
+
+  onLogoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.footerForm.get('logoCentro')?.setValue(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onLogoDrop(event: DragEvent): void {
+    event.preventDefault();
+    const file = event.dataTransfer?.files[0];
+    if (!file) return;
+    this.onLogoSelected({ target: { files: [file] } } as any);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
   saveChanges() {
     if (this.footerForm.valid) {
-
       const formValue = this.footerForm.value;
-
       const footerData: FooterData = {
-        contacto: {
-          telefono: formValue.telefono,
-          email: formValue.email
-        },
+        contacto: { telefono: formValue.telefono, email: formValue.email },
         logoCentro: formValue.logoCentro,
         menuIzquierda: formValue.menuIzquierda,
         noticias: formValue.noticias,
         redes: formValue.redes,
         copyright: formValue.copyright || 'JF Tricon Perú, LLC',
-        followText: formValue.followText || 'SÍGUENOS EN —' // 🔥 guardar
+        followText: formValue.followText || 'SÍGUENOS EN —'
       };
-
       this.footerService.updateFooter(footerData);
-
       this.showSuccessMessage = true;
       setTimeout(() => this.showSuccessMessage = false, 3000);
     }
   }
 
-  // ================= RESET =================
   resetForm() {
     this.setFormValues(this.footerService.getFooter());
   }

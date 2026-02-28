@@ -32,6 +32,17 @@ h1 {
   font-weight: 400;
 }
 
+.optional-badge {
+  background-color: #e5e7eb;
+  color: #6b7280;
+  padding: 0.2rem 0.6rem;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 400;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
 /* TABS */
 ::ng-deep .mat-tab-group {
   margin-bottom: 2rem;
@@ -63,46 +74,16 @@ h1 {
   border: 1px solid #e5e7eb;
 }
 
-/* SECTION GROUPS */
-.section-group {
-  margin-bottom: 1rem;
-}
-
-.section-group h3 {
+.tab-card h3 {
   color: #111827;
   font-size: 1.2rem;
   font-weight: 500;
-  margin: 1rem 0 1rem 0;
+  margin: 0 0 1.5rem 0;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid #059669;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.section-group h3 mat-icon {
-  color: #059669 !important;
-}
-
-.section-group h4 {
-  color: #374151;
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 1.5rem 0 0.5rem 0;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.section-group h4 mat-icon {
-  color: #059669 !important;
-}
-
-.section-group h4 span {
-  color: #9ca3af;
-  font-size: 0.85rem;
-  font-weight: normal;
-  margin-left: 0.5rem;
 }
 
 /* FORM FIELDS - WHITE THEME */
@@ -134,15 +115,61 @@ h1 {
 ::ng-deep textarea.mat-input-element {
   line-height: 1.6;
   color: #111827 !important;
-  min-height: 60px;
 }
 
 /* FORM GRID */
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
-  margin: 0.5rem 0;
+  margin: 1rem 0;
+}
+
+/* FLEX ROW */
+.flex-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.flex-row:hover {
+  border-color: #059669;
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+}
+
+.flex-row .full-width {
+  flex: 1;
+}
+
+.flex-row button {
+  margin-top: 0.5rem;
+}
+
+/* CARD EDITOR */
+.card-editor {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.card-editor:hover {
+  border-color: #059669;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1);
+}
+
+.card-editor hr {
+  margin: 1.5rem 0 0 0;
+  border: none;
+  border-top: 2px dashed #e5e7eb;
 }
 
 /* EXPANSION PANELS - WHITE THEME */
@@ -192,19 +219,14 @@ h1 {
   border-radius: 0 0 8px 8px;
 }
 
-/* PARAGRAPH ROWS - WHITE THEME */
-[style*="display: flex; gap: 0.5rem; align-items: center;"] {
-  padding: 0.5rem;
-  background-color: #f9fafb;
-  border-radius: 4px;
-  border: 1px solid #e5e7eb;
-  transition: all 0.3s ease;
-}
-
-[style*="display: flex; gap: 0.5rem; align-items: center;"]:hover {
-  border-color: #059669;
-  background-color: #f0fdf4;
-  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.1);
+/* PANEL ACTIONS */
+.panel-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
 }
 
 /* CHECKBOX - WHITE THEME */
@@ -220,7 +242,16 @@ h1 {
   color: #374151 !important;
 }
 
-/* BUTTONS - WHITE THEME */
+/* BUTTONS */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 2px solid #e5e7eb;
+}
+
 button[mat-raised-button] {
   font-weight: 500 !important;
   text-transform: uppercase;
@@ -230,25 +261,13 @@ button[mat-raised-button] {
   padding: 0.5rem 1.5rem !important;
 }
 
-button[mat-raised-button]:not([color]):not([color="primary"]):not([color="warn"]) {
-  background-color: #f3f4f6 !important;
-  color: #374151 !important;
-  border: 1px solid #e5e7eb !important;
-}
-
-button[mat-raised-button]:not([color]):not([color="primary"]):not([color="warn"]):hover {
-  background-color: #e5e7eb !important;
-  border-color: #059669 !important;
-  transform: translateY(-1px);
-}
-
 button[mat-raised-button][color="primary"] {
   background-color: #059669 !important;
   color: #ffffff !important;
   border: 1px solid #059669 !important;
 }
 
-button[mat-raised-button][color="primary"]:hover {
+button[mat-raised-button][color="primary"]:hover:not(:disabled) {
   background-color: #047857 !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2) !important;
@@ -279,38 +298,32 @@ button[mat-icon-button]:hover {
   background-color: rgba(5, 150, 105, 0.1) !important;
 }
 
-button[mat-raised-button] mat-icon {
-  margin-right: 0.5rem;
-  color: inherit;
+button[mat-icon-button][color="warn"]:hover {
+  background-color: rgba(220, 38, 38, 0.1) !important;
 }
 
-/* ADD BUTTONS - WHITE THEME */
-button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"]) {
+/* ADD BUTTONS */
+button[mat-raised-button][color="primary"]:not(.actions button) {
   margin: 0.5rem 0;
-  width: 100%;
   background-color: #ffffff !important;
   color: #059669 !important;
   border: 2px dashed #d1d5db !important;
+  width: 100%;
   padding: 1rem !important;
 }
 
-button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"]):hover {
+button[mat-raised-button][color="primary"]:not(.actions button):hover {
   border-color: #059669 !important;
   background-color: #f0fdf4 !important;
   transform: translateY(-2px);
 }
 
-/* ACTIONS */
-.actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 2px solid #e5e7eb;
+button[mat-raised-button] mat-icon {
+  margin-right: 0.5rem;
+  color: inherit;
 }
 
-/* NOTIFICATION - WHITE THEME */
+/* NOTIFICATION */
 .notification {
   position: fixed;
   bottom: 2rem;
@@ -342,7 +355,7 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
   width: 100%;
 }
 
-/* PLACEHOLDER COLOR - WHITE THEME */
+/* PLACEHOLDER COLOR */
 ::ng-deep .mat-input-element::placeholder {
   color: #9ca3af !important;
 }
@@ -351,7 +364,7 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
   color: #6b7280 !important;
 }
 
-/* TOOLTIP - WHITE THEME */
+/* TOOLTIP */
 ::ng-deep .mat-tooltip {
   background-color: #1f2937 !important;
   color: #ffffff !important;
@@ -379,13 +392,25 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
     gap: 1rem;
   }
 
-  [style*="display: flex; gap: 0.5rem; align-items: center;"] {
+  .flex-row {
     flex-direction: column;
-    align-items: stretch;
+    gap: 0.5rem;
+    padding: 0.75rem;
   }
 
-  [style*="display: flex; gap: 0.5rem; align-items: center;"] button {
+  .flex-row button {
     align-self: flex-end;
+    margin-top: 0;
+  }
+
+  .panel-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .panel-actions button {
+    width: 100%;
   }
 
   .actions {
@@ -404,21 +429,20 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
     text-align: center;
   }
 
+  .card-editor {
+    padding: 1rem;
+  }
+
   ::ng-deep .expansion-item .mat-expansion-panel-body {
     padding: 1rem !important;
   }
 
-  .section-group h4 {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .section-group h4 span {
-    margin-left: 0;
+  button[mat-raised-button][color="primary"]:not(.actions button) {
+    padding: 0.75rem !important;
   }
 }
 
-/* SCROLLBAR - WHITE THEME */
+/* SCROLLBAR */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -447,41 +471,16 @@ button[mat-raised-button]:has(mat-icon):not(.actions button):not([color="warn"])
   background-color: #059669 !important;
 }
 
-/* SPACING UTILITIES */
-[style*="margin-top: 1rem;"] {
-  margin-top: 1rem !important;
+/* MARGIN UTILITIES */
+[style*="margin-top: 1.5rem;"] {
+  margin-top: 1.5rem !important;
 }
 
-[style*="margin-bottom: 0.5rem;"] {
-  margin-bottom: 0.5rem !important;
+[style*="margin-bottom: 1rem;"] {
+  margin-bottom: 1rem !important;
 }
 
-[style*="margin: 1rem 0;"] {
-  margin: 1rem 0 !important;
-}
-
-/* FLEX UTILITIES */
-[style*="display: flex; justify-content: flex-end;"] {
-  margin-top: 0.5rem;
-}
-
-[style*="display: flex; justify-content: space-between;"] {
-  margin-top: 1rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid #e5e7eb;
-}
-
-/* BOTTOM BANNER SPECIFIC */
-ng-template + button[mat-raised-button] {
-  margin-top: 1rem;
-}
-
-/* HERO BUTTON SECTION */
-[style*="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;"] span {
-  color: #9ca3af;
-}
-
-/* DELETE BUTTON STYLES */
-button[mat-raised-button][color="warn"][style*="margin-top"] {
-  margin-top: 0.5rem;
+/* ICONS WITHIN TEXTS */
+.mat-icon {
+  color: #059669;
 }

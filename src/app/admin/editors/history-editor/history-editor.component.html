@@ -1,4 +1,6 @@
 <div class="editor-container">
+
+  <!-- HEADER -->
   <h1>
     <span></span>
     Editor Historia
@@ -6,6 +8,7 @@
   </h1>
 
   <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+
     <!-- ================= HERO ================= -->
     <mat-tab label="Hero">
       <mat-card class="tab-card">
@@ -24,44 +27,47 @@
         <h3>Bloques del timeline</h3>
 
         <mat-accordion multi>
-          <mat-expansion-panel *ngFor="let t of data.timeline; let i=index">
+          <mat-expansion-panel
+            *ngFor="let t of data.timeline; let i = index;"
+            class="expansion-item">
             <mat-expansion-panel-header>
               <mat-panel-title>
-                <mat-icon style="margin-right:0.5rem;color:#3b82f6;">timeline</mat-icon>
-                Bloque {{i+1}}
+                <mat-icon>timeline</mat-icon>
+                Bloque {{ i + 1 }}
               </mat-panel-title>
             </mat-expansion-panel-header>
 
-            <div class="form-grid">
+            <div class="form-grid" style="margin-top: 1rem;">
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Imagen</mat-label>
-                <input matInput [(ngModel)]="t.image" placeholder="URL de la imagen">
+                <input matInput [(ngModel)]="t.image" [name]="'tImg' + i" placeholder="URL de la imagen">
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Alt</mat-label>
-                <input matInput [(ngModel)]="t.alt" placeholder="Texto alternativo">
+                <input matInput [(ngModel)]="t.alt" [name]="'tAlt' + i" placeholder="Texto alternativo">
               </mat-form-field>
             </div>
 
-            <h4>Historias</h4>
-            <div *ngFor="let s of t.stories; let j=index" class="story-grid">
-              <mat-form-field appearance="outline">
+            <h3 style="margin-top: 1rem;">Historias</h3>
+
+            <div *ngFor="let s of t.stories; let j = index;" class="flex-row">
+              <mat-form-field appearance="outline" class="year-field">
                 <mat-label>Año</mat-label>
-                <input matInput [(ngModel)]="s.year">
+                <input matInput [(ngModel)]="s.year" [name]="'year' + i + j">
               </mat-form-field>
 
               <mat-form-field appearance="outline" class="full-width">
                 <mat-label>Texto</mat-label>
-                <input matInput [(ngModel)]="s.text">
+                <input matInput [(ngModel)]="s.text" [name]="'text' + i + j">
               </mat-form-field>
 
-              <button mat-icon-button color="warn" (click)="deleteStory(i,j)" matTooltip="Eliminar historia">
+              <button mat-icon-button color="warn" (click)="deleteStory(i, j)" matTooltip="Eliminar historia">
                 <mat-icon>delete</mat-icon>
               </button>
             </div>
 
-            <div class="block-actions">
+            <div class="panel-actions">
               <button mat-raised-button color="primary" (click)="addStory(i)">
                 <mat-icon>add</mat-icon> Agregar historia
               </button>
@@ -73,26 +79,26 @@
           </mat-expansion-panel>
         </mat-accordion>
 
-        <button mat-raised-button color="primary" style="margin-top:1rem;" (click)="addTimeline()">
+        <button mat-raised-button color="primary" style="margin-top: 1rem;" (click)="addTimeline()">
           <mat-icon>add</mat-icon> Agregar bloque
         </button>
 
       </mat-card>
     </mat-tab>
+
   </mat-tab-group>
 
-  <!-- ================= MENSAJE ÉXITO ================= -->
-  <div *ngIf="showSuccessMessage" class="notification">
-    ✅ Historia actualizada correctamente
-  </div>
-
-    <!-- ================= ACCIONES ================= -->
+  <!-- BOTONES ACCIONES -->
   <div class="actions">
-    <button mat-raised-button color="warn" (click)="resetForm()">
-      <mat-icon>refresh</mat-icon> Cancelar
-    </button>
+    <button mat-raised-button color="warn" (click)="resetForm()">Cancelar</button>
     <button mat-raised-button color="primary" (click)="save()">
       <mat-icon>save</mat-icon> Guardar cambios
     </button>
   </div>
+
+  <!-- NOTIFICACIÓN -->
+  <div *ngIf="showSuccessMessage" class="notification">
+    ✅ Historia actualizada correctamente
+  </div>
+
 </div>

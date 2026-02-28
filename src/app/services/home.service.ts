@@ -5,7 +5,6 @@ import { API_BASE_URL } from '../api.config';
 
 @Injectable({ providedIn: 'root' })
 export class HomeService {
-
   private homeData: HomeData = {
     hero: {
       titleLines: ['LO QUE SE NECESITA', 'PARA ROMPER', 'BARRERAS'],
@@ -46,11 +45,30 @@ export class HomeService {
     return saved ? JSON.parse(saved) : this.homeData;
   }
 
-  async updateHome(data: HomeData) {
+  async updateHome(data: HomeData): Promise<void> {
     this.homeData = data;
     localStorage.setItem('homeData', JSON.stringify(data));
     try {
       await this.http.put<HomeData>(`${API_BASE_URL}/home`, data).toPromise();
+    } catch {}
+  }
+
+  async updateHomeWithFiles(data: HomeData, imageFiles: (File | null)[]): Promise<void> {
+    const formData = new FormData();
+    formData.append('hero', JSON.stringify(data.hero));
+    formData.append('about', JSON.stringify(data.about));
+    formData.append('cards', JSON.stringify(data.cards));
+
+    imageFiles.forEach((file, index) => {
+      if (file) formData.append(`cardImage_${index}`, file);
+    });
+
+    try {
+      const updated = await this.http.put<HomeData>(`${API_BASE_URL}/home`, formData).toPromise();
+      if (updated) {
+        this.homeData = updated;
+        localStorage.setItem('homeData', JSON.stringify(updated));
+      }
     } catch {}
   }
 }

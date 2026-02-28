@@ -1,9 +1,7 @@
-// products-editor.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-// Angular Material
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,8 +35,12 @@ import { HeroProduct, Feature, Download } from '../../../models/product.model';
 export class ProductsEditorComponent implements OnInit {
   product!: HeroProduct;
   originalProduct!: HeroProduct;
-  downloadsFiles: (File | null)[] = [];
   showSuccessMessage = false;
+
+  // Archivos
+  downloadsFiles: (File | null)[] = [];
+  mainImageFile: File | null = null;
+  thumbnailFiles: (File | null)[] = [];
 
   constructor(private productService: ProductService) {}
 
@@ -50,13 +52,14 @@ export class ProductsEditorComponent implements OnInit {
     this.product = this.productService.getProduct();
     this.originalProduct = JSON.parse(JSON.stringify(this.product));
 
-    // Inicializar arrays si no existen
     if (!this.product.downloads) this.product.downloads = [];
     if (!this.product.features) this.product.features = [];
     if (!this.product.descriptions) this.product.descriptions = [];
     if (!this.product.thumbnails) this.product.thumbnails = [];
 
     this.downloadsFiles = Array(this.product.downloads.length).fill(null);
+    this.thumbnailFiles = Array(this.product.thumbnails.length).fill(null);
+    this.mainImageFile = null;
   }
 
   trackByIndex(index: number): number {
@@ -65,49 +68,111 @@ export class ProductsEditorComponent implements OnInit {
 
   // ================= GUARDAR =================
   save(): void {
-    if (!this.downloadsFiles || this.downloadsFiles.every(f => f == null)) {
-      this.productService.updateProduct(this.product);
+    const hasFiles =
+      this.mainImageFile !== null ||
+      this.thumbnailFiles.some(f => f !== null) ||
+      this.downloadsFiles.some(f => f !== null);
+
+    if (hasFiles) {
+      this.productService.updateProductWithFiles(
+        this.product,
+        this.downloadsFiles,
+        this.mainImageFile,
+        this.thumbnailFiles
+      );
     } else {
-      this.productService.updateProductWithFiles(this.product, this.downloadsFiles);
+      this.productService.updateProduct(this.product);
     }
+
     this.showSuccessMessage = true;
-    setTimeout(() => this.showSuccessMessage = false, 3000);
+    setTimeout(() => (this.showSuccessMessage = false), 3000);
     this.originalProduct = JSON.parse(JSON.stringify(this.product));
   }
 
   // ================= RESET =================
   resetForm(): void {
     this.product = JSON.parse(JSON.stringify(this.originalProduct));
-    this.downloadsFiles = Array(this.product.downloads.length).fill(null);
+    this.downloadsFiles = Array(this.product.downloads?.length ?? 0).fill(null);
+    this.thumbnailFiles = Array(this.product.thumbnails?.length ?? 0).fill(null);
+    this.mainImageFile = null;
   }
 
-  // ================= DESCRIPCIONES =================
-  addDescription(): void {
-    this.product.descriptions.push('');
+  // ================= IMAGEN PRINCIPAL =================
+  onMainImageSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    this.mainImageFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.product.mainImage = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
   }
 
-  removeDescription(index: number): void {
-    this.product.descriptions.splice(index, 1);
+  onDropMainImage(event: DragEvent): void {
+    event.preventDefault();
+    const file = event.dataTransfer?.files[0];
+    if (!file) return;
+    this.mainImageFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.product.mainImage = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  mainImageFileName(): string {
+    return this.mainImageFile?.name ?? '';
   }
 
   // ================= THUMBNAILS =================
   addThumbnail(): void {
     this.product.thumbnails.push('');
+    this.thumbnailFiles.push(null);
   }
 
   removeThumbnail(index: number): void {
     this.product.thumbnails.splice(index, 1);
+    this.thumbnailFiles.splice(index, 1);
   }
+
+  onThumbnailSelected(index: number, event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+    this.thumbnailFiles[index] = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.product.thumbnails[index] = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onDropThumbnail(index: number, event: DragEvent): void {
+    event.preventDefault();
+    const file = event.dataTransfer?.files[0];
+    if (!file) return;
+    this.thumbnailFiles[index] = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.product.thumbnails[index] = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  thumbnailFileName(index: number): string {
+    return this.thumbnailFiles[index]?.name ?? '';
+  }
+
+  // ================= DESCRIPCIONES =================
+  addDescription(): void { this.product.descriptions.push(''); }
+  removeDescription(index: number): void { this.product.descriptions.splice(index, 1); }
 
   // ================= FEATURES =================
   addFeature(): void {
     this.product.features = this.product.features || [];
     this.product.features.push({ title: '', description: '' });
   }
-
-  removeFeature(index: number): void {
-    this.product.features?.splice(index, 1);
-  }
+  removeFeature(index: number): void { this.product.features?.splice(index, 1); }
 
   // ================= DOWNLOADS =================
   addDownload(): void {
@@ -121,27 +186,19 @@ export class ProductsEditorComponent implements OnInit {
     this.downloadsFiles.splice(index, 1);
   }
 
-  removeSelectedFile(index: number): void {
-    this.downloadsFiles[index] = null;
-  }
-
   onFileSelected(index: number, event: Event): void {
     const input = event.target as HTMLInputElement;
-    this.downloadsFiles[index] = input.files && input.files[0] ? input.files[0] : null;
+    this.downloadsFiles[index] = input.files?.[0] ?? null;
   }
 
   onDropFile(index: number, event: DragEvent): void {
     event.preventDefault();
-    const file = event.dataTransfer?.files[0] ?? null;
-    this.downloadsFiles[index] = file;
+    this.downloadsFiles[index] = event.dataTransfer?.files[0] ?? null;
   }
 
-  onDragOver(event: DragEvent): void {
-    event.preventDefault();
-  }
+  onDragOver(event: DragEvent): void { event.preventDefault(); }
 
   fileName(index: number): string {
-    const f = this.downloadsFiles[index];
-    return f ? f.name : '';
+    return this.downloadsFiles[index]?.name ?? '';
   }
 }

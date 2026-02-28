@@ -68,6 +68,43 @@ export class NavbarEditorComponent implements OnInit {
     return category?.get('titulo')?.value || '';
   }
 
+
+  iconosSociales = [
+  { class: 'bi bi-facebook',  nombre: 'Facebook' },
+  { class: 'bi bi-instagram', nombre: 'Instagram' },
+  { class: 'bi bi-twitter-x', nombre: 'X / Twitter' },
+  { class: 'bi bi-linkedin',  nombre: 'LinkedIn' },
+  { class: 'bi bi-youtube',   nombre: 'YouTube' },
+  { class: 'bi bi-tiktok',    nombre: 'TikTok' },
+  { class: 'bi bi-whatsapp',  nombre: 'WhatsApp' },
+];
+
+selectIcon(index: number, iconClass: string) {
+  this.redesArray.at(index).get('icon')?.setValue(iconClass);
+}
+
+onLogoSelected(event: Event): void {
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    this.form.get('logoActual')?.setValue(e.target?.result as string);
+  };
+  reader.readAsDataURL(file);
+}
+
+onLogoDrop(event: DragEvent): void {
+  event.preventDefault();
+  const file = event.dataTransfer?.files[0];
+  if (!file) return;
+  this.onLogoSelected({ target: { files: [file] } } as any);
+}
+
+onDragOver(event: DragEvent): void {
+  event.preventDefault();
+}
+
   // ================= GUARDAR =================
   saveChanges() {
     if (this.form.valid) {

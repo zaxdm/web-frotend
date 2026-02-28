@@ -57,32 +57,27 @@
 
       <!-- ================= LOGO ================= -->
       <mat-tab label="Logo">
-        <mat-card class="tab-card">
-          <div class="form-grid">
-            <div class="full-width section-group">
-              <h3>
-                <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">image</mat-icon>
-                Logo del Navbar
-              </h3>
-              
-              <div class="form-grid" style="margin-top: 1rem;">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Logo Actual (ruta)</mat-label>
-                  <input matInput formControlName="logoActual" placeholder="/logo-blanco.png">
-                </mat-form-field>
-
-                <!-- Vista previa del logo -->
-                <div class="logo-preview" *ngIf="form.get('logoActual')?.value">
-                  <div class="logo-placeholder">
-                    <mat-icon>image</mat-icon>
-                    <span class="logo-text">{{ form.get('logoActual')?.value }}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </mat-card>
-      </mat-tab>
+  <mat-card class="tab-card">
+    <div class="full-width section-group">
+      <h3>
+        <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">image</mat-icon>
+        Logo del Navbar
+      </h3>
+      <div class="upload-row" style="margin-top: 1rem;">
+        <img *ngIf="form.get('logoActual')?.value"
+             [src]="form.get('logoActual')?.value"
+             style="height:80px; border-radius:4px; margin-bottom:8px; display:block;">
+        <input type="file" accept="image/*" (change)="onLogoSelected($event)">
+        <div class="dropzone"
+             (dragover)="onDragOver($event)"
+             (drop)="onLogoDrop($event)">
+          <mat-icon>upload</mat-icon>
+          Arrastra aquí el logo o selecciónalo
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</mat-tab>
 
       <!-- ================= MENÚ ACERCA DE ================= -->
       <mat-tab label="Menú Acerca de">
@@ -162,11 +157,18 @@
                       <input matInput formControlName="nombre" placeholder="Facebook">
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="full-width">
-                      <mat-label>Icono</mat-label>
-                      <input matInput formControlName="icon" placeholder="bi bi-facebook">
-                      <mat-hint>Clase del icono (Bootstrap Icons)</mat-hint>
-                    </mat-form-field>
+                    <div class="full-width">
+  <label style="font-size:13px; color:#666; margin-bottom:8px; display:block;">Selecciona un icono</label>
+  <div class="icon-selector">
+    <div *ngFor="let ic of iconosSociales"
+         class="icon-option"
+         [class.selected]="redesArray.at(i).get('icon')?.value === ic.class"
+         (click)="selectIcon(i, ic.class)">
+      <i [class]="ic.class"></i>
+      <span>{{ic.nombre}}</span>
+    </div>
+  </div>
+</div>
 
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>URL</mat-label>

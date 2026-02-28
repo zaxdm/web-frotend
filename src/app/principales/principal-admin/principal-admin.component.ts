@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { AdminComponent } from "../../admin/admin/admin.component";
+import { Component } from '@angular/core';
+import { AdminComponent } from '../../admin/admin/admin.component';
+
 
 @Component({
   selector: 'app-principal-admin',
-  imports: [RouterOutlet, AdminComponent],
+  imports: [ AdminComponent],
   templateUrl: './principal-admin.component.html',
-  styleUrls: ['./principal-admin.component.css']
+  styleUrl: './principal-admin.component.css'
 })
-export class PrincipalAdminComponent implements OnInit {
+export class PrincipalAdminComponent {
 
-  constructor() { }
-
-  ngOnInit() {
-  }
 
 }

@@ -131,10 +131,31 @@
                       <input matInput formControlName="title" placeholder="Nombre del producto">
                     </mat-form-field>
 
-                    <mat-form-field appearance="outline" class="full-width">
-                      <mat-label>Imagen (URL/Ruta)</mat-label>
-                      <input matInput formControlName="image" placeholder="assets/products/bit1.png">
-                    </mat-form-field>
+                    <div class="full-width">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Imagen (URL actual)</mat-label>
+    <input matInput formControlName="image" placeholder="assets/products/bit1.png">
+  </mat-form-field>
+
+  <div class="upload-row">
+    <img *ngIf="productsArray.at(i).get('image')?.value"
+         [src]="productsArray.at(i).get('image')?.value"
+         style="height:80px; border-radius:4px; margin-bottom:8px; display:block;">
+
+    <input type="file" accept="image/*" (change)="onProductImageSelected(i, $event)">
+
+    <div class="dropzone"
+         (dragover)="onDragOver($event)"
+         (drop)="onDropProductImage(i, $event)">
+      <mat-icon>upload</mat-icon>
+      Arrastra aquí la imagen o selecciónala
+    </div>
+
+    <div class="filename" *ngIf="productImageFileName(i)">
+      <mat-icon>image</mat-icon> {{ productImageFileName(i) }}
+    </div>
+  </div>
+</div>
 
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Link del Producto</mat-label>

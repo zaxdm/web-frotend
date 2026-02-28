@@ -11,7 +11,7 @@ export class GeneralProductService {
   private _data: GeneralProductData = this.getDefaultData();
   public data$ = new BehaviorSubject<GeneralProductData>(this._data);
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) { // ✅ Sin AuthService
     const saved = localStorage.getItem(this.STORAGE_KEY);
     if (saved) {
       try {
@@ -28,12 +28,16 @@ export class GeneralProductService {
     return JSON.parse(JSON.stringify(this._data));
   }
 
-  updateData(data: GeneralProductData) {
-    this._data = JSON.parse(JSON.stringify(data));
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._data));
-    this.data$.next(this._data);
-    this.http.put(`${API_BASE_URL}/general-product-page`, this._data).toPromise().catch(() => {});
-  }
+updateData(data: GeneralProductData) {
+  this._data = JSON.parse(JSON.stringify(data));
+  localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this._data));
+  this.data$.next(this._data);
+
+  // ✅ Las imágenes base64 las maneja el backend con Cloudinary igual que Home
+  this.http.put(`${API_BASE_URL}/general-product-page`, this._data)
+    .toPromise()
+    .catch(() => {});
+}
 
   reset() {
     this._data = this.getDefaultData();

@@ -27,11 +27,9 @@ export class FooterService {
       { icon: 'bi bi-instagram', url: 'https://www.instagram.com/terelion.mining/', nombre: 'Instagram' }
     ],
     followText: 'SÍGUENOS EN —',
-
     copyright: `© ${new Date().getFullYear()} - JF Tricon Perú, LLC`,
-
   };
- 
+
   public footerData$ = new BehaviorSubject<FooterData>(this.getFooter());
 
   constructor(private http: HttpClient) {
@@ -47,6 +45,8 @@ export class FooterService {
     this.footerData = data;
     localStorage.setItem('footerData', JSON.stringify(data));
     this.footerData$.next(this.getFooter());
+
+    // ✅ Sin token manual — el interceptor lo agrega automáticamente
     this.http.put(`${API_BASE_URL}/footer`, { content: data }).toPromise().catch(() => {});
   }
 

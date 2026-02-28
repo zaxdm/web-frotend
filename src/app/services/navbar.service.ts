@@ -46,12 +46,13 @@ export class NavbarService {
     return saved ? JSON.parse(saved) : this.navbarData;
   }
 
-  updateNavbar(data: NavbarData) {
-    this.navbarData = data;
-    localStorage.setItem('navbarData', JSON.stringify(data));
-    this.navbarSubject.next(data);
-    this.http.put(`${API_BASE_URL}/navbar`, data).toPromise().catch(() => {});
-  }
+updateNavbar(data: NavbarData) {
+  this.navbarData = data;
+  localStorage.setItem('navbarData', JSON.stringify(data));
+  this.navbarSubject.next(data);
+
+  this.http.put(`${API_BASE_URL}/navbar`, data).toPromise().catch(() => {});
+}
 
   private async loadFromBackend(): Promise<void> {
     try {

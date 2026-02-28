@@ -38,9 +38,10 @@ export class ProductGeneralEditorComponent implements OnInit {
   form!: FormGroup;
   originalData!: GeneralProductData;
   showSuccessMessage = false;
+  productImageFiles: (File | null)[] = [];
 
   constructor(
-    private service: GeneralProductService, 
+    private service: GeneralProductService,
     private fb: FormBuilder
   ) {}
 
@@ -51,7 +52,8 @@ export class ProductGeneralEditorComponent implements OnInit {
   resetForm() {
     const data = this.service.getData();
     this.originalData = JSON.parse(JSON.stringify(data));
-    
+    this.productImageFiles = Array(data.products.length).fill(null);
+
     this.form = this.fb.group({
       headerData: this.fb.group({
         titulo: [data.headerData.titulo],
@@ -99,7 +101,7 @@ export class ProductGeneralEditorComponent implements OnInit {
           link: p.link
         }))
       };
-      
+
       this.service.updateData(updated);
       this.showSuccessMessage = true;
       setTimeout(() => (this.showSuccessMessage = false), 3000);
@@ -107,10 +109,39 @@ export class ProductGeneralEditorComponent implements OnInit {
     }
   }
 
-  // Helper para obtener título del producto
-  getProductTitle(index: number): string {
-    const product = this.productsArray.at(index);
-    return product?.get('title')?.value || '';
+  // ================= IMAGEN =================
+  onProductImageSelected(index: number, event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+
+    this.productImageFiles[index] = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.productsArray.at(index).get('image')?.setValue(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  onDragOver(event: DragEvent): void {
+    event.preventDefault();
+  }
+
+  onDropProductImage(index: number, event: DragEvent): void {
+    event.preventDefault();
+    const file = event.dataTransfer?.files[0];
+    if (!file) return;
+
+    this.productImageFiles[index] = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.productsArray.at(index).get('image')?.setValue(e.target?.result as string);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  productImageFileName(index: number): string {
+    return this.productImageFiles[index]?.name ?? '';
   }
 
   // ================= BREADCRUMBS =================
@@ -125,16 +156,22 @@ export class ProductGeneralEditorComponent implements OnInit {
   // ================= PRODUCTOS =================
   addProduct() {
     this.productsArray.push(
-      this.fb.group({ 
-        title: [''], 
-        image: [''], 
-        link: ['#'] 
+      this.fb.group({
+        title: [''],
+        image: [''],
+        link: ['#']
       })
     );
+    this.productImageFiles.push(null);
   }
 
   removeProduct(index: number) {
     this.productsArray.removeAt(index);
+    this.productImageFiles.splice(index, 1);
+  }
+
+  getProductTitle(index: number): string {
+    return this.productsArray.at(index)?.get('title')?.value || '';
   }
 
   // ================= GETTERS =================

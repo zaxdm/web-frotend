@@ -1,5 +1,5 @@
-<!-- products-editor.component.html -->
 <div class="editor-container">
+
   <h1>
     <span></span>
     Editor de Producto
@@ -7,231 +7,228 @@
   </h1>
 
   <mat-tab-group animationDuration="300ms" [dynamicHeight]="true">
+
     <!-- TAB: Principal -->
     <mat-tab label="Principal">
       <mat-card class="tab-card">
-        <form>
-          <div class="form-grid">
-            <div class="full-width section-group">
-              <h3>
-                <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">info</mat-icon>
-                Información Principal
-              </h3>
-              
-              <div class="form-grid" style="margin-top: 1rem;">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Título del producto</mat-label>
-                  <input matInput [(ngModel)]="product.title" name="title" placeholder="Nombre del producto">
-                </mat-form-field>
+        <h3>Información principal</h3>
 
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Subtítulo</mat-label>
-                  <input matInput [(ngModel)]="product.subtitle" name="subtitle" placeholder="Breve descripción">
-                </mat-form-field>
+        <div class="form-grid">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Título</mat-label>
+            <input matInput [(ngModel)]="product.title" name="title">
+          </mat-form-field>
 
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Imagen principal (URL)</mat-label>
-                  <input matInput [(ngModel)]="product.mainImage" name="mainImage" placeholder="/assets/product/main.jpg">
-                </mat-form-field>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Subtítulo</mat-label>
+            <input matInput [(ngModel)]="product.subtitle" name="subtitle">
+          </mat-form-field>
+        </div>
 
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Link de contacto</mat-label>
-                  <input matInput [(ngModel)]="product.contactLink" name="contactLink" placeholder="/contacto">
-                </mat-form-field>
-              </div>
+        <!-- Imagen principal con upload -->
+        <div class="full-width">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Imagen principal (URL actual)</mat-label>
+            <input matInput [(ngModel)]="product.mainImage" name="mainImage">
+          </mat-form-field>
+
+          <div class="upload-row">
+            <img *ngIf="product.mainImage"
+                 [src]="product.mainImage"
+                 style="height:80px; border-radius:4px; margin-bottom:8px; display:block;">
+
+            <input #mainImageInput type="file" accept="image/*"
+                   style="display:none"
+                   (change)="onMainImageSelected($event)">
+
+            <div class="dropzone"
+                 (click)="mainImageInput.click()"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDropMainImage($event)"
+                 style="cursor:pointer;">
+              <mat-icon>upload</mat-icon>
+              Haz clic o arrastra la imagen aquí
+            </div>
+
+            <div class="filename" *ngIf="mainImageFileName()">
+              <mat-icon>image</mat-icon> {{ mainImageFileName() }}
             </div>
           </div>
-        </form>
+        </div>
+
+        <div class="form-grid" style="margin-top: 1rem;">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Link contacto</mat-label>
+            <input matInput [(ngModel)]="product.contactLink" name="contactLink">
+          </mat-form-field>
+        </div>
       </mat-card>
     </mat-tab>
 
     <!-- TAB: Descripciones -->
     <mat-tab label="Descripciones">
       <mat-card class="tab-card">
-        <form>
-          <div class="form-grid">
-            <div class="full-width section-group">
-              <h3>
-                <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">notes</mat-icon>
-                Descripciones del Producto
-              </h3>
-              
-              <div *ngFor="let d of product.descriptions; let i = index; trackBy: trackByIndex" style="margin-bottom: 1rem;">
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                  <mat-form-field appearance="outline" style="flex: 1;">
-                    <mat-label>Descripción #{{i + 1}}</mat-label>
-                    <textarea matInput [(ngModel)]="product.descriptions[i]" [name]="'desc' + i" rows="3" placeholder="Texto descriptivo"></textarea>
-                  </mat-form-field>
-                  <button mat-icon-button color="warn" type="button" (click)="removeDescription(i)" matTooltip="Eliminar descripción">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
-              </div>
-              
-              <button mat-raised-button type="button" (click)="addDescription()" style="margin-top: 0.5rem;">
-                <mat-icon>add</mat-icon> Agregar descripción
-              </button>
-            </div>
-          </div>
-        </form>
+        <h3>Descripciones</h3>
+
+        <div *ngFor="let d of product.descriptions; let i = index; trackBy: trackByIndex" class="flex-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción {{i + 1}}</mat-label>
+            <textarea matInput [(ngModel)]="product.descriptions[i]" rows="3" [name]="'desc' + i"></textarea>
+          </mat-form-field>
+          <button mat-icon-button color="warn" (click)="removeDescription(i)" matTooltip="Eliminar descripción">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="addDescription()">
+          <mat-icon>add</mat-icon> Agregar descripción
+        </button>
       </mat-card>
     </mat-tab>
 
     <!-- TAB: Thumbnails -->
     <mat-tab label="Thumbnails">
       <mat-card class="tab-card">
-        <form>
-          <div class="form-grid">
-            <div class="full-width section-group">
-              <h3>
-                <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">image</mat-icon>
-                Imágenes Miniatura
-              </h3>
-              
-              <div *ngFor="let t of product.thumbnails; let i = index; trackBy: trackByIndex" style="margin-bottom: 1rem;">
-                <div style="display: flex; gap: 0.5rem; align-items: center;">
-                  <mat-form-field appearance="outline" style="flex: 1;">
-                    <mat-label>Thumbnail #{{i + 1}} (URL)</mat-label>
-                    <input matInput [(ngModel)]="product.thumbnails[i]" [name]="'thumb' + i" placeholder="/assets/product/thumb1.jpg">
-                  </mat-form-field>
-                  <button mat-icon-button color="warn" type="button" (click)="removeThumbnail(i)" matTooltip="Eliminar thumbnail">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </div>
+        <h3>Imágenes miniatura</h3>
+
+        <div *ngFor="let t of product.thumbnails; let i = index; trackBy: trackByIndex" class="card-editor">
+          <div class="full-width">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>URL imagen {{i + 1}}</mat-label>
+              <input matInput [(ngModel)]="product.thumbnails[i]" [name]="'thumb' + i">
+            </mat-form-field>
+
+            <div class="upload-row">
+              <img *ngIf="product.thumbnails[i]"
+                   [src]="product.thumbnails[i]"
+                   style="height:80px; border-radius:4px; margin-bottom:8px; display:block;">
+
+              <input #thumbInput type="file" accept="image/*"
+                     style="display:none"
+                     (change)="onThumbnailSelected(i, $event)">
+
+              <div class="dropzone"
+                   (click)="thumbInput.click()"
+                   (dragover)="onDragOver($event)"
+                   (drop)="onDropThumbnail(i, $event)"
+                   style="cursor:pointer;">
+                <mat-icon>upload</mat-icon>
+                Haz clic o arrastra la imagen aquí
               </div>
-              
-              <button mat-raised-button type="button" (click)="addThumbnail()" style="margin-top: 0.5rem;">
-                <mat-icon>add</mat-icon> Agregar thumbnail
-              </button>
+
+              <div class="filename" *ngIf="thumbnailFileName(i)">
+                <mat-icon>image</mat-icon> {{ thumbnailFileName(i) }}
+              </div>
             </div>
           </div>
-        </form>
+
+          <button mat-icon-button color="warn" (click)="removeThumbnail(i)" matTooltip="Eliminar imagen">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <hr>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="addThumbnail()">
+          <mat-icon>add</mat-icon> Agregar imagen
+        </button>
       </mat-card>
     </mat-tab>
 
     <!-- TAB: Features -->
-    <mat-tab label="Características">
+    <mat-tab label="Features">
       <mat-card class="tab-card">
-        <form>
-          <div *ngFor="let feature of product.features || []; let i = index; trackBy: trackByIndex">
-            <mat-expansion-panel class="expansion-item">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">star</mat-icon>
-                  {{feature.title || 'Característica #' + (i + 1)}}
-                </mat-panel-title>
-              </mat-expansion-panel-header>
+        <h3>Características</h3>
 
-              <div class="form-grid">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Título de la característica</mat-label>
-                  <input matInput [(ngModel)]="feature.title" [name]="'featureTitle' + i" placeholder="Característica principal">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Descripción</mat-label>
-                  <textarea matInput [(ngModel)]="feature.description" [name]="'featureDesc' + i" rows="3" placeholder="Descripción detallada"></textarea>
-                </mat-form-field>
-
-                <div class="full-width" style="display: flex; justify-content: flex-end; margin-top: 1rem;">
-                  <button mat-raised-button color="warn" type="button" (click)="removeFeature(i)">
-                    <mat-icon>delete</mat-icon> Eliminar característica
-                  </button>
-                </div>
-              </div>
-            </mat-expansion-panel>
+        <div *ngFor="let f of product.features || []; let i = index; trackBy: trackByIndex" class="card-editor">
+          <div class="form-grid">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Título</mat-label>
+              <input matInput [(ngModel)]="product.features![i].title" [name]="'featTitle' + i">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Descripción</mat-label>
+              <input matInput [(ngModel)]="product.features![i].description" [name]="'featDesc' + i">
+            </mat-form-field>
           </div>
-
-          <button mat-raised-button type="button" (click)="addFeature()" style="margin-top: 1rem;">
-            <mat-icon>add</mat-icon> Agregar característica
+          <button mat-raised-button color="warn" (click)="removeFeature(i)">
+            <mat-icon>delete</mat-icon> Eliminar feature
           </button>
-        </form>
+          <hr>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="addFeature()">
+          <mat-icon>add</mat-icon> Agregar feature
+        </button>
       </mat-card>
     </mat-tab>
 
     <!-- TAB: Descargables -->
     <mat-tab label="Descargables">
       <mat-card class="tab-card">
-        <form>
-          <div *ngFor="let download of product.downloads || []; let i = index; trackBy: trackByIndex">
-            <mat-expansion-panel class="expansion-item">
-              <mat-expansion-panel-header>
-                <mat-panel-title>
-                  <mat-icon style="margin-right: 0.5rem; color: #3b82f6;">download</mat-icon>
-                  {{download.title || 'Descargable #' + (i + 1)}}
-                </mat-panel-title>
-              </mat-expansion-panel-header>
+        <h3>Archivos descargables</h3>
 
-              <div class="form-grid">
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Título del descargable</mat-label>
-                  <input matInput [(ngModel)]="download.title" [name]="'downloadTitle' + i" placeholder="Manual de usuario">
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Descripción</mat-label>
-                  <textarea matInput [(ngModel)]="download.description" [name]="'downloadDesc' + i" rows="2" placeholder="Descripción del archivo"></textarea>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="full-width">
-                  <mat-label>Link (si es URL externa)</mat-label>
-                  <input matInput [(ngModel)]="download.link" [name]="'downloadLink' + i" placeholder="https://ejemplo.com/manual.pdf">
-                </mat-form-field>
-
-                <!-- Sección de subida de archivos -->
-                <div class="full-width section-group" style="margin-top: 1rem;">
-                  <h4 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                    <mat-icon style="color: #3b82f6;">attach_file</mat-icon>
-                    Subir archivo PDF
-                  </h4>
-
-                  <div class="upload-container">
-                    <input type="file" #fileInput [id]="'file-' + i" accept=".pdf" style="display: none;" (change)="onFileSelected(i, $event)">
-                    
-                    <div class="dropzone" (dragover)="onDragOver($event)" (drop)="onDropFile(i, $event)" (click)="fileInput.click()">
-                      <mat-icon style="font-size: 2rem; width: 2rem; height: 2rem; margin-bottom: 0.5rem;">cloud_upload</mat-icon>
-                      <span>Arrastra aquí o haz clic para subir un PDF</span>
-                      <span style="font-size: 0.8rem; color: #666;">{{ fileName(i) || 'Ningún archivo seleccionado' }}</span>
-                    </div>
-
-                    <button *ngIf="fileName(i)" mat-raised-button type="button" (click)="removeSelectedFile(i)" style="margin-top: 0.5rem;">
-                      <mat-icon>clear</mat-icon> Quitar archivo
-                    </button>
-                  </div>
-                </div>
-
-                <div class="full-width" style="display: flex; justify-content: flex-end; margin-top: 1rem;">
-                  <button mat-raised-button color="warn" type="button" (click)="removeDownload(i)">
-                    <mat-icon>delete</mat-icon> Eliminar descargable
-                  </button>
-                </div>
-              </div>
-            </mat-expansion-panel>
+        <div *ngFor="let d of product.downloads || []; let i = index; trackBy: trackByIndex" class="card-editor">
+          <div class="form-grid">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Título</mat-label>
+              <input matInput [(ngModel)]="product.downloads![i].title" [name]="'dlTitle' + i">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Descripción</mat-label>
+              <input matInput [(ngModel)]="product.downloads![i].description" [name]="'dlDesc' + i">
+            </mat-form-field>
           </div>
 
-          <button mat-raised-button type="button" (click)="addDownload()" style="margin-top: 1rem;">
-            <mat-icon>add</mat-icon> Agregar descargable
+          <div *ngIf="product.downloads![i].link" style="margin-bottom: 0.5rem;">
+            <a [href]="product.downloads![i].link" target="_blank" style="font-size:0.85rem; color:#3b82f6;">
+              <mat-icon style="vertical-align:middle; font-size:1rem;">picture_as_pdf</mat-icon>
+              Ver PDF actual
+            </a>
+          </div>
+
+          <div class="upload-row">
+            <input #pdfInput type="file" accept="application/pdf"
+                   style="display:none"
+                   (change)="onFileSelected(i, $event)">
+
+            <div class="dropzone"
+                 (click)="pdfInput.click()"
+                 (dragover)="onDragOver($event)"
+                 (drop)="onDropFile(i, $event)"
+                 style="cursor:pointer;">
+              <mat-icon>upload_file</mat-icon>
+              Haz clic o arrastra el PDF aquí
+            </div>
+
+            <div class="filename" *ngIf="fileName(i)">
+              <mat-icon>picture_as_pdf</mat-icon> {{ fileName(i) }}
+            </div>
+          </div>
+
+          <button mat-raised-button color="warn" (click)="removeDownload(i)" style="margin-top:0.5rem;">
+            <mat-icon>delete</mat-icon> Eliminar descargable
           </button>
-        </form>
+          <hr>
+        </div>
+
+        <button mat-raised-button color="primary" (click)="addDownload()">
+          <mat-icon>add</mat-icon> Agregar descargable
+        </button>
       </mat-card>
     </mat-tab>
+
   </mat-tab-group>
 
-  
-    <!-- ================= ACCIONES ================= -->
+  <!-- BOTONES ACCIONES -->
   <div class="actions">
-    <button mat-raised-button color="warn" (click)="resetForm()">
-      <mat-icon>refresh</mat-icon> Cancelar
-    </button>
+    <button mat-raised-button color="warn" (click)="resetForm()">Cancelar</button>
     <button mat-raised-button color="primary" (click)="save()">
       <mat-icon>save</mat-icon> Guardar cambios
     </button>
   </div>
 
-  @if (showSuccessMessage) {
-    <div class="notification">
-      ✅ Producto actualizado correctamente
-    </div>
-  }
+  <div *ngIf="showSuccessMessage" class="notification">
+    ✅ Producto actualizado correctamente
+  </div>
 
-
+</div>

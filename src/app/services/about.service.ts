@@ -12,7 +12,7 @@ export class AboutService {
   private aboutDataSubject = new BehaviorSubject<AboutSection>(this._aboutData);
   public aboutData$ = this.aboutDataSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient) { // ✅ Sin AuthService
     const saved = localStorage.getItem(this.STORAGE_KEY);
     if (saved) {
       try {
@@ -45,7 +45,11 @@ export class AboutService {
     this._aboutData = validated;
     this.aboutDataSubject.next(this._aboutData);
     this.saveToLocalStorage();
-    this.http.put(`${API_BASE_URL}/about`, { aboutData: validated }).toPromise().catch(() => {});
+
+    // ✅ Sin token manual — el interceptor lo agrega
+    this.http.put(`${API_BASE_URL}/about`, { aboutData: validated })
+      .toPromise()
+      .catch(() => {});
   }
 
   private saveToLocalStorage(): void {
@@ -74,16 +78,18 @@ export class AboutService {
       paragraphs: Array.isArray(saved.paragraphs) && saved.paragraphs.length ? saved.paragraphs : defaults.paragraphs,
       paragraphs2: Array.isArray(saved.paragraphs2) ? saved.paragraphs2 : defaults.paragraphs2
     };
-  } 
+  }
 
   private getDefaultData(): AboutSection {
     return {
       heroTitle: 'SOBRE NOSOTROS',
       subtitle: 'Nuestra misión, valores y equipo',
-      paragraphs: ['Somos orgullosos especialistas en el desarrollo y fabricación de brocas de cono de rodillos para las industrias de minería y construcción. Texas es nuestra patria, pero la industria minera a cielo abierto mundial es nuestro patio de recreo.',
+      paragraphs: [
+        'Somos orgullosos especialistas en el desarrollo y fabricación de brocas de cono de rodillos para las industrias de minería y construcción. Texas es nuestra patria, pero la industria minera a cielo abierto mundial es nuestro patio de recreo.',
         'En Terelion siempre nos hemos dedicado a ser los mejores en nuestro negocio. Exploramos constantemente nuevos diseños innovadores, nuevos materiales, nuevos métodos de fabricación y nuevas herramientas de ingeniería. Sólo para suministrar a nuestros clientes las brocas de cono de rodillos más resistentes, eficientes y rentables disponibles.'
       ],
-      paragraphs2: ['Dondequiera que mires, el mundo está lleno de tareas desafiantes que la humanidad debe resolver. En Terelion nos especializamos en aquellos desafíos que plantea la perforación con voladuras en la minería a cielo abierto.',
+      paragraphs2: [
+        'Dondequiera que mires, el mundo está lleno de tareas desafiantes que la humanidad debe resolver. En Terelion nos especializamos en aquellos desafíos que plantea la perforación con voladuras en la minería a cielo abierto.',
         'Siempre nos hemos dedicado a ser los mejores en nuestro negocio. Exploramos constantemente nuevos diseños innovadores, nuevos materiales, nuevos métodos de fabricación y nuevas herramientas de ingeniería. Todo con el objetivo de fabricar las brocas de cono de rodillos más resistentes, eficientes y rentables disponibles.',
         'Algunas de nuestras innovaciones son menores. Otros conducen a avances que afectan a toda la industria. Estén atentos y estarán entre los primeros en saber cuándo Terelion lanzará la próxima innovación en perforación de rocas.'
       ]

@@ -185,7 +185,11 @@
   font-weight: bold;
 }
 
-
+.icon-download.disabled {
+  pointer-events: none;
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 
 /* -----------------
 -----------------

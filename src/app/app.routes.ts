@@ -11,6 +11,7 @@ import { ProductoGeneralComponent } from './components/producto-general/producto
 import { ContactComponent } from './routes/contact/contact.component';
 import { MasInfoComponent } from './components/mas-info/mas-info.component';
 import { NoticiasComponent } from './components/noticias/noticias.component';
+import { LoginComponent } from './principales/login/login.component';
 
 // Admin components
 import { PrincipalAdminComponent } from '../app/principales/principal-admin/principal-admin.component';
@@ -25,12 +26,18 @@ import { ProductGeneralEditorComponent } from './admin/editors/product-general-e
 import { MasInfoEditorComponent } from './admin/editors/mas-info-editor/mas-info-editor.component';
 import { HistoryEditorComponent } from './admin/editors/history-editor/history-editor.component';
 import { NoticiasEditorComponent } from './admin/editors/noticias-editor/noticias-editor.component';
+import { RegistrarComponent } from './principales/registrar/registrar.component';
+
+// Guard
+import { authGuard } from '../app/principales/login/Auth.guard'; // ← ajusta la ruta si es diferente
+import { ProfileComponent } from './admin/admin/profile/profile.component';
 
 export const routes: Routes = [
+
   // -------------------- Public routes --------------------
   {
     path: '',
-    component: PrincipalComponent, // layout público con navbar + footer
+    component: PrincipalComponent,
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
@@ -41,27 +48,35 @@ export const routes: Routes = [
       { path: 'mas-info', component: MasInfoComponent },
       { path: 'contactos', component: ContactComponent },
       { path: 'noticias', component: NoticiasComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'registrarse', component: RegistrarComponent },
     ]
   },
 
-  // -------------------- Admin routes --------------------
+  // -------------------- Admin routes (protegidas) --------------------
   {
-    path: 'admin',
-    component: PrincipalAdminComponent, // layout admin sin navbar ni footer
-    children: [
-      { path: '', component: AdminComponent },
-      { path: 'about', component: AboutEditorComponent },
-      { path: 'contact', component: ContactEditorComponent },
-      { path: 'home', component: HomeEditorComponent },
-      { path: 'footer', component: FooterEditorComponent },
-      { path: 'navbar', component: NavbarEditorComponent },
-      { path: 'general-product', component: ProductGeneralEditorComponent },
-      { path: 'products', component: ProductsEditorComponent },
-      { path: 'mas-info', component: MasInfoEditorComponent },
-      { path: 'history', component: HistoryEditorComponent },
-      { path: 'noticias', component: NoticiasEditorComponent },
-    ]
-  },
+
+  path: 'admin',
+  component: PrincipalAdminComponent,
+  canActivate: [authGuard], // ← solo aquí es suficiente
+  children: [
+    { path: 'home', component: HomeEditorComponent }, // ← sin canActivate
+    { path: 'about', component: AboutEditorComponent },
+    { path: 'contact', component: ContactEditorComponent },
+    { path: 'footer', component: FooterEditorComponent },
+    { path: 'navbar', component: NavbarEditorComponent },
+    { path: 'general-product', component: ProductGeneralEditorComponent },
+    { path: 'products', component: ProductsEditorComponent },
+    { path: 'mas-info', component: MasInfoEditorComponent },
+    { path: 'history', component: HistoryEditorComponent },
+    { path: 'noticias', component: NoticiasEditorComponent },
+    { path: 'profile', component: ProfileComponent },
+
+  ]
+},
+
+  // Redirigir cualquier ruta no encontrada a home o login
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({
